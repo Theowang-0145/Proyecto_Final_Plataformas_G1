@@ -1,6 +1,6 @@
 /*
 Este es un archivo de pureba de que a todos nos compila el raylib y demas. Compilen este con este comando:
-gcc main.c -o prueba -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -lXi -lXrandr -lXinerama -lXcursor
+gcc <nombre de la prueba>.c -o prueba -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -lXi -lXrandr -lXinerama -lXcursor
 
 ya cuando hagamos el makefile podemos meter todas esas librerias ahi y ya compila mas facilito. por ahora se ve asi
 */
