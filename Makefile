@@ -15,11 +15,11 @@ TARGET = simulador
 all:
 	@echo "Compilando proyecto..."
 	@$(CC) $(SRC) $(CFLAGS) -o $(TARGET) $(LDFLAGS)
-	@echo "Compilacion exitosa"
+	@echo "Compilación exitosa."
 
 run: all
 	@echo "Ejecutando..."
-      ./$(TARGET)
+	@./$(TARGET)
 
 clean:
-	rm -f $(TARGET)
+	@rm -f $(TARGET)
