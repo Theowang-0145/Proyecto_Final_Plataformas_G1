@@ -10,13 +10,16 @@ SRC = src/main.c \
       src/componentes.c \
       src/botones.c
 
-TARGET = simulator
+TARGET = simulador
 
 all:
-	$(CC) $(SRC) $(CFLAGS) -o $(TARGET) $(LDFLAGS)
+	@echo "Compilando proyecto..."
+	@$(CC) $(SRC) $(CFLAGS) -o $(TARGET) $(LDFLAGS)
+	@echo "Compilacion exitosa"
 
 run: all
-	./$(TARGET)
+	@echo "Ejecutando..."
+      ./$(TARGET)
 
 clean:
 	rm -f $(TARGET)
