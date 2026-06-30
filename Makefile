@@ -23,3 +23,11 @@ run: all
 
 clean:
 	@rm -f $(TARGET)
+
+TEST_MEM = test_memoria
+
+test_memoria:
+	@$(CC) src/test_memoria.c src/componentes.c $(CFLAGS) -o $(TEST_MEM) $(LDFLAGS)
+
+memcheck-test: test_memoria
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(TEST_MEM)

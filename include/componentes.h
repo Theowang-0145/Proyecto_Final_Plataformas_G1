@@ -9,12 +9,13 @@
 //====== Para los Resistores (COMPONENTES) ======
 typedef struct 
 {
-    Vector2 posicion;
+    Vector2 posicion;   //luego hay que implementarlo al snap to grid
     bool visible;
-    bool seleccionado;
+    bool seleccionado;  //este bool luego hay que trabajarlo para poder seleccionar y mover
 
 }Resistor;
 
+//esto de aca ya no se toca (por ahora jeje creo que si para el snap y el seleccionado pero asi se ve bien)
 typedef struct 
 {
     Resistor *resistores; //aca se encuentran practicamente todos los resistores almacenados
@@ -22,10 +23,10 @@ typedef struct
     size_t capacidad; 
 }ArregloResistores;
 
-void InicializarArreglo_Res(ArregloResistores *punt_datos, size_t capacidad_inicial);
-void Anadir_Resistor(ArregloResistores *punt_datos);
-void Dibujar_resistor(ArregloResistores *punt_datos); //por ahora solo esta la funcion de dibujado, esto en caso de que el mouse toque el boton 
-void Liberar_Arreglo_Resistores(ArregloResistores *punt_datos);
+void InicializarArreglo_Res(ArregloResistores *punt_datos, size_t capacidad_inicial);  //inicializa el arreglo (Como el lab 5)
+void Anadir_Resistor(ArregloResistores *punt_datos);//anade resistores (como el lab 5)
+void Dibujar_resistor(ArregloResistores *punt_datos); //los dibuja, pero sus posiciones son variables de structs (Como el lab 5)
+void Liberar_Arreglo_Resistores(ArregloResistores *punt_datos);//libera la mmoria (igual que el lab 5)
 
 
 //====== Para las Fuentes de Tension (COMPONENTES) ======

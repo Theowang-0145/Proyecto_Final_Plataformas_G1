@@ -29,12 +29,12 @@ void Dibujar_boton(Rectangle boton_general, const char* texto)
     //este condicional se utiliza para cambiar el color del texto cuando el puntero del mouse se encuentre sobre el boton
     if (CheckCollisionPointRec(mouse, boton_general))
     {
-        //esta funcion dibuja el boton perce, sin bordes que resalten
+        //esta funcion dibuja el boton perce, sin bordes que resalten pero de otro color
         DrawRectangleRec(boton_general, LIGHTGRAY);
     }
     else
     {
-        //al igual que esta
+        //al igual que esta pero de otro color
         DrawRectangleRec(boton_general, GRAY);
     }
 

@@ -9,7 +9,7 @@
 
 //====== Para los Resistores ======
 
-ArregloResistores arreglo_R;
+ArregloResistores arreglo_R;    //antes inicializabamos uno ahora se inicializa un arreglo para tener ahi todosy poder poner un monton en pantalla
 
 //este boton si es estatico y sirve siempre 
 static Rectangle resistor_boton = {20, 20, 180, 45};
@@ -34,7 +34,8 @@ void InicializarSimulador()
     SetTargetFPS(60);
 
     //inicializacion de arreglos 
-    InicializarArreglo_Res(&arreglo_R, 10); 
+    InicializarArreglo_Res(&arreglo_R, 10); //ojo que se inicializa aca primero pues asi no entra en el while y entra en loop (solo se necesita una vez)
+                                        
 }
 
 //esta funcion actualiza constantemente lo que ocurre en el programa, es decir, realiza todos los cambios que luego 
@@ -45,12 +46,12 @@ void ActualizarSimulador()
     //por ejemplo esto que cambia el estado de la variable bool del resistor creado
     if (ButtonClicked(resistor_boton) == true)
     {
-        Anadir_Resistor(&arreglo_R);
+        Anadir_Resistor(&arreglo_R);    //antes se tenia un true, ahora una funcion pues se maneja con arreglos dinamicos(muy parecido al lab 5 solo que con un struct en vez de int)
 
     }
 
 
-    //aca van a hacer falta muchas mas funciones para las demas innteracciones
+    //aca van a hacer falta muchas mas funciones para las demas interacciones
 
 }
 
@@ -71,10 +72,9 @@ void DibujarSimulador(void)
     //----------Botones para el toolbar(FALTAN MAS)------
     Dibujar_boton(resistor_boton, "Agregar R");
 
-    //dibujado de los componentes 
+    //dibujado de los componentes, ahora solo se necesita una funcion que en realidad es un loop
     Dibujar_resistor(&arreglo_R);
     
-
 
     //----------Respuesta del dibujo al cambio en la actualizacion (FALTAN MAS ACTUALIZACIONES Y MAS COMPONENTES)
     EndDrawing();
@@ -83,6 +83,7 @@ void DibujarSimulador(void)
 //funcion de cerrado de la ventana de Raylib
 void CerrarSimulador(void)
 {
+    //ojo que se cierra aca el ciclo y se debe liberar memoria de todos los punteros
     Liberar_Arreglo_Resistores(&arreglo_R);
     CloseWindow();
 
