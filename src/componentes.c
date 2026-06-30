@@ -152,6 +152,37 @@ Rectangle Caja_de_seleccion_resistor(Resistor resistor){
     return caja; 
 } 
 
+void Mover_Resistor(ArregloResistores *punt_datos)
+{
+    for (size_t i = 0; i < punt_datos->tamano; i++)
+    {
+        if (punt_datos->resistores[i].seleccionado)
+        {
+            if (IsKeyPressed(KEY_RIGHT))
+            {
+                punt_datos->resistores[i].posicion.x += 20;
+            }
+
+            if (IsKeyPressed(KEY_LEFT))
+            {
+                punt_datos->resistores[i].posicion.x -= 20;
+            }
+
+            if (IsKeyPressed(KEY_UP))
+            {
+                punt_datos->resistores[i].posicion.y -= 20;
+            }
+
+            if (IsKeyPressed(KEY_DOWN))
+            {
+            punt_datos->resistores[i].posicion.y += 20;
+            }
+
+            break;
+        }
+    }
+}
+
 
 //====== Para las Fuentes de Tension (COMPONENTES) ======
 

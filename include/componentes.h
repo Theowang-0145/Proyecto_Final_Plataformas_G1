@@ -30,6 +30,7 @@ void Liberar_Arreglo_Resistores(ArregloResistores *punt_datos);//libera la mmori
 
 void Seleccion_movimiento_resistores(ArregloResistores *punt_datos);
 Rectangle Caja_de_seleccion_resistor(Resistor resistor); 
+void Mover_Resistor(ArregloResistores *punt_datos); 
 
 
 //====== Para las Fuentes de Tension (COMPONENTES) ======

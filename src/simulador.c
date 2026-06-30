@@ -51,6 +51,7 @@ void ActualizarSimulador()
 
     //Seccion se seleccion de componentes (proximamente va a estar el movimiento y el snap de cada uno)
     Seleccion_movimiento_resistores(&arreglo_R); //este fue el unico cambio
+    Mover_Resistor(&arreglo_R); //para mover el resistor basta con hacer una funcion nueva que recorra el arreglo, busque el seleccionado y cambie su vector con punteros
 
 }
 
