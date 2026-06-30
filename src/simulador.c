@@ -9,14 +9,7 @@
 
 //====== Para los Resistores ======
 
-//este struct guarda UN SOLO RESISTOR POR AHORA, pues se quiere tener la base. 
-//cambiarlo luego para que puedan haber mas resistores, con una lsta o con un arreglo dinamico
-
-static Resistor resistor = {
-
-    .posicion = {500, 500},
-    .visible = false    //inicializado en false pues no se ve en pantalla desde el inicio, sino mediante un cambio con bool
-};
+ArregloResistores arreglo_R;
 
 //este boton si es estatico y sirve siempre 
 static Rectangle resistor_boton = {20, 20, 180, 45};
@@ -39,6 +32,9 @@ void InicializarSimulador()
 {
     InitWindow(ANCHO, ALTO, "Simulador de Circuitos");
     SetTargetFPS(60);
+
+    //inicializacion de arreglos 
+    InicializarArreglo_Res(&arreglo_R, 10); 
 }
 
 //esta funcion actualiza constantemente lo que ocurre en el programa, es decir, realiza todos los cambios que luego 
@@ -49,7 +45,8 @@ void ActualizarSimulador()
     //por ejemplo esto que cambia el estado de la variable bool del resistor creado
     if (ButtonClicked(resistor_boton) == true)
     {
-        resistor.visible = true;
+        Anadir_Resistor(&arreglo_R);
+
     }
 
 
@@ -74,19 +71,21 @@ void DibujarSimulador(void)
     //----------Botones para el toolbar(FALTAN MAS)------
     Dibujar_boton(resistor_boton, "Agregar R");
 
+    //dibujado de los componentes 
+    Dibujar_resistor(&arreglo_R);
+    
+
 
     //----------Respuesta del dibujo al cambio en la actualizacion (FALTAN MAS ACTUALIZACIONES Y MAS COMPONENTES)
-    if (resistor.visible == true)
-    {
-        Dibujar_resistor(resistor);
-    }
     EndDrawing();
 }
 
 //funcion de cerrado de la ventana de Raylib
 void CerrarSimulador(void)
 {
+    Liberar_Arreglo_Resistores(&arreglo_R);
     CloseWindow();
+
 }
 
 //esta funcion corresponde al grid (la saque del aporte de Aaron)

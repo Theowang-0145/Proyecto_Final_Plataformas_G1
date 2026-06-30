@@ -1,6 +1,6 @@
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Iinclude
+CFLAGS = -Wall -Wextra -g -Iinclude
 
 LDFLAGS = -lraylib -lGL -lm -lpthread -ldl -lrt \
           -lX11 -lXi -lXrandr -lXinerama -lXcursor
