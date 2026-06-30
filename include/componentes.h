@@ -28,6 +28,9 @@ void Anadir_Resistor(ArregloResistores *punt_datos);//anade resistores (como el 
 void Dibujar_resistor(ArregloResistores *punt_datos); //los dibuja, pero sus posiciones son variables de structs (Como el lab 5)
 void Liberar_Arreglo_Resistores(ArregloResistores *punt_datos);//libera la mmoria (igual que el lab 5)
 
+void Seleccion_movimiento_resistores(ArregloResistores *punt_datos);
+Rectangle Caja_de_seleccion_resistor(Resistor resistor); 
+
 
 //====== Para las Fuentes de Tension (COMPONENTES) ======
 

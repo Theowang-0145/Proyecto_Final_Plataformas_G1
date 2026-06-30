@@ -38,8 +38,7 @@ void InicializarSimulador()
                                         
 }
 
-//esta funcion actualiza constantemente lo que ocurre en el programa, es decir, realiza todos los cambios que luego 
-//en la creacion del dibujo se ven reflejados
+//---------------------------------------UPDATE-------------------------------------
 
 void ActualizarSimulador()
 {
@@ -50,13 +49,12 @@ void ActualizarSimulador()
 
     }
 
-
-    //aca van a hacer falta muchas mas funciones para las demas interacciones
+    //Seccion se seleccion de componentes (proximamente va a estar el movimiento y el snap de cada uno)
+    Seleccion_movimiento_resistores(&arreglo_R); //este fue el unico cambio
 
 }
 
-
-//esta es la funcion de dibujado de zona de trabajo, de componentes y de cambios en el programa
+//--------------------------------------DRAWING------------------------------------
 void DibujarSimulador(void)
 {
     BeginDrawing();

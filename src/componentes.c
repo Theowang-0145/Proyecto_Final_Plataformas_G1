@@ -32,7 +32,7 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
     //aca se inicializan los resistores cuando hay que anadir uno nuevo, ojo con la posicion que cambia segun el tamano
     //esto para que a la hora de crearlos no se pongan uno sobre otro, sino corridos
     Resistor resistor = {
-        .posicion = {(500 + (punt_datos->tamano*5 + 10) ) , (500 + (punt_datos->tamano*5 + 10) )},
+        .posicion = {(500 + (punt_datos->tamano*40 + 30) ) , (500 + (punt_datos->tamano*40 + 30) )},
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
         .seleccionado = false
     };
@@ -57,7 +57,7 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
         punt_datos->capacidad = nueva_capacidad;
 
     }
-    
+
     //integracion del resistor a la lista del arreglo
     punt_datos->resistores[punt_datos->tamano] = resistor; 
     punt_datos->resistores[punt_datos->tamano].visible = true;
@@ -87,6 +87,16 @@ void Dibujar_resistor(ArregloResistores *punt_datos)    //esta funcion recibe el
         DrawText("R", x - 12, y - 45, 20, BLACK);
         DrawText("1k", x - 12, y + 25, 18, RED);
 
+        //esta nueva parte es solo un cambio de color si el resistor fue seleccionado
+        if (punt_datos->resistores[i].seleccionado == true) {
+            DrawLine(x - 60, y, x - 30, y, RED);
+            DrawRectangleLines(x - 30, y - 15, 60, 30, RED);
+            DrawLine(x + 30, y, x + 60, y, RED);
+
+            DrawText("R", x - 12, y - 45, 20, BLUE);
+            DrawText("1k", x - 12, y + 25, 18, BLUE);
+        }
+
     }
 }
 
@@ -105,6 +115,43 @@ void Liberar_Arreglo_Resistores(ArregloResistores *punt_datos){
     punt_datos->capacidad = 0; 
     punt_datos->tamano = 0; 
 }
+
+void Seleccion_movimiento_resistores(ArregloResistores *punt_datos){ //basicamente funciona como pulsos generados por el cursor
+
+    bool click;
+    bool encima;
+
+    //cada pulso que se genera , primero deselecciona todas las resistencias y luego va egenerando un boton por resistencia, preguntando si esa fue la que toco
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+
+        Vector2 mouse = GetMousePosition(); //se solicita el estado del mouse y su posicion
+
+        for (size_t i = 0; i < punt_datos->tamano; i++){    //como paso preliminar se deseleccionan todos los elementos
+
+            punt_datos->resistores[i].seleccionado = false; 
+        }
+
+        for (size_t i = 0; i < punt_datos->tamano; i++){    //por cada elemento genera su boton y pregunta si fue ese el que se toco
+
+            Rectangle caja_seleccion = Caja_de_seleccion_resistor(punt_datos->resistores[i]); 
+
+            encima = CheckCollisionPointRec(mouse,caja_seleccion);
+            click = IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
+
+            if ((encima == true) && (click == true)){   //por ultimo, si lo es, simplemente cambia su estado en el strcut para poder ser movido con las teclas proximamente
+                punt_datos->resistores[i].seleccionado = true; 
+                break;
+            }
+        }
+    }
+}
+
+Rectangle Caja_de_seleccion_resistor(Resistor resistor){
+
+    Rectangle caja = {resistor.posicion.x - 70, resistor.posicion.y -50, 130, 70}; 
+    return caja; 
+} 
+
 
 //====== Para las Fuentes de Tension (COMPONENTES) ======
 
