@@ -13,6 +13,8 @@ ArregloResistores arreglo_R;    //antes inicializabamos uno ahora se inicializa 
 
 //este boton si es estatico y sirve siempre 
 static Rectangle resistor_boton = {20, 20, 180, 45};
+static Rectangle fuente_V_boton = {20, 80, 180, 45};
+static Rectangle fuente_I_boton = {220, 20, 180, 45};
 
 //====== Para las Fuentes de Tension ======
 
@@ -49,6 +51,16 @@ void ActualizarSimulador()
 
     }
 
+    if(ButtonClicked(fuente_V_boton) == true){
+
+        printf("\nHola se imprime una fuente de tension\n");
+    }
+
+    if(ButtonClicked(fuente_I_boton) == true){
+
+        printf("\nHola se imprime una fuente de corriente\n");
+    }
+
     //Seccion se seleccion de componentes (proximamente va a estar el movimiento y el snap de cada uno)
     Seleccion_movimiento_resistores(&arreglo_R); //este fue el unico cambio
     Mover_Resistor(&arreglo_R); //para mover el resistor basta con hacer una funcion nueva que recorra el arreglo, busque el seleccionado y cambie su vector con punteros
@@ -70,6 +82,8 @@ void DibujarSimulador(void)
 
     //----------Botones para el toolbar(FALTAN MAS)------
     Dibujar_boton(resistor_boton, "Agregar R");
+    Dibujar_boton(fuente_V_boton, "Agregar F-T");
+    Dibujar_boton(fuente_I_boton, "Agregar F-C");
 
     //dibujado de los componentes, ahora solo se necesita una funcion que en realidad es un loop
     Dibujar_resistor(&arreglo_R);
