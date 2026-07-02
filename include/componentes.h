@@ -87,4 +87,33 @@ void Seleccion_movimiento_Fuente_C(ArregloFuentes_C *punt_datos);
 Rectangle Caja_de_seleccion_Fuente_C(Fuentes_C fuente_T); 
 void Mover_Fuente_C(ArregloFuentes_C *punt_datos); 
 
+
+
+//====== Para los nodos (COMPONENTES) ======
+
+typedef struct 
+{
+    Vector2 posicion;   //luego hay que implementarlo al snap to grid
+    bool visible;
+    bool seleccionado;  //este bool luego hay que trabajarlo para poder seleccionar y mover
+
+}Nodo;
+
+//esto de aca ya no se toca (por ahora jeje creo que si para el snap y el seleccionado pero asi se ve bien)
+typedef struct 
+{
+    Nodo *nodo; //aca se encuentran practicamente todos los resistores almacenados
+    size_t tamano; 
+    size_t capacidad; 
+}ArregloNodos;
+
+void InicializarArregloNodo(ArregloNodos *punt_datos, size_t capacidad_inicial);  //inicializa el arreglo (Como el lab 5)
+void Anadir_Nodo(ArregloNodos *punt_datos);//anade resistores (como el lab 5)
+void Dibujar_Nodo(ArregloNodos *punt_datos); //los dibuja, pero sus posiciones son variables de structs (Como el lab 5)
+void Liberar_Arreglo_Nodo(ArregloNodos *punt_datos);//libera la mmoria (igual que el lab 5)
+
+void Seleccion_movimiento_Nodo(ArregloNodos *punt_datos);
+Rectangle Caja_de_seleccion_Nodo(Nodo nodo); 
+void Mover_Nodo(ArregloNodos *punt_datos); 
+
 #endif
