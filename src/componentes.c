@@ -265,9 +265,9 @@ void Dibujar_Fuente_T(ArregloFuentes_T *punt_datos) //tal vez el cambio mas impo
 
         
         DrawCircleLines(x, y, 25, BLACK);//circulo principal
-        DrawLine(x + 15, y, x + 5, y, BLACK);//linea horizontal derecha
-        DrawLine(x + 10, y-7, x + 10, y+7, BLACK);//linea vertical derecha
-        DrawLine(x - 10, y-7, x - 10, y+7, BLACK);//linea vertical izquierda
+        DrawLine(x + 15, y, x + 5, y, BLUE);//linea horizontal derecha
+        DrawLine(x + 10, y-7, x + 10, y+7, BLUE);//linea vertical derecha
+        DrawLine(x - 10, y-7, x - 10, y+7, BLUE);//linea vertical izquierda
 
 
 
@@ -459,9 +459,9 @@ void Dibujar_Fuente_C(ArregloFuentes_C *punt_datos)
 
         //este es el dibujo del circulo 
         DrawCircleLines(x, y, 25, BLACK);
-        DrawLine(x - 10, y, x+10, y , BLACK); //linea horizontal
-        DrawLine(x + 10, y, x , y - 10 , BLACK);//linea inclinada superior
-        DrawLine(x + 10, y, x , y + 10 , BLACK);//linea inclinada inferior
+        DrawLine(x - 10, y, x+10, y , BLUE); //linea horizontal
+        DrawLine(x + 10, y, x , y - 10 , BLUE);//linea inclinada superior
+        DrawLine(x + 10, y, x , y + 10 , BLUE);//linea inclinada inferior
 
     //esta es la linea derecha
         DrawLine(x + 25, y, x + 60, y, BLACK);
@@ -562,6 +562,178 @@ void Mover_Fuente_C(ArregloFuentes_C *punt_datos)
             if (IsKeyPressed(KEY_DOWN))
             {
             punt_datos->fuentes_C[i].posicion.y += 20;
+            }
+
+            break;
+        }
+    }
+}
+
+/*
+
+//====== Para los Nodos (COMPONENTES) ======
+
+
+*/
+void InicializarArregloNodo(ArregloNodos *punt_datos, size_t capacidad_inicial){
+
+    
+    punt_datos->nodo = NULL; 
+    punt_datos->tamano=0;
+    punt_datos->capacidad=0;
+
+
+
+    //recordar que se le esta guardando memoria a puntero del struct del arreglo del tamano del struct de resistores
+    punt_datos->nodo = malloc(capacidad_inicial * sizeof(Fuentes_T)); 
+
+
+    //manejo de error por punteros 
+    if (punt_datos->nodo == NULL){
+        printf("\n ERROR NO SE LOGRO GUARDAR MEMORIA PARA EL ARREGLO DINAMICO");
+        return;
+    }
+
+    punt_datos->capacidad = capacidad_inicial; 
+}
+
+void Anadir_Nodo(ArregloNodos *punt_datos){
+
+    //se inicializa una nueva fuente de corriente 
+    Nodo nodo = {
+        .posicion = {(800 + (punt_datos->tamano*40 + 30) ) , (500 + (punt_datos->tamano*40 + 30) )},
+        .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
+        .seleccionado = false
+    };
+
+
+
+    //manejo de capacidad con realloc
+    if (punt_datos->tamano == punt_datos->capacidad){
+
+        size_t nueva_capacidad = punt_datos->capacidad * 2;
+
+        Nodo *nuevo = realloc(punt_datos->nodo, nueva_capacidad * sizeof(Nodo));
+
+        //manejo de error del puntero
+        if (nuevo == NULL){
+            printf("NO SE PUDO GENERAR NUEVA MEMORIA PARA EL ARREGLO DE RESISTORES");
+            return;
+        }
+        
+        //reescripcion del puntero con nueva capacidad
+        punt_datos->nodo = nuevo; 
+        punt_datos->capacidad = nueva_capacidad;
+
+    }
+
+    //integracion del resistor a la lista del arreglo
+    punt_datos->nodo[punt_datos->tamano] = nodo; 
+    punt_datos->nodo[punt_datos->tamano].visible = true;
+    punt_datos->tamano ++; 
+
+}
+
+
+
+void Dibujar_Nodo(ArregloNodos *punt_datos)
+{   
+   //ciclo para impresion constante de todas las fuentes
+    for (size_t i = 0; i < punt_datos->tamano; i ++ ){
+
+        int x = punt_datos->nodo[i].posicion.x;
+        int y = punt_datos->nodo[i].posicion.y;
+
+            DrawCircle(x, y, 10, BLUE);
+            DrawText("Nodo", x-20, y-30, 20, BLACK);
+            DrawText("1", x-1, y+13, 18, BLACK);
+
+        //cambio de color si es seleccionado
+        if (punt_datos->nodo[i].seleccionado == true) {
+
+            DrawCircle(x, y, 10, RED);
+            DrawText("Nodo", x-20, y-30, 20, BLUE);
+            DrawText("1", x-1, y+13, 18, BLUE);
+        }
+
+    }
+}
+
+void Liberar_Arreglo_Nodo(ArregloNodos *punt_datos){
+        //liberacion de memoria para los punteros
+        if (punt_datos->nodo != NULL)
+    {
+        free(punt_datos->nodo);
+
+        punt_datos->nodo = NULL;
+        punt_datos->tamano = 0;
+        punt_datos->capacidad = 0;
+    }
+
+    punt_datos->nodo = NULL; 
+    punt_datos->capacidad = 0; 
+    punt_datos->tamano = 0; 
+}
+
+void Seleccion_movimiento_Nodo(ArregloNodos *punt_datos){ //basicamente funciona como pulsos generados por el cursor
+
+    bool click;
+    bool encima;
+
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+
+        Vector2 mouse = GetMousePosition(); //se solicita el estado del mouse y su posicion
+
+        for (size_t i = 0; i < punt_datos->tamano; i++){    //como paso preliminar se deseleccionan todos los elementos
+
+            punt_datos->nodo[i].seleccionado = false; 
+        }
+
+        for (size_t i = 0; i < punt_datos->tamano; i++){    //por cada elemento genera su boton y pregunta si fue ese el que se toco
+
+            Rectangle caja_seleccion = Caja_de_seleccion_Nodo(punt_datos->nodo[i]); 
+
+            encima = CheckCollisionPointRec(mouse,caja_seleccion);
+            click = IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
+
+            if ((encima == true) && (click == true)){   //por ultimo, si lo es, simplemente cambia su estado en el strcut para poder ser movido con las teclas proximamente
+                punt_datos->nodo[i].seleccionado = true; 
+                break;
+            }
+        }
+    }
+}
+
+Rectangle Caja_de_seleccion_Nodo(Nodo Nodo){  //cajita de la fuente de corriente por si es seleccionado
+
+    Rectangle caja = {Nodo.posicion.x - 20, Nodo.posicion.y -20, 30, 30}; 
+    return caja; 
+} 
+
+void Mover_Nodo(ArregloNodos *punt_datos)
+{
+    for (size_t i = 0; i < punt_datos->tamano; i++)
+    {
+        if (punt_datos->nodo[i].seleccionado)
+        {
+            if (IsKeyPressed(KEY_RIGHT))
+            {
+                punt_datos->nodo[i].posicion.x += 20;
+            }
+
+            if (IsKeyPressed(KEY_LEFT))
+            {
+                punt_datos->nodo[i].posicion.x -= 20;
+            }
+
+            if (IsKeyPressed(KEY_UP))
+            {
+                punt_datos->nodo[i].posicion.y -= 20;
+            }
+
+            if (IsKeyPressed(KEY_DOWN))
+            {
+            punt_datos->nodo[i].posicion.y += 20;
             }
 
             break;

@@ -12,6 +12,7 @@
 ArregloResistores arreglo_R; 
 ArregloFuentes_T arreglo_F_T;
 ArregloFuentes_C arreglo_F_C;
+ArregloNodos arreglo_nodo;
 
 //este boton si es estatico y sirve siempre 
 static Rectangle resistor_boton = {20, 20, 180, 45};
@@ -35,6 +36,7 @@ void InicializarSimulador()
     InicializarArreglo_Res(&arreglo_R, 10); //ojo que se inicializa aca primero pues asi no entra en el while y entra en loop (solo se necesita una vez)              
     InicializarArreglo_F_T(&arreglo_F_T, 10);
     InicializarArreglo_F_C(&arreglo_F_C, 10);
+    InicializarArregloNodo(&arreglo_nodo, 10);
 }
 
 //---------------------------------------UPDATE-------------------------------------
@@ -60,7 +62,7 @@ void ActualizarSimulador()
 
     if(ButtonClicked(nodo_boton) == true){
 
-        printf("Anadir nodo en el dibujo"); 
+        Anadir_Nodo(&arreglo_nodo);
     }
 
 
@@ -83,6 +85,9 @@ void ActualizarSimulador()
 
     Seleccion_movimiento_Fuente_C(&arreglo_F_C);
     Mover_Fuente_C(&arreglo_F_C);
+
+    Seleccion_movimiento_Nodo(&arreglo_nodo);
+    Mover_Nodo(&arreglo_nodo);
 }
 
 //--------------------------------------DRAWING------------------------------------
@@ -116,6 +121,7 @@ void DibujarSimulador(void)
     Dibujar_resistor(&arreglo_R);
     Dibujar_Fuente_T(&arreglo_F_T);
     Dibujar_Fuente_C(&arreglo_F_C);
+    Dibujar_Nodo(&arreglo_nodo);
     
 
     //----------Respuesta del dibujo al cambio en la actualizacion (FALTAN MAS ACTUALIZACIONES Y MAS COMPONENTES)
@@ -129,6 +135,7 @@ void CerrarSimulador(void)
     Liberar_Arreglo_Resistores(&arreglo_R);
     Liberar_Arreglo_Fuente_T(&arreglo_F_T);
     Liberar_Arreglo_Fuente_C(&arreglo_F_C);
+    Liberar_Arreglo_Nodo(&arreglo_nodo);
     CloseWindow();
 
 }
