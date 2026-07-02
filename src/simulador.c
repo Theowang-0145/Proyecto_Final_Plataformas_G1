@@ -7,23 +7,19 @@
 
 //----------Seccion de posicones y dimensiones de componentes(dibujo del componente y su boton asociado)-----------------
 
-//====== Para los Resistores ======
+//====== Para los Componentes ======
 
-ArregloResistores arreglo_R;    //antes inicializabamos uno ahora se inicializa un arreglo para tener ahi todosy poder poner un monton en pantalla
+ArregloResistores arreglo_R; 
+ArregloFuentes_T arreglo_F_T;
+ArregloFuentes_C arreglo_F_C;
 
 //este boton si es estatico y sirve siempre 
 static Rectangle resistor_boton = {20, 20, 180, 45};
-static Rectangle fuente_V_boton = {20, 80, 180, 45};
-static Rectangle fuente_I_boton = {220, 20, 180, 45};
-
-//====== Para las Fuentes de Tension ======
-
-//falta
-
-
-//====== Para las Fuentes de Corriente ======
-
-//falta
+static Rectangle fuente_T_boton = {20, 80, 180, 45};
+static Rectangle fuente_C_boton = {220, 20, 180, 45};
+static Rectangle nodo_boton = {220, 80, 180, 45};
+static Rectangle rotar_boton = {420, 20, 150, 45};
+static Rectangle eliminar_boton = {420, 80, 150, 45};
 
 
 
@@ -36,8 +32,9 @@ void InicializarSimulador()
     SetTargetFPS(60);
 
     //inicializacion de arreglos 
-    InicializarArreglo_Res(&arreglo_R, 10); //ojo que se inicializa aca primero pues asi no entra en el while y entra en loop (solo se necesita una vez)
-                                        
+    InicializarArreglo_Res(&arreglo_R, 10); //ojo que se inicializa aca primero pues asi no entra en el while y entra en loop (solo se necesita una vez)              
+    InicializarArreglo_F_T(&arreglo_F_T, 10);
+    InicializarArreglo_F_C(&arreglo_F_C, 10);
 }
 
 //---------------------------------------UPDATE-------------------------------------
@@ -51,20 +48,41 @@ void ActualizarSimulador()
 
     }
 
-    if(ButtonClicked(fuente_V_boton) == true){
+    if(ButtonClicked(fuente_T_boton) == true){
 
-        printf("\nHola se imprime una fuente de tension\n");
+        Anadir_Fuente_T(&arreglo_F_T);
     }
 
-    if(ButtonClicked(fuente_I_boton) == true){
+    if(ButtonClicked(fuente_C_boton) == true){
 
-        printf("\nHola se imprime una fuente de corriente\n");
+        Anadir_Fuente_C(&arreglo_F_C);
+    }
+
+    if(ButtonClicked(nodo_boton) == true){
+
+        printf("Anadir nodo en el dibujo"); 
+    }
+
+
+    if(ButtonClicked(rotar_boton) == true){
+
+        printf("Rotar componente"); 
+    }
+
+    if(ButtonClicked(eliminar_boton) == true){
+
+        printf("Eliminar componente"); 
     }
 
     //Seccion se seleccion de componentes (proximamente va a estar el movimiento y el snap de cada uno)
     Seleccion_movimiento_resistores(&arreglo_R); //este fue el unico cambio
     Mover_Resistor(&arreglo_R); //para mover el resistor basta con hacer una funcion nueva que recorra el arreglo, busque el seleccionado y cambie su vector con punteros
 
+    Seleccion_movimiento_Fuente_T(&arreglo_F_T);
+    Mover_Fuente_T(&arreglo_F_T);
+
+    Seleccion_movimiento_Fuente_C(&arreglo_F_C);
+    Mover_Fuente_C(&arreglo_F_C);
 }
 
 //--------------------------------------DRAWING------------------------------------
@@ -78,15 +96,26 @@ void DibujarSimulador(void)
     DrawRectangle(0, 0, ANCHO, ALTURA_TOOLBAR, LIGHTGRAY);
     DrawRectangleLines(0, 0, ANCHO, ALTURA_TOOLBAR, BLACK);
     DrawText("Barra de herramientas", (ANCHO / 2) - 100, 25, 20, BLACK);
+    DrawText("[ DC SIMULATOR ]", (ANCHO / 2) - 105, 80, 29, BLACK);
+
+    DrawRectangle(890, 10, 475, 130, WHITE);
+    DrawRectangleLines(890, 10, 475, 130, BLACK);
+    DrawText("Mensajes",1080, 25, 20, BLACK);
+
     Imprimir_Grid();
 
     //----------Botones para el toolbar(FALTAN MAS)------
     Dibujar_boton(resistor_boton, "Agregar R");
-    Dibujar_boton(fuente_V_boton, "Agregar F-T");
-    Dibujar_boton(fuente_I_boton, "Agregar F-C");
+    Dibujar_boton(fuente_T_boton, "Agregar F-T");
+    Dibujar_boton(fuente_C_boton, "Agregar F-C");
+    Dibujar_boton(nodo_boton, "Agregar N");
+    Dibujar_boton(rotar_boton, "Rotar Comp");
+    Dibujar_boton(eliminar_boton, "Eliminar");
 
     //dibujado de los componentes, ahora solo se necesita una funcion que en realidad es un loop
     Dibujar_resistor(&arreglo_R);
+    Dibujar_Fuente_T(&arreglo_F_T);
+    Dibujar_Fuente_C(&arreglo_F_C);
     
 
     //----------Respuesta del dibujo al cambio en la actualizacion (FALTAN MAS ACTUALIZACIONES Y MAS COMPONENTES)
@@ -98,6 +127,8 @@ void CerrarSimulador(void)
 {
     //ojo que se cierra aca el ciclo y se debe liberar memoria de todos los punteros
     Liberar_Arreglo_Resistores(&arreglo_R);
+    Liberar_Arreglo_Fuente_T(&arreglo_F_T);
+    Liberar_Arreglo_Fuente_C(&arreglo_F_C);
     CloseWindow();
 
 }

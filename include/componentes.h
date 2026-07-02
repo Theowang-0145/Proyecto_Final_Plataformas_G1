@@ -35,7 +35,56 @@ void Mover_Resistor(ArregloResistores *punt_datos);
 
 //====== Para las Fuentes de Tension (COMPONENTES) ======
 
+typedef struct 
+{
+    Vector2 posicion;   //luego hay que implementarlo al snap to grid
+    bool visible;
+    bool seleccionado;  //este bool luego hay que trabajarlo para poder seleccionar y mover
+
+}Fuentes_T;
+
+//esto de aca ya no se toca (por ahora jeje creo que si para el snap y el seleccionado pero asi se ve bien)
+typedef struct 
+{
+    Fuentes_T *fuentes_T; //aca se encuentran practicamente todos los resistores almacenados
+    size_t tamano; 
+    size_t capacidad; 
+}ArregloFuentes_T;
+
+void InicializarArreglo_F_T(ArregloFuentes_T *punt_datos, size_t capacidad_inicial);  //inicializa el arreglo (Como el lab 5)
+void Anadir_Fuente_T(ArregloFuentes_T *punt_datos);//anade resistores (como el lab 5)
+void Dibujar_Fuente_T(ArregloFuentes_T *punt_datos); //los dibuja, pero sus posiciones son variables de structs (Como el lab 5)
+void Liberar_Arreglo_Fuente_T(ArregloFuentes_T *punt_datos);//libera la mmoria (igual que el lab 5)
+
+void Seleccion_movimiento_Fuente_T(ArregloFuentes_T *punt_datos);
+Rectangle Caja_de_seleccion_Fuente_T(Fuentes_T fuente_T); 
+void Mover_Fuente_T(ArregloFuentes_T *punt_datos); 
+
 //====== Para las Fuentes de Corriente (COMPONENTES) ======
 
+typedef struct 
+{
+    Vector2 posicion;   //luego hay que implementarlo al snap to grid
+    bool visible;
+    bool seleccionado;  //este bool luego hay que trabajarlo para poder seleccionar y mover
+
+}Fuentes_C;
+
+//esto de aca ya no se toca (por ahora jeje creo que si para el snap y el seleccionado pero asi se ve bien)
+typedef struct 
+{
+    Fuentes_C *fuentes_C; //aca se encuentran practicamente todos los resistores almacenados
+    size_t tamano; 
+    size_t capacidad; 
+}ArregloFuentes_C;
+
+void InicializarArreglo_F_C(ArregloFuentes_C *punt_datos, size_t capacidad_inicial);  //inicializa el arreglo (Como el lab 5)
+void Anadir_Fuente_C(ArregloFuentes_C *punt_datos);//anade resistores (como el lab 5)
+void Dibujar_Fuente_C(ArregloFuentes_C *punt_datos); //los dibuja, pero sus posiciones son variables de structs (Como el lab 5)
+void Liberar_Arreglo_Fuente_C(ArregloFuentes_C *punt_datos);//libera la mmoria (igual que el lab 5)
+
+void Seleccion_movimiento_Fuente_C(ArregloFuentes_C *punt_datos);
+Rectangle Caja_de_seleccion_Fuente_C(Fuentes_C fuente_T); 
+void Mover_Fuente_C(ArregloFuentes_C *punt_datos); 
 
 #endif
