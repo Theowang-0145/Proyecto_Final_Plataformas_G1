@@ -116,6 +116,21 @@ void Liberar_Arreglo_Resistores(ArregloResistores *punt_datos){
     punt_datos->tamano = 0; 
 }
 
+bool Eliminar_Resistor_Seleccionado(ArregloResistores *punt_datos){
+    for (size_t i = 0; i < punt_datos->tamano; i++){
+        if (punt_datos->resistores[i].seleccionado){
+            for (size_t j = i; j + 1 < punt_datos->tamano; j++){
+                punt_datos->resistores[j] = punt_datos->resistores[j + 1];
+            }
+
+            punt_datos->tamano--;
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void Seleccion_movimiento_resistores(ArregloResistores *punt_datos){ //basicamente funciona como pulsos generados por el cursor
 
     bool click;
@@ -306,6 +321,21 @@ void Liberar_Arreglo_Fuente_T(ArregloFuentes_T *punt_datos){
     punt_datos->fuentes_T = NULL; 
     punt_datos->capacidad = 0; 
     punt_datos->tamano = 0; 
+}
+
+bool Eliminar_Fuente_T_Seleccionada(ArregloFuentes_T *punt_datos){
+    for (size_t i = 0; i < punt_datos->tamano; i++){
+        if (punt_datos->fuentes_T[i].seleccionado){
+            for (size_t j = i; j + 1 < punt_datos->tamano; j++){
+                punt_datos->fuentes_T[j] = punt_datos->fuentes_T[j + 1];
+            }
+
+            punt_datos->tamano--;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void Seleccion_movimiento_Fuente_T(ArregloFuentes_T *punt_datos){ 
@@ -503,6 +533,21 @@ void Liberar_Arreglo_Fuente_C(ArregloFuentes_C *punt_datos){
     punt_datos->tamano = 0; 
 }
 
+bool Eliminar_Fuente_C_Seleccionada(ArregloFuentes_C *punt_datos){
+    for (size_t i = 0; i < punt_datos->tamano; i++){
+        if (punt_datos->fuentes_C[i].seleccionado){
+            for (size_t j = i; j + 1 < punt_datos->tamano; j++){
+                punt_datos->fuentes_C[j] = punt_datos->fuentes_C[j + 1];
+            }
+
+            punt_datos->tamano--;
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void Seleccion_movimiento_Fuente_C(ArregloFuentes_C *punt_datos){ //basicamente funciona como pulsos generados por el cursor
 
     bool click;
@@ -673,6 +718,21 @@ void Liberar_Arreglo_Nodo(ArregloNodos *punt_datos){
     punt_datos->nodo = NULL; 
     punt_datos->capacidad = 0; 
     punt_datos->tamano = 0; 
+}
+
+bool Eliminar_Nodo_Seleccionado(ArregloNodos *punt_datos){
+    for (size_t i = 0; i < punt_datos->tamano; i++){
+        if (punt_datos->nodo[i].seleccionado){
+            for (size_t j = i; j + 1 < punt_datos->tamano; j++){
+                punt_datos->nodo[j] = punt_datos->nodo[j + 1];
+            }
+
+            punt_datos->tamano--;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void Seleccion_movimiento_Nodo(ArregloNodos *punt_datos){ //basicamente funciona como pulsos generados por el cursor

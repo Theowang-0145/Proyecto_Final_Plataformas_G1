@@ -73,7 +73,19 @@ void ActualizarSimulador()
 
     if(ButtonClicked(eliminar_boton) == true){
 
-        printf("Eliminar componente"); 
+        bool eliminado = false;
+
+        eliminado = Eliminar_Resistor_Seleccionado(&arreglo_R) || eliminado;
+        eliminado = Eliminar_Fuente_T_Seleccionada(&arreglo_F_T) || eliminado;
+        eliminado = Eliminar_Fuente_C_Seleccionada(&arreglo_F_C) || eliminado;
+        eliminado = Eliminar_Nodo_Seleccionado(&arreglo_nodo) || eliminado;
+
+        if (eliminado){
+        printf("Componente Eliminado");
+        }
+        else {
+        printf("Seleccione un componente antes de eliminar");
+        }
     }
 
     //Seccion se seleccion de componentes (proximamente va a estar el movimiento y el snap de cada uno)

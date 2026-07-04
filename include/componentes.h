@@ -27,6 +27,7 @@ void InicializarArreglo_Res(ArregloResistores *punt_datos, size_t capacidad_inic
 void Anadir_Resistor(ArregloResistores *punt_datos);//anade resistores (como el lab 5)
 void Dibujar_resistor(ArregloResistores *punt_datos); //los dibuja, pero sus posiciones son variables de structs (Como el lab 5)
 void Liberar_Arreglo_Resistores(ArregloResistores *punt_datos);//libera la mmoria (igual que el lab 5)
+bool Eliminar_Resistor_Seleccionado(ArregloResistores *punt_datos); //elimina el resistor
 
 void Seleccion_movimiento_resistores(ArregloResistores *punt_datos);
 Rectangle Caja_de_seleccion_resistor(Resistor resistor); 
@@ -55,6 +56,8 @@ void InicializarArreglo_F_T(ArregloFuentes_T *punt_datos, size_t capacidad_inici
 void Anadir_Fuente_T(ArregloFuentes_T *punt_datos);//anade resistores (como el lab 5)
 void Dibujar_Fuente_T(ArregloFuentes_T *punt_datos); //los dibuja, pero sus posiciones son variables de structs (Como el lab 5)
 void Liberar_Arreglo_Fuente_T(ArregloFuentes_T *punt_datos);//libera la mmoria (igual que el lab 5)
+bool Eliminar_Fuente_T_Seleccionada(ArregloFuentes_T *punt_datos); //elimina la fuente
+
 
 void Seleccion_movimiento_Fuente_T(ArregloFuentes_T *punt_datos);
 Rectangle Caja_de_seleccion_Fuente_T(Fuentes_T fuente_T); 
@@ -82,6 +85,7 @@ void InicializarArreglo_F_C(ArregloFuentes_C *punt_datos, size_t capacidad_inici
 void Anadir_Fuente_C(ArregloFuentes_C *punt_datos);//anade resistores (como el lab 5)
 void Dibujar_Fuente_C(ArregloFuentes_C *punt_datos); //los dibuja, pero sus posiciones son variables de structs (Como el lab 5)
 void Liberar_Arreglo_Fuente_C(ArregloFuentes_C *punt_datos);//libera la mmoria (igual que el lab 5)
+bool Eliminar_Fuente_C_Seleccionada(ArregloFuentes_C *punt_datos); //elimina la fuente de corriente
 
 void Seleccion_movimiento_Fuente_C(ArregloFuentes_C *punt_datos);
 Rectangle Caja_de_seleccion_Fuente_C(Fuentes_C fuente_T); 
@@ -111,6 +115,7 @@ void InicializarArregloNodo(ArregloNodos *punt_datos, size_t capacidad_inicial);
 void Anadir_Nodo(ArregloNodos *punt_datos);//anade resistores (como el lab 5)
 void Dibujar_Nodo(ArregloNodos *punt_datos); //los dibuja, pero sus posiciones son variables de structs (Como el lab 5)
 void Liberar_Arreglo_Nodo(ArregloNodos *punt_datos);//libera la mmoria (igual que el lab 5)
+bool Eliminar_Nodo_Seleccionado(ArregloNodos *punt_datos); //elimina el nodo
 
 void Seleccion_movimiento_Nodo(ArregloNodos *punt_datos);
 Rectangle Caja_de_seleccion_Nodo(Nodo nodo); 
