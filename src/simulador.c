@@ -4,6 +4,7 @@
 
 #include <raylib.h>
 #include <stdio.h>
+#include <string.h>
 
 //----------Seccion de posicones y dimensiones de componentes(dibujo del componente y su boton asociado)-----------------
 
@@ -22,6 +23,23 @@ static Rectangle nodo_boton = {220, 80, 180, 45};
 static Rectangle rotar_boton = {420, 20, 150, 45};
 static Rectangle eliminar_boton = {420, 80, 150, 45};
 
+//variables de edicion
+
+typedef enum{
+    EDITAR_NINGUNO,
+    EDITAR_RESISTOR,
+    EDITAR_FUENTE_T,
+    EDITAR_FUENTE_C,
+    EDITAR_NODO
+} TipoEdicion;
+
+static bool modo_edicion = false;
+static bool editando_valor = false;
+static TipoEdicion tipo_edicion = EDITAR_NINGUNO;
+static size_t indice_edicion = 0;
+
+static char buffer_nombre[MAX_TEXTO_COMPONENTE];
+static char buffer_valor[MAX_TEXTO_COMPONENTE];
 
 
 //----------Seccion de funciones de inicializado y cierre-----------------
@@ -41,8 +59,160 @@ void InicializarSimulador()
 
 //---------------------------------------UPDATE-------------------------------------
 
+static void AgregarCaracter(char *texto, int caracter){
+    size_t longitud = strlen(texto);
+
+    if (longitud < MAX_TEXTO_COMPONENTE - 1){
+
+        texto[longitud] = (char)caracter;
+        texto[longitud + 1] = '\0';
+    }
+}
+
+static void BorrarCaracter(char *texto){
+    size_t longitud = strlen(texto);
+
+    if (longitud > 0){
+        texto[longitud - 1] = '\0';
+    }
+}
+
+static bool Cargar_Componente_Seleccionado(void){
+    for (size_t i = 0; i < arreglo_R.tamano; i++){
+        if (arreglo_R.resistores[i].seleccionado){
+            tipo_edicion = EDITAR_RESISTOR;
+            indice_edicion = i;
+            strcpy(buffer_nombre, arreglo_R.resistores[i].nombre);
+            strcpy(buffer_valor, arreglo_R.resistores[i].valor);
+            return true;
+        }
+    }
+
+
+    for (size_t i = 0; i < arreglo_F_T.tamano; i++){
+        if (arreglo_F_T.fuentes_T[i].seleccionado){
+            tipo_edicion = EDITAR_FUENTE_T;
+            indice_edicion = i;
+            strcpy(buffer_nombre, arreglo_F_T.fuentes_T[i].nombre);
+            strcpy(buffer_valor, arreglo_F_T.fuentes_T[i].valor);
+            return true;
+        }
+    }
+
+
+    for (size_t i = 0; i < arreglo_F_C.tamano; i++){
+        if (arreglo_F_C.fuentes_C[i].seleccionado){
+            tipo_edicion = EDITAR_FUENTE_C;
+            indice_edicion = i;
+            strcpy(buffer_nombre, arreglo_F_C.fuentes_C[i].nombre);
+            strcpy(buffer_valor, arreglo_F_C.fuentes_C[i].valor);
+            return true;
+        }
+    }
+
+
+    for (size_t i = 0; i < arreglo_nodo.tamano; i++){
+        if (arreglo_nodo.nodo[i].seleccionado){
+            tipo_edicion = EDITAR_NODO;
+            indice_edicion = i;
+            strcpy(buffer_nombre, arreglo_nodo.nodo[i].nombre);
+            strcpy(buffer_valor, arreglo_nodo.nodo[i].valor);
+            return true;
+        }
+    }
+
+    return false;
+}
+
+static void Guardar_Edicion_Componente(void){
+    switch (tipo_edicion){
+        case EDITAR_RESISTOR:
+            strcpy(arreglo_R.resistores[indice_edicion].nombre, buffer_nombre);
+            strcpy(arreglo_R.resistores[indice_edicion].valor, buffer_valor);
+            break;
+
+        case EDITAR_FUENTE_T:
+            strcpy(arreglo_F_T.fuentes_T[indice_edicion].nombre, buffer_nombre);
+            strcpy(arreglo_F_T.fuentes_T[indice_edicion].valor, buffer_valor);
+            break;
+
+
+        case EDITAR_FUENTE_C:
+            strcpy(arreglo_F_C.fuentes_C[indice_edicion].nombre, buffer_nombre);
+            strcpy(arreglo_F_C.fuentes_C[indice_edicion].valor, buffer_valor);
+            break;
+
+
+        case EDITAR_NODO:
+            strcpy(arreglo_nodo.nodo[indice_edicion].nombre, buffer_nombre);
+            strcpy(arreglo_nodo.nodo[indice_edicion].valor, buffer_valor);
+            break;
+
+        default:
+            break;
+    }
+}
+
+static void Actualizar_Modo_Edicion(void){
+    int caracter;
+
+    if (IsKeyPressed(KEY_TAB)){
+
+        editando_valor = !editando_valor;
+    }
+
+    if (IsKeyPressed(KEY_BACKSPACE)){
+        if(editando_valor){
+            BorrarCaracter(buffer_valor);
+        }
+        else {
+            BorrarCaracter(buffer_nombre);
+        }
+    }
+
+    caracter = GetCharPressed();
+
+    while (caracter > 0){
+        if ((caracter >= 32) && (caracter <= 125)){
+            if (editando_valor){
+                AgregarCaracter(buffer_valor, caracter);
+            }
+            else {
+                AgregarCaracter(buffer_nombre, caracter);
+            }
+        }
+
+        caracter = GetCharPressed();
+    }
+
+    if (IsKeyPressed(KEY_ENTER)){
+        Guardar_Edicion_Componente();
+
+        modo_edicion = false;
+        tipo_edicion = EDITAR_NINGUNO;
+        editando_valor = false;
+
+        printf("Cambios guardados correctamente.\n");
+    }
+
+    if (IsKeyPressed(KEY_ESCAPE)){
+        modo_edicion = false;
+        tipo_edicion = EDITAR_NINGUNO;
+        editando_valor = false;
+
+        printf("Edicion cancelada.\n");
+    }
+}
+
+
 void ActualizarSimulador()
 {
+    //revisar primero si esta en modo edicion
+    if (modo_edicion){
+        Actualizar_Modo_Edicion();
+        return;
+    }
+
     //por ejemplo esto que cambia el estado de la variable bool del resistor creado
     if (ButtonClicked(resistor_boton) == true)
     {
@@ -88,6 +258,19 @@ void ActualizarSimulador()
         }
     }
 
+    if (IsKeyPressed(KEY_E)){
+
+        if (Cargar_Componente_Seleccionado()){
+
+            modo_edicion = true;
+            editando_valor = false;
+            printf("Editando componente. TAB cambia campo, ENTER guarda, ESC cancela.\n");
+        }
+        else {
+            printf("Seleccione un componente antes de editar.\n");
+        }
+    }
+
     //Seccion se seleccion de componentes (proximamente va a estar el movimiento y el snap de cada uno)
     Seleccion_movimiento_resistores(&arreglo_R); //este fue el unico cambio
     Mover_Resistor(&arreglo_R); //para mover el resistor basta con hacer una funcion nueva que recorra el arreglo, busque el seleccionado y cambie su vector con punteros
@@ -118,6 +301,17 @@ void DibujarSimulador(void)
     DrawRectangle(890, 10, 475, 130, WHITE);
     DrawRectangleLines(890, 10, 475, 130, BLACK);
     DrawText("Mensajes",1080, 25, 20, BLACK);
+
+    if (modo_edicion){
+        DrawText("EDITANDO COMPONENTE", 910, 55, 18, BLUE);
+
+        DrawText("Nombre:", 910, 85, 18, BLACK);
+        DrawText(buffer_nombre, 1000, 85, 18, editando_valor ? DARKGRAY : BLUE);
+
+        DrawText("Valor:", 910, 115, 18, BLACK);
+        DrawText(buffer_valor, 1000, 115, 18, editando_valor ? BLUE : DARKGRAY);
+    }
+
 
     Imprimir_Grid();
 

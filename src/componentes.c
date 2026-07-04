@@ -37,6 +37,9 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
         .seleccionado = false
     };
 
+    snprintf(resistor.nombre, MAX_TEXTO_COMPONENTE, "R%zu", punt_datos->tamano + 1);
+    snprintf(resistor.valor, MAX_TEXTO_COMPONENTE, "1k");
+
     //el que se maneje como struct facilita luego cambiarle los valores, seleccionarlo, moverlo y demas
 
     //manejo de capacidad con realloc
@@ -84,8 +87,8 @@ void Dibujar_resistor(ArregloResistores *punt_datos)    //esta funcion recibe el
         DrawLine(x + 30, y, x + 60, y, BLACK);
 
     //esto es para el texto dentro del cuadrado
-        DrawText("R", x - 12, y - 45, 20, BLACK);
-        DrawText("1k", x - 12, y + 25, 18, RED);
+        DrawText(punt_datos->resistores[i].nombre, x - 12, y - 45, 20, BLACK);
+        DrawText(punt_datos->resistores[i].valor, x - 12, y + 25, 18, RED);
 
         //esta nueva parte es solo un cambio de color si el resistor fue seleccionado
         if (punt_datos->resistores[i].seleccionado == true) {
@@ -93,8 +96,8 @@ void Dibujar_resistor(ArregloResistores *punt_datos)    //esta funcion recibe el
             DrawRectangleLines(x - 30, y - 15, 60, 30, RED);
             DrawLine(x + 30, y, x + 60, y, RED);
 
-            DrawText("R", x - 12, y - 45, 20, BLUE);
-            DrawText("1k", x - 12, y + 25, 18, BLUE);
+            DrawText(punt_datos->resistores[i].nombre, x - 12, y - 45, 20, BLUE);
+            DrawText(punt_datos->resistores[i].valor, x - 12, y + 25, 18, BLUE);
         }
 
     }
@@ -239,6 +242,9 @@ void Anadir_Fuente_T(ArregloFuentes_T *punt_datos){
         .seleccionado = false
     };
 
+    snprintf(fuentes_T.nombre, MAX_TEXTO_COMPONENTE, "V%zu", punt_datos->tamano + 1);
+    snprintf(fuentes_T.valor, MAX_TEXTO_COMPONENTE, "1mV");
+
 
     //manejo de capacidad con realloc
     if (punt_datos->tamano == punt_datos->capacidad){
@@ -288,9 +294,8 @@ void Dibujar_Fuente_T(ArregloFuentes_T *punt_datos) //tal vez el cambio mas impo
 
         DrawLine(x + 25, y, x + 60, y, BLACK);//terminal derecha
 
-        DrawText("V 1", x - 12, y - 45, 20, BLACK);//texto para la fuente
-        DrawText("1 mV", x - 12, y + 25, 18, RED);
-
+        DrawText(punt_datos->fuentes_T[i].nombre, x - 12, y - 45, 20, BLACK);//texto para la fuente
+        DrawText(punt_datos->fuentes_T[i].valor, x - 12, y + 25, 18, RED);
   
         if (punt_datos->fuentes_T[i].seleccionado == true) {//cambio si es seleccionado
             DrawLine(x - 60, y, x - 25, y, RED);
@@ -300,8 +305,9 @@ void Dibujar_Fuente_T(ArregloFuentes_T *punt_datos) //tal vez el cambio mas impo
             DrawLine(x - 10, y-7, x - 10, y+7, RED);
             DrawLine(x + 25, y, x + 60, y, RED);
 
-            DrawText("V 1", x - 12, y - 45, 20, BLUE);
-            DrawText("1 mV", x - 12, y + 25, 18, BLUE);
+            DrawText(punt_datos->fuentes_T[i].nombre, x - 12, y - 45, 20, BLUE);//texto para la fuente
+            DrawText(punt_datos->fuentes_T[i].valor, x - 12, y + 25, 18, BLUE);
+
         }
 
     }
@@ -447,6 +453,8 @@ void Anadir_Fuente_C(ArregloFuentes_C *punt_datos){
         .seleccionado = false
     };
 
+    snprintf(fuentes_C.nombre, MAX_TEXTO_COMPONENTE, "I%zu", punt_datos->tamano + 1);
+    snprintf(fuentes_C.valor, MAX_TEXTO_COMPONENTE, "1mA");
 
 
     //manejo de capacidad con realloc
@@ -497,8 +505,8 @@ void Dibujar_Fuente_C(ArregloFuentes_C *punt_datos)
         DrawLine(x + 25, y, x + 60, y, BLACK);
 
     //esto es para el texto de la fuente
-        DrawText("I 1", x - 12, y - 45, 20, BLACK);
-        DrawText("1 mA", x - 12, y + 25, 18, RED);
+        DrawText(punt_datos->fuentes_C[i].nombre, x - 12, y - 45, 20, BLACK);
+        DrawText(punt_datos->fuentes_C[i].valor, x - 12, y + 25, 18, RED);
 
         //cambio de color si es seleccionado
         if (punt_datos->fuentes_C[i].seleccionado == true) {
@@ -510,8 +518,9 @@ void Dibujar_Fuente_C(ArregloFuentes_C *punt_datos)
             DrawLine(x + 10, y, x , y + 10 , RED);
             DrawLine(x + 25, y, x + 60, y, RED);
 
-            DrawText("I 1", x - 12, y - 45, 20, BLUE);
-            DrawText("1 mA", x - 12, y + 25, 18, BLUE);
+            DrawText(punt_datos->fuentes_C[i].nombre, x - 12, y - 45, 20, BLUE);
+            DrawText(punt_datos->fuentes_C[i].valor, x - 12, y + 25, 18, BLUE);
+
         }
 
     }
@@ -651,7 +660,8 @@ void Anadir_Nodo(ArregloNodos *punt_datos){
         .seleccionado = false
     };
 
-
+    snprintf(nodo.nombre, MAX_TEXTO_COMPONENTE, "Nodo");
+    snprintf(nodo.valor, MAX_TEXTO_COMPONENTE, "%zu", punt_datos->tamano + 1);
 
     //manejo de capacidad con realloc
     if (punt_datos->tamano == punt_datos->capacidad){
@@ -690,15 +700,15 @@ void Dibujar_Nodo(ArregloNodos *punt_datos)
         int y = punt_datos->nodo[i].posicion.y;
 
             DrawCircle(x, y, 10, BLUE);
-            DrawText("Nodo", x-20, y-30, 20, BLACK);
-            DrawText("1", x-1, y+13, 18, BLACK);
+            DrawText(punt_datos->nodo[i].nombre, x - 20, y - 30, 20, BLACK);
+            DrawText(punt_datos->nodo[i].valor, x - 1, y + 13, 18, BLACK);
 
         //cambio de color si es seleccionado
         if (punt_datos->nodo[i].seleccionado == true) {
 
             DrawCircle(x, y, 10, RED);
-            DrawText("Nodo", x-20, y-30, 20, BLUE);
-            DrawText("1", x-1, y+13, 18, BLUE);
+            DrawText(punt_datos->nodo[i].nombre, x - 20, y - 30, 20, BLUE);
+            DrawText(punt_datos->nodo[i].valor, x - 1, y + 13, 18, BLUE);
         }
 
     }

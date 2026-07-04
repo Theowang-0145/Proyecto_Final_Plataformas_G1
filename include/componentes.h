@@ -6,12 +6,16 @@
 #include <stdbool.h>    //como nota esta viene incluida en raylib pero por orden se pone aca
 #include <stdlib.h>
 
+#define MAX_TEXTO_COMPONENTE 20
+
 //====== Para los Resistores (COMPONENTES) ======
 typedef struct 
 {
     Vector2 posicion;   //luego hay que implementarlo al snap to grid
     bool visible;
     bool seleccionado;  //este bool luego hay que trabajarlo para poder seleccionar y mover
+    char nombre[MAX_TEXTO_COMPONENTE];
+    char valor[MAX_TEXTO_COMPONENTE];
 
 }Resistor;
 
@@ -41,7 +45,8 @@ typedef struct
     Vector2 posicion;   //luego hay que implementarlo al snap to grid
     bool visible;
     bool seleccionado;  //este bool luego hay que trabajarlo para poder seleccionar y mover
-
+    char nombre[MAX_TEXTO_COMPONENTE];
+    char valor[MAX_TEXTO_COMPONENTE];
 }Fuentes_T;
 
 //esto de aca ya no se toca (por ahora jeje creo que si para el snap y el seleccionado pero asi se ve bien)
@@ -70,6 +75,8 @@ typedef struct
     Vector2 posicion;   //luego hay que implementarlo al snap to grid
     bool visible;
     bool seleccionado;  //este bool luego hay que trabajarlo para poder seleccionar y mover
+    char nombre[MAX_TEXTO_COMPONENTE];
+    char valor[MAX_TEXTO_COMPONENTE];
 
 }Fuentes_C;
 
@@ -100,6 +107,8 @@ typedef struct
     Vector2 posicion;   //luego hay que implementarlo al snap to grid
     bool visible;
     bool seleccionado;  //este bool luego hay que trabajarlo para poder seleccionar y mover
+    char nombre[MAX_TEXTO_COMPONENTE];
+    char valor[MAX_TEXTO_COMPONENTE];
 
 }Nodo;
 
