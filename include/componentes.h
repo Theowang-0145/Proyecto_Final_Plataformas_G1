@@ -32,7 +32,11 @@ typedef struct {
         vector2 posicion; //solicita saber como esta el componente
         bool visible;
         bool seleccionado;
+
         int rotacion; //si es 0 sera horizontal, si es 1 vertical
+//agregado para permitir una conexion entre componentes
+	int nodo_inicio;
+	int nodo_fin;
 }Resistor;//acase debe indicar cada uno de los compoenetes
 //fin del seteo de rotacion
 
@@ -47,6 +51,7 @@ Rectangle Caja_de_seleccion_resistor(Resistor resistor);
 void Mover_Resistor(ArregloResistores *punt_datos); 
 
 void Rotar_Resistor(ArregloResistores *punt_datos);//permite la rotacion con posicion determinada
+
 //====== Para las Fuentes de Tension (COMPONENTES) ======
 
 typedef struct 
@@ -71,7 +76,12 @@ typedef struct {
         vector2 posicion; 
         bool visible;
         bool seleccionado;
+
         int rotacion; //si es 0 sera horizontal, si es 1 vertical
+
+	int nodo_inicio;
+	int nodo_fin;
+
 }Fuente_T;//aca se debe indicar cada uno de los compoenetes
 //fin del seteo de rotacion 
 
@@ -114,7 +124,11 @@ typedef struct {
         vector2 posicion;
         bool visible;
         bool seleccionado;
+
         int rotacion; //si es 0 sera horizontal, si es 1 vertical
+
+	int nodo_inicio;
+	int nodo_fin;
 }Fuente_C;//aca se debe indicar cada uno de los compoenetes
 //fin del seteo de rotacion
 
