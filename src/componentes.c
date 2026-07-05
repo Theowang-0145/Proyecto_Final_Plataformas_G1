@@ -3,6 +3,17 @@
 #include <stdlib.h>
 
 
+/*
+
+NOTA: Toda esta seccion de codigo pertenece al las propiedades de cada componente. En resumen cada componente es un struct que posee 
+dibujo, vectores, visibilidad, seleccion y valores de nombre y de numero. Si se observa bien, cada componente es una copia del otro 
+pero con otros nombres y dibujos para poder diferenciarlos, pero poseen las mismas caracteristicas de movimiento, seleccion y eliminado.
+Cabe resaltar que al ser objetos de diseno, se deben de seleccionar de alguna forma, por ello se implementan Rectangles para poder tratarlos
+como objetos moviles si son clickeados por el cursor (como si fueran un boton). 
+
+*/
+
+
 //====== Para los Resistores (COMPONENTES) ====== (basicamente se cambiaron todas pero se parece al Lab 5)
 
 void InicializarArreglo_Res(ArregloResistores *punt_datos, size_t capacidad_inicial){
@@ -172,7 +183,7 @@ Rectangle Caja_de_seleccion_resistor(Resistor resistor){
 
 void Mover_Resistor(ArregloResistores *punt_datos)
 {
-    for (size_t i = 0; i < punt_datos->tamano; i++)
+    for (size_t i = 0; i < punt_datos->tamano; i++)//esto aplica para todos los resitorores, por eso el ciclo for
     {
         if (punt_datos->resistores[i].seleccionado)
         {
