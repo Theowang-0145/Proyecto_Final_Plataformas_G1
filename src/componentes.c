@@ -46,6 +46,11 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
         .posicion = {(500 + (punt_datos->tamano*40 + 30) ) , (500 + (punt_datos->tamano*40 + 30) )},
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
         .seleccionado = false
+	//se debe agregar la conticion inicial de rotacion, en este caso horizontal
+	.rotacion = 0
+	//ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
+	.nodo_inicio = -1
+	.nodo_fin = -1
     };
 
     snprintf(resistor.nombre, MAX_TEXTO_COMPONENTE, "R%zu", punt_datos->tamano + 1);
@@ -251,6 +256,11 @@ void Anadir_Fuente_T(ArregloFuentes_T *punt_datos){
         .posicion = {(600 + (punt_datos->tamano*40 + 30) ) , (500 + (punt_datos->tamano*40 + 30) )},
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
         .seleccionado = false
+        //se debe agregar la conticion inicial de rotacion, en este caso horizontal
+        .rotacion = 0
+        //ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
+        .nodo_inicio = -1
+        .nodo_fin = -1
     };
 
     snprintf(fuentes_T.nombre, MAX_TEXTO_COMPONENTE, "V%zu", punt_datos->tamano + 1);
@@ -462,6 +472,11 @@ void Anadir_Fuente_C(ArregloFuentes_C *punt_datos){
         .posicion = {(700 + (punt_datos->tamano*40 + 30) ) , (500 + (punt_datos->tamano*40 + 30) )},
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
         .seleccionado = false
+        //se debe agregar la conticion inicial de rotacion, en este caso horizontal
+        .rotacion = 0
+        //ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
+        .nodo_inicio = -1
+        .nodo_fin = -1
     };
 
     snprintf(fuentes_C.nombre, MAX_TEXTO_COMPONENTE, "I%zu", punt_datos->tamano + 1);
