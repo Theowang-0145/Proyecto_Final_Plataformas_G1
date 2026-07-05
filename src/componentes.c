@@ -176,24 +176,24 @@ void Mover_Resistor(ArregloResistores *punt_datos)
     {
         if (punt_datos->resistores[i].seleccionado)
         {
-            if (IsKeyPressed(KEY_RIGHT))
+            if (IsKeyDown(KEY_RIGHT))
             {
-                punt_datos->resistores[i].posicion.x += 20;
+                punt_datos->resistores[i].posicion.x += 5;
             }
 
-            if (IsKeyPressed(KEY_LEFT))
+            if (IsKeyDown(KEY_LEFT))
             {
-                punt_datos->resistores[i].posicion.x -= 20;
+                punt_datos->resistores[i].posicion.x -= 5;
             }
 
-            if (IsKeyPressed(KEY_UP))
+            if (IsKeyDown(KEY_UP))
             {
-                punt_datos->resistores[i].posicion.y -= 20;
+                punt_datos->resistores[i].posicion.y -= 5;
             }
 
-            if (IsKeyPressed(KEY_DOWN))
+            if (IsKeyDown(KEY_DOWN))
             {
-            punt_datos->resistores[i].posicion.y += 20;
+            punt_datos->resistores[i].posicion.y += 5;
             }
 
             break;
@@ -386,24 +386,24 @@ void Mover_Fuente_T(ArregloFuentes_T *punt_datos)
     {
         if (punt_datos->fuentes_T[i].seleccionado)
         {
-            if (IsKeyPressed(KEY_RIGHT))
+            if (IsKeyDown(KEY_RIGHT))
             {
-                punt_datos->fuentes_T[i].posicion.x += 20;
+                punt_datos->fuentes_T[i].posicion.x += 5;
             }
 
-            if (IsKeyPressed(KEY_LEFT))
+            if (IsKeyDown(KEY_LEFT))
             {
-                punt_datos->fuentes_T[i].posicion.x -= 20;
+                punt_datos->fuentes_T[i].posicion.x -= 5;
             }
 
-            if (IsKeyPressed(KEY_UP))
+            if (IsKeyDown(KEY_UP))
             {
-                punt_datos->fuentes_T[i].posicion.y -= 20;
+                punt_datos->fuentes_T[i].posicion.y -= 5;
             }
 
-            if (IsKeyPressed(KEY_DOWN))
+            if (IsKeyDown(KEY_DOWN))
             {
-            punt_datos->fuentes_T[i].posicion.y += 20;
+            punt_datos->fuentes_T[i].posicion.y += 5;
             }
 
             break;
@@ -598,24 +598,24 @@ void Mover_Fuente_C(ArregloFuentes_C *punt_datos)
     {
         if (punt_datos->fuentes_C[i].seleccionado)
         {
-            if (IsKeyPressed(KEY_RIGHT))
+            if (IsKeyDown(KEY_RIGHT))
             {
-                punt_datos->fuentes_C[i].posicion.x += 20;
+                punt_datos->fuentes_C[i].posicion.x += 5;
             }
 
-            if (IsKeyPressed(KEY_LEFT))
+            if (IsKeyDown(KEY_LEFT))
             {
-                punt_datos->fuentes_C[i].posicion.x -= 20;
+                punt_datos->fuentes_C[i].posicion.x -= 5;
             }
 
-            if (IsKeyPressed(KEY_UP))
+            if (IsKeyDown(KEY_UP))
             {
-                punt_datos->fuentes_C[i].posicion.y -= 20;
+                punt_datos->fuentes_C[i].posicion.y -= 5;
             }
 
-            if (IsKeyPressed(KEY_DOWN))
+            if (IsKeyDown(KEY_DOWN))
             {
-            punt_datos->fuentes_C[i].posicion.y += 20;
+            punt_datos->fuentes_C[i].posicion.y += 5;
             }
 
             break;
@@ -786,24 +786,24 @@ void Mover_Nodo(ArregloNodos *punt_datos)
     {
         if (punt_datos->nodo[i].seleccionado)
         {
-            if (IsKeyPressed(KEY_RIGHT))
+            if (IsKeyDown(KEY_RIGHT))
             {
-                punt_datos->nodo[i].posicion.x += 20;
+                punt_datos->nodo[i].posicion.x += 5;
             }
 
-            if (IsKeyPressed(KEY_LEFT))
+            if (IsKeyDown(KEY_LEFT))
             {
-                punt_datos->nodo[i].posicion.x -= 20;
+                punt_datos->nodo[i].posicion.x -= 5;
             }
 
-            if (IsKeyPressed(KEY_UP))
+            if (IsKeyDown(KEY_UP))
             {
-                punt_datos->nodo[i].posicion.y -= 20;
+                punt_datos->nodo[i].posicion.y -= 5;
             }
 
-            if (IsKeyPressed(KEY_DOWN))
+            if (IsKeyDown(KEY_DOWN))
             {
-            punt_datos->nodo[i].posicion.y += 20;
+            punt_datos->nodo[i].posicion.y += 5;
             }
 
             break;
