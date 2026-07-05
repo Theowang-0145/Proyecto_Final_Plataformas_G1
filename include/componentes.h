@@ -44,13 +44,16 @@ void InicializarArreglo_Res(ArregloResistores *punt_datos, size_t capacidad_inic
 void Anadir_Resistor(ArregloResistores *punt_datos);//anade resistores (como el lab 5)
 void Dibujar_resistor(ArregloResistores *punt_datos); //los dibuja, pero sus posiciones son variables de structs (Como el lab 5)
 void Liberar_Arreglo_Resistores(ArregloResistores *punt_datos);//libera la mmoria (igual que el lab 5)
-bool Eliminar_Resistor_Seleccionado(ArregloResistores *punt_datos); //elimina el resistor
+bool Eliminar_Resistor_Seleccionado(ArregloResistores *punt_datos); //elximina el resistor
 
 void Seleccion_movimiento_resistores(ArregloResistores *punt_datos);
 Rectangle Caja_de_seleccion_resistor(Resistor resistor); 
 void Mover_Resistor(ArregloResistores *punt_datos); 
 
 void Rotar_Resistor(ArregloResistores *punt_datos);//permite la rotacion con posicion determinada
+
+//el siguiente void permite el mmalado para la conexcion de componentes con nodos. 
+void Conectar_Resistor(ArrgloResistores *punt_datos, int indice_resistor, int nodo_inicio, int nodo_fin);
 
 //====== Para las Fuentes de Tension (COMPONENTES) ======
 
@@ -99,6 +102,10 @@ void Mover_Fuente_T(ArregloFuentes_T *punt_datos);
 
 void Rotar_Fuente_T(ArregloFuentes_T *punt_datos);//permite la rotacion con posicion determinada
 
+//el siguiente void permite la llamada  para la conexcion de componentes con nodos. 
+void Conectar_Fuente_T(ArrgloFuentes_T *punt_datos, int indice_fuentes_T, int nodo_inicio, int nodo_fin);
+
+
 //====== Para las Fuentes de Corriente (COMPONENTES) ======
 
 typedef struct 
@@ -144,6 +151,10 @@ Rectangle Caja_de_seleccion_Fuente_C(Fuentes_C fuente_T);
 void Mover_Fuente_C(ArregloFuentes_C *punt_datos); 
 
 void Rotar_Fuente_C(ArregloFuentes_C *punt_datos);//permite la rotacion con posicion determinada
+
+//el siguiente void permite la llamada  para la conexcion de componentes con nodos. 
+void Conectar_Fuente_C(ArrgloFuentes_C *punt_datos, int indice_fuentes_C, int nodo_inicio, int nodo_fin);
+
 
 //====== Para los nodos (COMPONENTES) ======
 
