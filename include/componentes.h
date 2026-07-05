@@ -27,6 +27,15 @@ typedef struct
     size_t capacidad; 
 }ArregloResistores;
 
+//agregado para  determinar la orientacion del compoente: resistor
+typedef struct {
+        vector2 posicion; //solicita saber como esta el componente
+        bool visible;
+        bool seleccionado;
+        int rotacion; //si es 0 sera horizontal, si es 1 vertical
+}Resistor;//acase debe indicar cada uno de los compoenetes
+//fin del seteo de rotacion
+
 void InicializarArreglo_Res(ArregloResistores *punt_datos, size_t capacidad_inicial);  //inicializa el arreglo (Como el lab 5)
 void Anadir_Resistor(ArregloResistores *punt_datos);//anade resistores (como el lab 5)
 void Dibujar_resistor(ArregloResistores *punt_datos); //los dibuja, pero sus posiciones son variables de structs (Como el lab 5)
@@ -37,7 +46,7 @@ void Seleccion_movimiento_resistores(ArregloResistores *punt_datos);
 Rectangle Caja_de_seleccion_resistor(Resistor resistor); 
 void Mover_Resistor(ArregloResistores *punt_datos); 
 
-
+void Rotar_Resistor(ArregloResistores *punt_datos);//permite la rotacion con posicion determinada
 //====== Para las Fuentes de Tension (COMPONENTES) ======
 
 typedef struct 
@@ -57,6 +66,16 @@ typedef struct
     size_t capacidad; 
 }ArregloFuentes_T;
 
+//agregado para  determinar la orientacion del compoente: Fuente de tension
+typedef struct {
+        vector2 posicion; 
+        bool visible;
+        bool seleccionado;
+        int rotacion; //si es 0 sera horizontal, si es 1 vertical
+}Fuente_T;//aca se debe indicar cada uno de los compoenetes
+//fin del seteo de rotacion 
+
+
 void InicializarArreglo_F_T(ArregloFuentes_T *punt_datos, size_t capacidad_inicial);  //inicializa el arreglo (Como el lab 5)
 void Anadir_Fuente_T(ArregloFuentes_T *punt_datos);//anade resistores (como el lab 5)
 void Dibujar_Fuente_T(ArregloFuentes_T *punt_datos); //los dibuja, pero sus posiciones son variables de structs (Como el lab 5)
@@ -67,6 +86,8 @@ bool Eliminar_Fuente_T_Seleccionada(ArregloFuentes_T *punt_datos); //elimina la 
 void Seleccion_movimiento_Fuente_T(ArregloFuentes_T *punt_datos);
 Rectangle Caja_de_seleccion_Fuente_T(Fuentes_T fuente_T); 
 void Mover_Fuente_T(ArregloFuentes_T *punt_datos); 
+
+void Rotar_Fuente_T(ArregloFuentes_T *punt_datos);//permite la rotacion con posicion determinada
 
 //====== Para las Fuentes de Corriente (COMPONENTES) ======
 
@@ -88,6 +109,16 @@ typedef struct
     size_t capacidad; 
 }ArregloFuentes_C;
 
+//agregado para  determinar la orientacion del compoente: Fuente de corriente
+typedef struct {
+        vector2 posicion;
+        bool visible;
+        bool seleccionado;
+        int rotacion; //si es 0 sera horizontal, si es 1 vertical
+}Fuente_C;//aca se debe indicar cada uno de los compoenetes
+//fin del seteo de rotacion
+
+
 void InicializarArreglo_F_C(ArregloFuentes_C *punt_datos, size_t capacidad_inicial);  //inicializa el arreglo (Como el lab 5)
 void Anadir_Fuente_C(ArregloFuentes_C *punt_datos);//anade resistores (como el lab 5)
 void Dibujar_Fuente_C(ArregloFuentes_C *punt_datos); //los dibuja, pero sus posiciones son variables de structs (Como el lab 5)
@@ -98,7 +129,7 @@ void Seleccion_movimiento_Fuente_C(ArregloFuentes_C *punt_datos);
 Rectangle Caja_de_seleccion_Fuente_C(Fuentes_C fuente_T); 
 void Mover_Fuente_C(ArregloFuentes_C *punt_datos); 
 
-
+void Rotar_Fuente_C(ArregloFuentes_C *punt_datos);//permite la rotacion con posicion determinada
 
 //====== Para los nodos (COMPONENTES) ======
 
@@ -120,6 +151,16 @@ typedef struct
     size_t capacidad; 
 }ArregloNodos;
 
+
+//agregado para  determinar la orientacion del compoente: Nodo
+typedef struct {
+        vector2 posicion;
+        bool visible;
+        bool seleccionado;
+        int rotacion; //si es 0 sera horizontal, si es 1 vertical
+}Nodo;//aca se debe indicar cada uno de los compoenetes
+//fin del seteo de rotacion
+
 void InicializarArregloNodo(ArregloNodos *punt_datos, size_t capacidad_inicial);  //inicializa el arreglo (Como el lab 5)
 void Anadir_Nodo(ArregloNodos *punt_datos);//anade resistores (como el lab 5)
 void Dibujar_Nodo(ArregloNodos *punt_datos); //los dibuja, pero sus posiciones son variables de structs (Como el lab 5)
@@ -129,5 +170,7 @@ bool Eliminar_Nodo_Seleccionado(ArregloNodos *punt_datos); //elimina el nodo
 void Seleccion_movimiento_Nodo(ArregloNodos *punt_datos);
 Rectangle Caja_de_seleccion_Nodo(Nodo nodo); 
 void Mover_Nodo(ArregloNodos *punt_datos); 
+
+void Rotar_Nodo(ArregloNodos *punt_datos);//permite la rotacion con posicion determinada
 
 #endif
