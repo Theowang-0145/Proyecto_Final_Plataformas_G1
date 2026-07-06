@@ -205,8 +205,7 @@ static void Actualizar_Modo_Edicion(void){
 }
 
 
-void ActualizarSimulador()
-{
+void ActualizarSimulador() {
 
 	//actualizacion para lector de seleccion en nodo 
 	if(IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {//con el primer click derecho, se establece el primer nodo
