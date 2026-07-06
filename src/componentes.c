@@ -120,46 +120,37 @@ void Dibujar_resistor(ArregloResistores *punt_datos)    //esta funcion recibe el
         int x = punt_datos->resistores[i].posicion.x;//aca solo se cambio la notacion y ver que estan dentro de un circlo
         int y = punt_datos->resistores[i].posicion.y;
 
-        DrawLine(x - 60, y, x - 30, y, BLACK);
+        if (punt_datos->resistores[i].rotacion == 0) {
+		    DrawLine(x - 60, y, x - 30,y, BLACK);
+		    DrawRectangleLines(x - 30, y - 15, 60, 30, BLACK);
+            DrawLine(x + 30, y, x + 60, y, BLACK);
+            DrawText(punt_datos->resistores[i].nombre, x - 12, y - 45, 20, BLUE);
+            DrawText(punt_datos->resistores[i].valor, x - 12, y + 25, 18, BLUE);
+	    }
+	    else { //mientras que esta cambia la forma en vertical 
+		    DrawLine(x, y - 60, x, y - 30, BLACK);
+		    DrawRectangleLines(x - 15, y - 30, 30, 60, BLACK);
+		    DrawLine(x, y + 30, x, y + 60, BLACK);
+            DrawText(punt_datos->resistores[i].nombre, x - 12, y - 45, 20, BLUE);
+            DrawText(punt_datos->resistores[i].valor, x - 12, y + 25, 18, BLUE);
+        }
 
-    //este es el cuadrado de en medio (Recordar que el eje x crece hacia la derecha pero y hacia abajo. Raylib dibuja del punto hacia la derehca y hacia abajo)
-        DrawRectangleLines(x - 30, y - 15, 60, 30, BLACK);
-
-    //esta es la linea derecha
-        DrawLine(x + 30, y, x + 60, y, BLACK);
-
-    //esto es para el texto dentro del cuadrado
-        DrawText(punt_datos->resistores[i].nombre, x - 12, y - 45, 20, BLACK);
-        DrawText(punt_datos->resistores[i].valor, x - 12, y + 25, 18, RED);
-
-        //esta nueva parte es solo un cambio de color si el resistor fue seleccionado
-	//ademas, se agrega la condicion que permite la rotacion al seleccionar usando boton R sobre el componente
         if (punt_datos->resistores[i].seleccionado == true) {
-		if(punt_datos->resistores[i].rotacion == 0) {
+		    if(punt_datos->resistores[i].rotacion == 0) {
         		DrawLine(x - 60, y, x - 30, y, RED);
        	 		DrawRectangleLines(x - 30, y - 15, 60, 30, RED);
         		DrawLine(x + 30, y, x + 60, y, RED);
+                DrawText(punt_datos->resistores[i].nombre, x - 12, y - 45, 20, BLUE);
+            	DrawText(punt_datos->resistores[i].valor, x - 12, y + 25, 18, BLUE);
     		}
     		else {
         		DrawLine(x, y - 60, x, y - 30, RED);
         		DrawRectangleLines(x - 15, y - 30, 30, 60, RED);
         		DrawLine(x, y + 30, x, y + 60, RED);
-		}
-            	DrawText(punt_datos->resistores[i].nombre, x - 12, y - 45, 20, BLUE);
+                DrawText(punt_datos->resistores[i].nombre, x - 12, y - 45, 20, BLUE);
             	DrawText(punt_datos->resistores[i].valor, x - 12, y + 25, 18, BLUE);
-	}
-	//esto agrega las condiciones para la rotacion del componente
-	//esta primera condicion determina si esta en horizontal
-	if (punt_datos->resistores[i].rotacion == 0) {
-		DrawLine(x - 60, y, x - 30,y, BLACK);
-		DrawRectangleLines(x - 30, y - 15, 60, 30, BLACK);
-	}
-	else { //mientras que esta cambia la forma en vertical 
-		DrawLine(x, y - 60, x, y - 30, BLACK);
-		DrawRectangleLines(x - 15, y - 30, 30, 60, BLACK);
-		DrawLine(x, y + 30, x, y + 60, BLACK);
+            }
         }
-
     }
 }
 
@@ -389,9 +380,6 @@ void Dibujar_Fuente_T(ArregloFuentes_T *punt_datos) //tal vez el cambio mas impo
         int x = punt_datos->fuentes_T[i].posicion.x;
         int y = punt_datos->fuentes_T[i].posicion.y;
 		//aca se dejo la tipografia del texto
-		DrawText(punt_datos->fuentes_T[i].nombre, x -12, y - 45, 20, BLUE);
-		DrawText(punt_datos->fuentes_T[i].valor, x - 12, y + 25, 18, BLUE);
-
 		if(punt_datos->fuentes_T[i].rotacion == 0) {
 			DrawLine(x - 60, y, x - 25, y, BLACK);//terminal izquierdo
 			DrawCircleLines(x, y, 25, BLACK);//el circulo principal
@@ -399,6 +387,8 @@ void Dibujar_Fuente_T(ArregloFuentes_T *punt_datos) //tal vez el cambio mas impo
 			DrawLine(x + 10, y-7, x + 10, y+7, BLUE);//linea vertical derecha
     		DrawLine(x - 10, y-7, x - 10, y+7, BLUE);//linea vertical izquierda
     		DrawLine(x + 25, y, x + 60, y, BLACK);//linea horizontal izquierda
+            DrawText(punt_datos->fuentes_T[i].nombre, x -12, y - 45, 20, BLUE);
+		    DrawText(punt_datos->fuentes_T[i].valor, x - 12, y + 25, 18, BLUE);
 		}
 		else {
     		DrawLine(x, y - 60, x, y - 25, BLACK);
@@ -408,31 +398,34 @@ void Dibujar_Fuente_T(ArregloFuentes_T *punt_datos) //tal vez el cambio mas impo
     		DrawLine(x - 7, y - 10, x + 7, y - 10, BLUE);
     		DrawLine(x - 7, y + 10, x + 7, y + 10, BLUE);
    			DrawLine(x, y + 25, x, y + 60, BLACK);
+            DrawText(punt_datos->fuentes_T[i].nombre, x -12, y - 45, 20, BLUE);
+		    DrawText(punt_datos->fuentes_T[i].valor, x - 12, y + 25, 18, BLUE);
 		}
 	
         //al igual que en el dibujado, el seleccionado debe cambiar la estructura para rotar.
 
 		if (punt_datos->fuentes_T[i].seleccionado == true) {
-    			if(punt_datos->fuentes_T[i].rotacion == 0) {
+    		if(punt_datos->fuentes_T[i].rotacion == 0) {
         		//aca se respeta el mismo orden de lineas pera cambiando de horizontal a vertital y viceversa
-				DrawLine(x - 60, y, x - 25, y, RED);
-        			DrawCircleLines(x, y, 25, RED);
-        			DrawLine(x + 15, y, x + 5, y, RED);
-        			DrawLine(x + 10, y-7, x + 10, y+7, RED);
-       				DrawLine(x - 10, y-7, x - 10, y+7, RED);
-        			DrawLine(x + 25, y, x + 60, y, RED);
+			    DrawLine(x - 60, y, x - 25, y, RED);
+        		DrawCircleLines(x, y, 25, RED);
+        		DrawLine(x + 15, y, x + 5, y, RED);
+        		DrawLine(x + 10, y-7, x + 10, y+7, RED);
+       			DrawLine(x - 10, y-7, x - 10, y+7, RED);
+        		DrawLine(x + 25, y, x + 60, y, RED);
+                DrawText(punt_datos->fuentes_T[i].nombre, x -12, y - 45, 20, BLUE);
+		        DrawText(punt_datos->fuentes_T[i].valor, x - 12, y + 25, 18, BLUE);
     			}
-    			else {
-        			DrawLine(x, y - 60, x, y - 25, RED);
-        			DrawCircleLines(x, y, 25, RED);
-        			DrawLine(x, y - 15, x, y - 5, RED);
-        			DrawLine(x - 7, y - 10, x + 7, y - 10, RED);
-        			DrawLine(x - 7, y + 10, x + 7, y + 10, RED);
-        			DrawLine(x, y + 25, x, y + 60, RED);
+    		else {
+        		DrawLine(x, y - 60, x, y - 25, RED);
+        		DrawCircleLines(x, y, 25, RED);
+        		DrawLine(x, y - 15, x, y - 5, RED);
+        		DrawLine(x - 7, y - 10, x + 7, y - 10, RED);
+        		DrawLine(x - 7, y + 10, x + 7, y + 10, RED);
+        		DrawLine(x, y + 25, x, y + 60, RED);
+                DrawText(punt_datos->fuentes_T[i].nombre, x -12, y - 45, 20, BLUE);
+		        DrawText(punt_datos->fuentes_T[i].valor, x - 12, y + 25, 18, BLUE);                
    			}
-	//se mantine la tipografia del texto
-    			DrawText(punt_datos->fuentes_T[i].nombre, x - 12, y - 45, 20, BLUE);
-    			DrawText(punt_datos->fuentes_T[i].valor, x - 12, y + 25, 18, BLUE);
 		}
     }
 }

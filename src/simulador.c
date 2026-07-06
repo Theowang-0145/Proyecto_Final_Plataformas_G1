@@ -284,7 +284,7 @@ void ActualizarSimulador() {
 
     if(ButtonClicked(rotar_boton) == true){ //implementa la rotacion de los componentes existentes con el avizo actualizado 
     	Rotar_Resistor(&arreglo_R);
- 	Rotar_Fuente_T(&arreglo_F_T);
+ 	    Rotar_Fuente_T(&arreglo_F_T);
     	Rotar_Fuente_C(&arreglo_F_C);
     	Rotar_Nodo(&arreglo_nodo);
         printf("Componente rotado");
