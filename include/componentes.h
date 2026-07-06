@@ -22,8 +22,8 @@ typedef struct
     int rotacion;//si es 0 sera horizontal, si es 1 vertical
 
 //agregado para permitir una conexion entre componentes
-    //int nodo_inicio;
-    //int nodo_fin;
+    int nodo_inicio;
+    int nodo_fin;
 } Resistor;
 //esto de aca ya no se toca (por ahora jeje creo que si para el snap y el seleccionado pero asi se ve bien)
 typedef struct
@@ -48,11 +48,11 @@ Rectangle Caja_de_seleccion_resistor(Resistor resistor);
 
 //el siguiente void permite el mmalado para la conexcion de componentes con nodos. 
 
-//void Conectar_Resistor(ArregloResistores *punt_datos, int indice_resistor, int nodo_inicio, int nodo_fin);
+void Conectar_Resistor(ArregloResistores *punt_datos, int indice_resistor, int nodo_inicio, int nodo_fin);
 
 //el siguiente void permite el llamado para conectar con un cable el nodo y el componente
 
-//void Dibujar_Conexiones_Resistores(ArregloResistores *resistores, ArregloNodos *nodos);
+void Dibujar_Conexiones_Resistores(ArregloResistores *resistores, ArregloNodos *nodos);
 
 //====== Para las Fuentes de Tension (COMPONENTES) ======
 
@@ -66,8 +66,8 @@ typedef struct
 
     int rotacion;//si es 0 sera horizontal, si es 1 vertical
 
-    // int nodo_inicio;
-    // int nodo_fin;
+    int nodo_inicio;
+    int nodo_fin;
 } Fuentes_T;
 
 //esto de aca ya no se toca (por ahora jeje creo que si para el snap y el seleccionado pero asi se ve bien)
@@ -91,11 +91,11 @@ Rectangle Caja_de_seleccion_Fuente_T(Fuentes_T fuente_T);
 
 //el siguiente void permite la llamada  para la conexcion de componentes con nodos. 
 
-//void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, int indice_fuentes_T, int nodo_inicio, int nodo_fin);
+void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, int indice_fuentes_T, int nodo_inicio, int nodo_fin);
 
 //el siguiente void permite el llamado para conectar con un cable el nodo y el componente
 
-//void Dibujar_Conexiones_Fuente_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nodos);
+void Dibujar_Conexiones_Fuente_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nodos);
 
 //====== Para las Fuentes de Corriente (COMPONENTES) ======
 
@@ -109,8 +109,8 @@ typedef struct
 
     int rotacion;//si es 0 sera horizontal, si es 1 vertical
 
-    // int nodo_inicio;
-    // int nodo_fin;
+    int nodo_inicio;
+    int nodo_fin;
 
 } Fuentes_C;
 
@@ -135,11 +135,11 @@ void Rotar_Fuente_C(ArregloFuentes_C *punt_datos);//permite la rotacion con posi
 
 //el siguiente void permite la llamada  para la conexcion de componentes con nodos. 
 
-//void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, int indice_fuentes_C, int nodo_inicio, int nodo_fin);
+void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, int indice_fuentes_C, int nodo_inicio, int nodo_fin);
 
 //el siguiente void permite el llamado para conectar con un cable el nodo y el componente
 
-//void Dibujar_Conexiones_Fuentes_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nodos);
+void Dibujar_Conexiones_Fuentes_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nodos);
 
 Rectangle Caja_de_seleccion_Fuente_C(Fuentes_C fuente_T);
 

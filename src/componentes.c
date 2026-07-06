@@ -49,8 +49,8 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
 	//se debe agregar la conticion inicial de rotacion, en este caso horizontal
 	    .rotacion = 0,
 	//ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
-	//.nodo_inicio = -1,
-	//.nodo_fin = -1
+	    .nodo_inicio = -1,
+	    .nodo_fin = -1
     };
 
     snprintf(resistor.nombre, MAX_TEXTO_COMPONENTE, "R%zu", punt_datos->tamano + 1);
@@ -85,7 +85,7 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
 }
 
 //el siguiente void permite conectar el componente con el nodo
-/*
+
 void Conectar_Resistor(ArregloResistores *punt_datos, int indice_resistor, int nodo_inicio, int nodo_fin) {
     if(indice_resistor < 0 || indice_resistor >= punt_datos->tamano) {
 	//se comprueban dos cosas, primero, que el indice sea negativo para que este desconectado
@@ -109,7 +109,7 @@ void Dibujar_Conexiones_Resistores(ArregloResistores *resistores, ArregloNodos *
         DrawLineEx(p1, p2, 3, RED);//cable rojo para distinguir
     }
 }
-*/
+
 
 
 void Dibujar_resistor(ArregloResistores *punt_datos)    //esta funcion recibe el struct planteado anteriormente en los 
@@ -302,7 +302,7 @@ void InicializarArreglo_F_T(ArregloFuentes_T *punt_datos, size_t capacidad_inici
 }
 
 //el siguiente void permite conectar el componente con el nodo
-/*
+
 void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, int indice_fuente_T, int nodo_inicio, int nodo_fin) {
     if(indice_fuente_T < 0 || indice_fuente_T >= punt_datos->tamano) {
         return;
@@ -324,7 +324,7 @@ void Dibujar_Conexiones_Fuentes_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nod
         DrawLineEx(p1, p2, 3, BLUE);//COLOR AZUL PARA DETERMINAR CONEXION
     }
 }
-*/
+
 
 void Anadir_Fuente_T(ArregloFuentes_T *punt_datos){
 
@@ -334,10 +334,10 @@ void Anadir_Fuente_T(ArregloFuentes_T *punt_datos){
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
         .seleccionado = false,
         //se debe agregar la conticion inicial de rotacion, en este caso horizontal
-        .rotacion = 0
+        .rotacion = 0,
         //ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
-        //.nodo_inicio = -1,
-        //.nodo_fin = -1
+        .nodo_inicio = -1,
+        .nodo_fin = -1
     };
 
     snprintf(fuentes_T.nombre, MAX_TEXTO_COMPONENTE, "V%zu", punt_datos->tamano + 1);
@@ -587,8 +587,8 @@ void Anadir_Fuente_C(ArregloFuentes_C *punt_datos){
         //se debe agregar la conticion inicial de rotacion, en este caso horizontal
         .rotacion = 0,
         //ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
-        //.nodo_inicio = -1,
-        //.nodo_fin = -1
+        .nodo_inicio = -1,
+        .nodo_fin = -1
     };
 
     snprintf(fuentes_C.nombre, MAX_TEXTO_COMPONENTE, "I%zu", punt_datos->tamano + 1);
@@ -622,7 +622,6 @@ void Anadir_Fuente_C(ArregloFuentes_C *punt_datos){
 }
 
 //funcion de conexion en fuente de corriente
-/*
 void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, int indice_fuente_C, int nodo_inicio, int nodo_fin) {
     if(indice_fuente_C < 0 || indice_fuente_C >= punt_datos->tamano) {
         return;
@@ -645,7 +644,7 @@ void Dibujar_Conexiones_Fuentes_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nod
         DrawLineEx(p1, p2, 3, GREEN);//color verde para conecciones 
     }
 }
-*/
+
 
 void Dibujar_Fuente_C(ArregloFuentes_C *punt_datos)
 {   

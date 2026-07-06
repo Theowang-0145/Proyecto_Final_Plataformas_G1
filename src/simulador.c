@@ -213,45 +213,47 @@ static void Actualizar_Modo_Edicion(void){
 void ActualizarSimulador() {
 
 	//actualizacion para lector de seleccion en nodo 
-	//if(IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {//con el primer click derecho, se establece el primer nodo
-    		//int nodo = Obtener_Nodo_Seleccionado(&arreglo_nodo);
-    		//if(nodo != -1) {
-        		//if(nodo_inicio_seleccionado == -1) {
-            			//nodo_inicio_seleccionado = nodo;
-			//}
-		//}
-        	//else {//con un segundo click derecho, selecciona el nodo final. 
-            		//nodo_fin_seleccionado = nodo;
-        	//}
-    	//}
+	if(IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {//con el primer click derecho, se establece el primer nodo
+    	int nodo = Obtener_Nodo_Seleccionado(&arreglo_nodo);
+    	if(nodo != -1) {
+        	if(nodo_inicio_seleccionado == -1) {
+            	nodo_inicio_seleccionado = nodo;
+            }
+        }
+        else {//con un segundo click derecho, selecciona el nodo final. 
+            nodo_fin_seleccionado = nodo;
+        }
+    }
 
 	//se agrega la deteccion mediante la tecla C de que se desea conectar el nodo de un componente a otro nodo
 	//para los resistores
-	//if(IsKeyPressed(KEY_C)) {
-    		//for(size_t i = 0; i < arreglo_R.tamano; i++) {
-        		//if(arreglo_R.resistores[i].seleccionado) {
-            			//Conectar_Resistor(&arreglo_R, i, nodo_inicio_seleccionado, nodo_fin_seleccionado);
-            			//printf("Resistor conectado\n");
-            			//break;
-        		//}
-    		//}
+	if(IsKeyPressed(KEY_C)) {
+    	for(size_t i = 0; i < arreglo_R.tamano; i++) {
+            if(arreglo_R.resistores[i].seleccionado) {
+            	Conectar_Resistor(&arreglo_R, i, nodo_inicio_seleccionado, nodo_fin_seleccionado);
+            	printf("Resistor conectado\n");
+            	break;
+        	}
+    }
+
 	//para la fuente de tension 
-    		//for(size_t i = 0; i < arreglo_F_T.tamano; i++) {
-        		//if(arreglo_F_T.fuentes_T[i].seleccionado) {
-            			//Conectar_Fuente_T(&arreglo_F_T, i, nodo_inicio_seleccionado, nodo_fin_seleccionado);
-            			//printf("Fuente de tension conectada\n");
-            			//break;
-        		//}
-    		//}
+    for(size_t i = 0; i < arreglo_F_T.tamano; i++) {
+        if(arreglo_F_T.fuentes_T[i].seleccionado) {
+            Conectar_Fuente_T(&arreglo_F_T, i, nodo_inicio_seleccionado, nodo_fin_seleccionado);
+            printf("Fuente de tension conectada\n");
+            break;
+        }
+    }
+
 	//para la cuente de corriente
-    		//for(size_t i = 0; i < arreglo_F_C.tamano; i++) {
-        		//if(arreglo_F_C.fuentes_C[i].seleccionado) {
-            			//Conectar_Fuente_C(&arreglo_F_C, i, nodo_inicio_seleccionado, nodo_fin_seleccionado);
-            			//printf("Fuente de corriente conectada\n");
-            			//break;
-        		//}
-    		//}
-	//}
+    for(size_t i = 0; i < arreglo_F_C.tamano; i++) {
+        if(arreglo_F_C.fuentes_C[i].seleccionado) {
+            Conectar_Fuente_C(&arreglo_F_C, i, nodo_inicio_seleccionado, nodo_fin_seleccionado);
+            printf("Fuente de corriente conectada\n");
+            break;
+        }
+    }
+}
 
     //revisar primero si esta en modo edicion
     if (modo_edicion){
@@ -373,9 +375,9 @@ void DibujarSimulador(void)
     Dibujar_boton(eliminar_boton, "Eliminar");
 
     //dibujado de los componentes, ahora solo se necesita una funcion que en realidad es un loop
-    //Dibujar_Conexiones_Resistores(&arreglo_R, &arreglo_nodo);
-    //Dibujar_Conexiones_Fuente_T(&arreglo_F_T, &arreglo_nodo);
-    //Dibujar_Conexiones_Fuentes_C(&arreglo_F_C, &arreglo_nodo);
+    Dibujar_Conexiones_Resistores(&arreglo_R, &arreglo_nodo);
+    Dibujar_Conexiones_Fuente_T(&arreglo_F_T, &arreglo_nodo);
+    Dibujar_Conexiones_Fuentes_C(&arreglo_F_C, &arreglo_nodo);
 
     Dibujar_resistor(&arreglo_R);
     Dibujar_Fuente_T(&arreglo_F_T);
