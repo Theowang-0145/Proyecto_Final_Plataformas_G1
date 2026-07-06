@@ -49,8 +49,8 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
 	//se debe agregar la conticion inicial de rotacion, en este caso horizontal
 	.rotacion = 0,
 	//ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
-	.nodo_inicio = -1,
-	.nodo_fin = -1
+	//.nodo_inicio = -1,
+	//.nodo_fin = -1
     };
 
     snprintf(resistor.nombre, MAX_TEXTO_COMPONENTE, "R%zu", punt_datos->tamano + 1);
@@ -85,29 +85,29 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
 }
 
 //el siguiente void permite conectar el componente con el nodo
-void Conectar_Resistor(ArregloResistores *punt_datos, int indice_resistor, int nodo_inicio, int nodo_fin) {
-    if(indice_resistor < 0 || indice_resistor >= punt_datos->tamano) {
+//void Conectar_Resistor(ArregloResistores *punt_datos, int indice_resistor, int nodo_inicio, int nodo_fin) {
+    //if(indice_resistor < 0 || indice_resistor >= punt_datos->tamano) {
 	//se comprueban dos cosas, primero, que el indice sea negativo para que este desconectado
 	//y que luego, que el indice sea disdinto de los otros componentes
-	return;
-    }
-    punt_datos->resistores[indice_resistor].nodo_inicio = nodo_inicio;//aca se otorga el valor del primer nodo
-    punt_datos->resistores[indice_resistor].nodo_fin = nodo_fin;//y aca el segundo nodo
-}
+	//return;
+    //}
+    //punt_datos->resistores[indice_resistor].nodo_inicio = nodo_inicio;//aca se otorga el valor del primer nodo
+    //punt_datos->resistores[indice_resistor].nodo_fin = nodo_fin;//y aca el segundo nodo
+//}
 
 //el siguiente dibuja la coneccion entre el componente y el nodo, el resistor es de coneccion roja
-void Dibujar_Conexiones_Resistores(ArregloResistores *resistores, ArregloNodos *nodos) {
-    for(size_t i = 0; i < resistores->tamano; i++) { //este es un cliclo de definicion nada mas
-        int inicio = resistores->resistores[i].nodo_inicio;//sse establece el valor de los nodos
-        int fin = resistores->resistores[i].nodo_fin;
-        if(inicio < 0 || fin < 0) {
-            continue;
-        }
-        Vector2 p1 = nodos->nodo[inicio].posicion;
-        Vector2 p2 = nodos->nodo[fin].posicion;
-        DrawLineEx(p1, p2, 3, RED);//cable rojo para distinguir
-    }
-}
+//void Dibujar_Conexiones_Resistores(ArregloResistores *resistores, ArregloNodos *nodos) {
+    //for(size_t i = 0; i < resistores->tamano; i++) { //este es un cliclo de definicion nada mas
+        //int inicio = resistores->resistores[i].nodo_inicio;//sse establece el valor de los nodos
+        //int fin = resistores->resistores[i].nodo_fin;
+        //if(inicio < 0 || fin < 0) {
+            //continue;
+        //}
+        //Vector2 p1 = nodos->nodo[inicio].posicion;
+        //Vector2 p2 = nodos->nodo[fin].posicion;
+        //DrawLineEx(p1, p2, 3, RED);//cable rojo para distinguir
+    //}
+//}
 
 
 
@@ -311,27 +311,27 @@ void InicializarArreglo_F_T(ArregloFuentes_T *punt_datos, size_t capacidad_inici
 
 //el siguiente void permite conectar el componente con el nodo
 
-void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, int indice_fuente_T, int nodo_inicio, int nodo_fin) {
-    if(indice_fuente_T < 0 || indice_fuente_T >= punt_datos->tamano) {
-        return;
-    }
-    punt_datos->fuentes_T[indice_fuente_T].nodo_inicio = nodo_inicio;
-    punt_datos->fuentes_T[indice_fuente_T].nodo_fin = nodo_fin;
-}
+//void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, int indice_fuente_T, int nodo_inicio, int nodo_fin) {
+    //if(indice_fuente_T < 0 || indice_fuente_T >= punt_datos->tamano) {
+        //return;
+    //}
+    //punt_datos->fuentes_T[indice_fuente_T].nodo_inicio = nodo_inicio;
+    //punt_datos->fuentes_T[indice_fuente_T].nodo_fin = nodo_fin;
+//}
 
 //el siguiente vaoid establece la coneccion de fuente de tencion en color azul para visualizarlo
-void Dibujar_Conexiones_Fuentes_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nodos) {
-    for(size_t i = 0; i < fuentes_T->tamano; i++) {
-        int inicio = fuentes_T->fuentes_T[i].nodo_inicio;
-        int fin = fuentes_T->fuentes_T[i].nodo_fin;
-        if(inicio < 0 || fin < 0) {
-            continue;
-        }
-        Vector2 p1 = nodos->nodo[inicio].posicion;
-        Vector2 p2 = nodos->nodo[fin].posicion;
-        DrawLineEx(p1, p2, 3, BLUE);//COLOR AZUL PARA DETERMINAR CONEXION
-    }
-}
+//void Dibujar_Conexiones_Fuentes_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nodos) {
+    //for(size_t i = 0; i < fuentes_T->tamano; i++) {
+        //int inicio = fuentes_T->fuentes_T[i].nodo_inicio;
+        //int fin = fuentes_T->fuentes_T[i].nodo_fin;
+        //if(inicio < 0 || fin < 0) {
+            //continue;
+        //}
+        //Vector2 p1 = nodos->nodo[inicio].posicion;
+        //Vector2 p2 = nodos->nodo[fin].posicion;
+        //DrawLineEx(p1, p2, 3, BLUE);//COLOR AZUL PARA DETERMINAR CONEXION
+    //}
+//}
 
 
 void Anadir_Fuente_T(ArregloFuentes_T *punt_datos){
@@ -344,8 +344,8 @@ void Anadir_Fuente_T(ArregloFuentes_T *punt_datos){
         //se debe agregar la conticion inicial de rotacion, en este caso horizontal
         .rotacion = 0
         //ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
-        .nodo_inicio = -1,
-        .nodo_fin = -1
+        //.nodo_inicio = -1,
+        //.nodo_fin = -1
     };
 
     snprintf(fuentes_T.nombre, MAX_TEXTO_COMPONENTE, "V%zu", punt_datos->tamano + 1);
@@ -590,8 +590,8 @@ void Anadir_Fuente_C(ArregloFuentes_C *punt_datos){
         //se debe agregar la conticion inicial de rotacion, en este caso horizontal
         .rotacion = 0
         //ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
-        .nodo_inicio = -1,
-        .nodo_fin = -1
+        //.nodo_inicio = -1,
+        //.nodo_fin = -1
     };
 
     snprintf(fuentes_C.nombre, MAX_TEXTO_COMPONENTE, "I%zu", punt_datos->tamano + 1);
@@ -626,28 +626,28 @@ void Anadir_Fuente_C(ArregloFuentes_C *punt_datos){
 
 //funcion de conexion en fuente de corriente
 
-void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, int indice_fuente_C, int nodo_inicio, int nodo_fin) {
-    if(indice_fuente_C < 0 || indice_fuente_C >= punt_datos->tamano) {
-        return;
-    }
-    punt_datos->fuentes_C[indice_fuente_C].nodo_inicio = nodo_inicio;
-    punt_datos->fuentes_C[indice_fuente_C].nodo_fin = nodo_fin;
-}
+//void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, int indice_fuente_C, int nodo_inicio, int nodo_fin) {
+    //if(indice_fuente_C < 0 || indice_fuente_C >= punt_datos->tamano) {
+        //return;
+    //}
+    //punt_datos->fuentes_C[indice_fuente_C].nodo_inicio = nodo_inicio;
+    //punt_datos->fuentes_C[indice_fuente_C].nodo_fin = nodo_fin;
+//}
 
 //Funcion para dibujar coneccion de fuente de corriente en color verde 
 
-void Dibujar_Conexiones_Fuentes_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nodos) {
-    for(size_t i = 0; i < fuentes_C->tamano; i++) {
-        int inicio = fuentes_C->fuentes_C[i].nodo_inicio;
-        int fin = fuentes_C->fuentes_C[i].nodo_fin;
-        if(inicio < 0 || fin < 0) {
-            continue;
-        }
-        Vector2 p1 = nodos->nodo[inicio].posicion;
-        Vector2 p2 = nodos->nodo[fin].posicion;
-        DrawLineEx(p1, p2, 3, GREEN);//color verde para conecciones 
-    }
-}
+//void Dibujar_Conexiones_Fuentes_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nodos) {
+    //for(size_t i = 0; i < fuentes_C->tamano; i++) {
+        //int inicio = fuentes_C->fuentes_C[i].nodo_inicio;
+        //int fin = fuentes_C->fuentes_C[i].nodo_fin;
+        //if(inicio < 0 || fin < 0) {
+            //continue;
+        //}
+        //Vector2 p1 = nodos->nodo[inicio].posicion;
+        //Vector2 p2 = nodos->nodo[fin].posicion;
+        //DrawLineEx(p1, p2, 3, GREEN);//color verde para conecciones 
+    //}
+//}
 
 
 void Dibujar_Fuente_C(ArregloFuentes_C *punt_datos)
@@ -847,6 +847,7 @@ void Anadir_Nodo(ArregloNodos *punt_datos){
         .posicion = {(800 + (punt_datos->tamano*40 + 30) ) , (500 + (punt_datos->tamano*40 + 30) )},
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
         .seleccionado = false
+	.rotacion = 0
     };
 
     snprintf(nodo.nombre, MAX_TEXTO_COMPONENTE, "Nodo");
@@ -975,17 +976,17 @@ void Seleccion_movimiento_Nodo(ArregloNodos *punt_datos){ //basicamente funciona
 
 //determinacion de que el usuariop selecciono el nodo como tal 
 
-int Obtener_Nodo_Seleccionado(ArregloNodos *punt_datos) {
-    Vector2 mouse = GetMousePosition();//esto funciona con click derecho
-    for(size_t i = 0; i < punt_datos->tamano; i++) {
-        Rectangle caja = Caja_de_seleccion_Nodo(punt_datos->nodo[i]);
-        if(CheckCollisionPointRec(mouse,caja))
-        {
-            return i;
-        }
-    }
-    return -1;
-}
+//int Obtener_Nodo_Seleccionado(ArregloNodos *punt_datos) {
+    //Vector2 mouse = GetMousePosition();//esto funciona con click derecho
+    //for(size_t i = 0; i < punt_datos->tamano; i++) {
+        //Rectangle caja = Caja_de_seleccion_Nodo(punt_datos->nodo[i]);
+        //if(CheckCollisionPointRec(mouse,caja))
+        //{
+            //return i;
+        //}
+    //}
+    //return -1;
+//}
 
 
 Rectangle Caja_de_seleccion_Nodo(Nodo Nodo){  //cajita de la fuente de corriente por si es seleccionado
