@@ -325,10 +325,12 @@ void ActualizarSimulador()
 
     Seleccion_movimiento_Nodo(&arreglo_nodo);
     Mover_Nodo(&arreglo_nodo);
-//Nodos seleccionados para las conecciones
-int nodo_inicio_seleccionado = -1
-int nodo_fin_seleccionado = -1
 }
+
+//Nodos seleccionados para las conecciones
+int nodo_inicio_seleccionado = -1;
+int nodo_fin_seleccionado = -1;
+//deben estar declaradas fuera de cualquier funcion 
 
 //--------------------------------------DRAWING------------------------------------
 void DibujarSimulador(void)
