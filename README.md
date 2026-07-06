@@ -24,6 +24,14 @@ Este programa permite construir circuitos eléctricos esquemáticos mediante una
   - Ohmios para resistencias.
 - Visualizar el circuito de forma esquemática.
 
+## Operaciones a tener en cuenta
+
+ - Click derecho + C permite la union de los componentes y los nodos
+ - Click derecho sobre componente para generar el primer nodo, repetir para el segundo
+ - Dezplazar el componente en pantalla mediante click derecho sostenido
+ - Generar un componente mediante el click derecho sobre la casilla respectiva
+ - Click derecho + R para totar
+ 
 ## Compilación
 
 ```bash
