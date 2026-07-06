@@ -203,6 +203,9 @@ bool Eliminar_Nodo_Seleccionado(ArregloNodos *punt_datos); //elimina el nodo
 
 void Seleccion_movimiento_Nodo(ArregloNodos *punt_datos);
 Rectangle Caja_de_seleccion_Nodo(Nodo nodo); 
+//esta funcion permite llamar a la funcion que detecta el seleccionado del nodo
+int Obtener_Nodo_Seleccionado(ArregloNodos *punt_datos);
+
 void Mover_Nodo(ArregloNodos *punt_datos); 
 
 void Rotar_Nodo(ArregloNodos *punt_datos);//permite la rotacion con posicion determinada
