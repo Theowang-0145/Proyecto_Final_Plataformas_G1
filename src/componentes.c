@@ -95,6 +95,20 @@ void Conectar_Resistor(ArregloResistores *punt_datos, int indice_resistor, int n
     punt_datos->resistores[indice_resistor].nodo_fin = nodo_fin;//y aca el segundo nodo
 }
 
+//el siguiente dibuja la coneccion entre el componente y el nodo, el resistor es de coneccion roja
+void Dibujar_Conexiones_Resistores(ArregloResistores *resistores, ArregloNodos *nodos) {
+    for(size_t i = 0; i < resistores->tamano; i++) { //este es un cliclo de definicion nada mas
+        int inicio = resistores->resistores[i].nodo_inicio;//sse establece el valor de los nodos
+        int fin = resistores->resistores[i].nodo_fin;
+        if(inicio < 0 || fin < 0) {
+            continue;
+        }
+        Vector2 p1 = nodos->nodo[inicio].posicion;
+        Vector2 p2 = nodos->nodo[fin].posicion;
+        DrawLineEx(p1, p2, 3, RED);//cable rojo para distinguir
+    }
+}
+
 
 
 void Dibujar_resistor(ArregloResistores *punt_datos)    //esta funcion recibe el struct planteado anteriormente en los 
@@ -269,6 +283,21 @@ void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, int indice_fuente_T, int no
     punt_datos->fuentes_T[indice_fuente_T].nodo_inicio = nodo_inicio;
     punt_datos->fuentes_T[indice_fuente_T].nodo_fin = nodo_fin;
 }
+
+//el siguiente vaoid establece la coneccion de fuente de tencion en color azul para visualizarlo
+void Dibujar_Conexiones_Fuentes_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nodos) {
+    for(size_t i = 0; i < fuentes_T->tamano; i++) {
+        int inicio = fuentes_T->fuentes_T[i].nodo_inicio;
+        int fin = fuentes_T->fuentes_T[i].nodo_fin;
+        if(inicio < 0 || fin < 0) {
+            continue;
+        }
+        Vector2 p1 = nodos->nodo[inicio].posicion;
+        Vector2 p2 = nodos->nodo[fin].posicion;
+        DrawLineEx(p1, p2, 3, BLUE);//COLOR AZUL PARA DETERMINAR CONEXION
+    }
+}
+
 
 void Anadir_Fuente_T(ArregloFuentes_T *punt_datos){
 
@@ -538,6 +567,21 @@ void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, int indice_fuente_C, int no
     }
     punt_datos->fuentes_C[indice_fuente_C].nodo_inicio = nodo_inicio;
     punt_datos->fuentes_C[indice_fuente_C].nodo_fin = nodo_fin;
+}
+
+//Funcion para dibujar coneccion de fuente de corriente en color verde 
+
+void Dibujar_Conexiones_Fuentes_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nodos) {
+    for(size_t i = 0; i < fuentes_C->tamano; i++) {
+        int inicio = fuentes_C->fuentes_C[i].nodo_inicio;
+        int fin = fuentes_C->fuentes_C[i].nodo_fin;
+        if(inicio < 0 || fin < 0) {
+            continue;
+        }
+        Vector2 p1 = nodos->nodo[inicio].posicion;
+        Vector2 p2 = nodos->nodo[fin].posicion;
+        DrawLineEx(p1, p2, 3, GREEN);//color verde para conecciones 
+    }
 }
 
 
