@@ -6,7 +6,7 @@ Proyecto final: DC Simulator (Simple Edition)
 Proyecto desarrollado en lenguaje C utilizando la biblioteca Raylib para el curso de Programación Bajo Plataformas Abiertas.
 
 Aarón Madrigal - C14373
-Brayan
+Brayan Sanchez Chavarria - C37283
 Theo
 
 ## Descripción
