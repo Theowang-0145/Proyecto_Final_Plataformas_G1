@@ -55,6 +55,9 @@ void Rotar_Resistor(ArregloResistores *punt_datos);//permite la rotacion con pos
 //el siguiente void permite el mmalado para la conexcion de componentes con nodos. 
 void Conectar_Resistor(ArrgloResistores *punt_datos, int indice_resistor, int nodo_inicio, int nodo_fin);
 
+//el siguiente void permite el llamado para conectar con un cable el nodo y el componente
+void Dibujar_Conexiones_Resistores(ArregloResistores *resistores, ArregloNodos *nodos);
+
 //====== Para las Fuentes de Tension (COMPONENTES) ======
 
 typedef struct 
@@ -105,6 +108,9 @@ void Rotar_Fuente_T(ArregloFuentes_T *punt_datos);//permite la rotacion con posi
 //el siguiente void permite la llamada  para la conexcion de componentes con nodos. 
 void Conectar_Fuente_T(ArrgloFuentes_T *punt_datos, int indice_fuentes_T, int nodo_inicio, int nodo_fin);
 
+//el siguiente void permite el llamado para conectar con un cable el nodo y el componente
+void Dibujar_Conexiones_Fuente_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nodos);
+
 
 //====== Para las Fuentes de Corriente (COMPONENTES) ======
 
@@ -154,6 +160,9 @@ void Rotar_Fuente_C(ArregloFuentes_C *punt_datos);//permite la rotacion con posi
 
 //el siguiente void permite la llamada  para la conexcion de componentes con nodos. 
 void Conectar_Fuente_C(ArrgloFuentes_C *punt_datos, int indice_fuentes_C, int nodo_inicio, int nodo_fin);
+
+//el siguiente void permite el llamado para conectar con un cable el nodo y el componente
+void Dibujar_Conexiones_Fuentes_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nodos);
 
 
 //====== Para los nodos (COMPONENTES) ======
