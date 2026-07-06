@@ -1,0 +1,5 @@
+simulador
+*.o
+
+test_memoria
+*.o
