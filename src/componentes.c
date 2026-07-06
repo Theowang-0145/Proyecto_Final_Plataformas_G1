@@ -1,4 +1,4 @@
-#include "componentes.h"
+}#include "componentes.h"
 #include <stdio.h>
 #include <stdlib.h>
 
