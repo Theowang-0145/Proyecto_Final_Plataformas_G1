@@ -3,6 +3,8 @@
 #include <stdlib.h>
 
 
+
+
 /*
 
 NOTA: Toda esta seccion de codigo pertenece al las propiedades de cada componente. En resumen cada componente es un struct que posee 
@@ -12,6 +14,47 @@ Cabe resaltar que al ser objetos de diseno, se deben de seleccionar de alguna fo
 como objetos moviles si son clickeados por el cursor (como si fueran un boton). 
 
 */
+
+
+//en esta sección, se trata el arrglo de cada nodo para permitir un cable de conexión 
+//se usan vectores para representar las lineas que conecten el nodo con el componente
+static bool Nodo_Valido(ArregloNodos *nodos, int indice)
+{
+    return indice >= 0 && (size_t)indice < nodos->tamano;
+}
+
+static Vector2 Terminal_1(Vector2 posicion, int rotacion) //esto es para que la rotacion se haga pero no afecte o desconecte el vector
+{
+    if (rotacion == 0)
+    {
+        return (Vector2){posicion.x - 60, posicion.y};//posicion horizontal 
+    }
+    else
+    {
+        return (Vector2){posicion.x, posicion.y - 60};//posicion vertical
+    }
+}
+
+static Vector2 Terminal_2(Vector2 posicion, int rotacion)//este es el vector del segundo nodo, para que haya comienzo y final del circuito
+{
+    if (rotacion == 0)
+    {
+        return (Vector2){posicion.x + 60, posicion.y};
+    }
+    else
+    {
+        return (Vector2){posicion.x, posicion.y + 60};
+    }
+}
+//en esta construcción, importante, no se permiten circuitos abiertos 
+//acá es donde, como tal, se dibujan los cables, si la conexión es con un resistor es roja, si es FC es verde y si es FT es azul
+static void Dibujar_Cable(Vector2 terminal, Vector2 nodo, Color color)
+{
+    DrawLineEx(terminal, nodo, 3, color);
+    DrawCircleV(terminal, 4, color);
+    DrawCircleV(nodo, 4, color);
+}
+
 
 
 //====== Para los Resistores (COMPONENTES) ====== (basicamente se cambiaron todas pero se parece al Lab 5)
@@ -49,8 +92,8 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
 	//se debe agregar la conticion inicial de rotacion, en este caso horizontal
 	    .rotacion = 0,
 	//ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
-	//.nodo_inicio = -1,
-	//.nodo_fin = -1
+	    .nodo_inicio = -1,
+	    .nodo_fin = -1
     };
 
     snprintf(resistor.nombre, MAX_TEXTO_COMPONENTE, "R%zu", punt_datos->tamano + 1);
@@ -85,9 +128,9 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
 }
 
 //el siguiente void permite conectar el componente con el nodo
-/*
-void Conectar_Resistor(ArregloResistores *punt_datos, int indice_resistor, int nodo_inicio, int nodo_fin) {
-    if(indice_resistor < 0 || indice_resistor >= punt_datos->tamano) {
+
+void Conectar_Resistor(ArregloResistores *punt_datos, size_t indice_resistor, int nodo_inicio, int nodo_fin) {
+    if(indice_resistor >= punt_datos->tamano) {
 	//se comprueban dos cosas, primero, que el indice sea negativo para que este desconectado
 	//y que luego, que el indice sea disdinto de los otros componentes
 	return;
@@ -97,19 +140,38 @@ void Conectar_Resistor(ArregloResistores *punt_datos, int indice_resistor, int n
 }
 
 //el siguiente dibuja la coneccion entre el componente y el nodo, el resistor es de coneccion roja
-void Dibujar_Conexiones_Resistores(ArregloResistores *resistores, ArregloNodos *nodos) {
-    for(size_t i = 0; i < resistores->tamano; i++) { //este es un cliclo de definicion nada mas
-        int inicio = resistores->resistores[i].nodo_inicio;//sse establece el valor de los nodos
+void Dibujar_Conexiones_Resistor(ArregloResistores *resistores, ArregloNodos *nodos)
+{ 
+	//el ciclo permite mantener el valor de los nodos, recordar que los nodos estan en -1 para que no conecten con mada
+	//y se establecen los nodos siempre en pares
+    for (size_t i = 0; i < resistores->tamano; i++)
+    {
+        int inicio = resistores->resistores[i].nodo_inicio;
         int fin = resistores->resistores[i].nodo_fin;
-        if(inicio < 0 || fin < 0) {
+
+        if (!Nodo_Valido(nodos, inicio) || !Nodo_Valido(nodos, fin)) //esto valida dos cosas, que existan asignados los -1
+        {
             continue;
         }
-        Vector2 p1 = nodos->nodo[inicio].posicion;
-        Vector2 p2 = nodos->nodo[fin].posicion;
-        DrawLineEx(p1, p2, 3, RED);//cable rojo para distinguir
+
+        Vector2 t1 = Terminal_1(
+            resistores->resistores[i].posicion,
+            resistores->resistores[i].rotacion
+        );
+
+        Vector2 t2 = Terminal_2(
+            resistores->resistores[i].posicion,
+            resistores->resistores[i].rotacion
+        );
+
+        Vector2 n1 = nodos->nodo[inicio].posicion;
+        Vector2 n2 = nodos->nodo[fin].posicion;
+
+        Dibujar_Cable(t1, n1, RED);//como se dijo arriba, los cables que salgan del resistor deben ser rojos, para visualizar 
+        Dibujar_Cable(t2, n2, RED);
     }
 }
-*/
+
 
 
 void Dibujar_resistor(ArregloResistores *punt_datos)    //esta funcion recibe el struct planteado anteriormente en los 
@@ -135,14 +197,14 @@ void Dibujar_resistor(ArregloResistores *punt_datos)    //esta funcion recibe el
             DrawText(punt_datos->resistores[i].valor, x - 55, y + 5, 18, RED);
         }
 
-        if (punt_datos->resistores[i].seleccionado == true) {
+        if (punt_datos->resistores[i].seleccionado == true) {//esto es para que se detecte la seleccion del componente 
 		    if(punt_datos->resistores[i].rotacion == 0) {
         		DrawLine(x - 60, y, x - 30, y, RED);
        	 		DrawRectangleLines(x - 30, y - 15, 60, 30, RED);
         		DrawLine(x + 30, y, x + 60, y, RED);
                 DrawText(punt_datos->resistores[i].nombre, x - 12, y - 45, 20, BLUE);
             	DrawText(punt_datos->resistores[i].valor, x - 12, y + 25, 18, BLUE);
-    		}
+    		}//en ambas secciones,busca que al seleccionar se, se dibujen las lineas y el componente en posición vertical en el else y horizontal en if
     		else {
         		DrawLine(x, y - 60, x, y - 30, RED);
         		DrawRectangleLines(x - 15, y - 30, 30, 60, RED);
@@ -302,29 +364,50 @@ void InicializarArreglo_F_T(ArregloFuentes_T *punt_datos, size_t capacidad_inici
 }
 
 //el siguiente void permite conectar el componente con el nodo
-/*
-void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, int indice_fuente_T, int nodo_inicio, int nodo_fin) {
-    if(indice_fuente_T < 0 || indice_fuente_T >= punt_datos->tamano) {
+
+void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, size_t indice_fuente_T, int nodo_inicio, int nodo_fin) {
+    if(indice_fuente_T >= punt_datos->tamano) {
         return;
     }
     punt_datos->fuentes_T[indice_fuente_T].nodo_inicio = nodo_inicio;
     punt_datos->fuentes_T[indice_fuente_T].nodo_fin = nodo_fin;
 }
 
+
 //el siguiente vaoid establece la coneccion de fuente de tencion en color azul para visualizarlo
-void Dibujar_Conexiones_Fuentes_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nodos) {
-    for(size_t i = 0; i < fuentes_T->tamano; i++) {
+//al igual que en el componente anterior, todos los componentes deben dibujarse en horizontal y vertical 
+
+void Dibujar_Conexiones_Fuente_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nodos)
+{
+    for (size_t i = 0; i < fuentes_T->tamano; i++)//la misma comprobación de asignacion
+    {
         int inicio = fuentes_T->fuentes_T[i].nodo_inicio;
         int fin = fuentes_T->fuentes_T[i].nodo_fin;
-        if(inicio < 0 || fin < 0) {
+
+        if (!Nodo_Valido(nodos, inicio) || !Nodo_Valido(nodos, fin))//la comprobacion para evitar errores
+        {
             continue;
         }
-        Vector2 p1 = nodos->nodo[inicio].posicion;
-        Vector2 p2 = nodos->nodo[fin].posicion;
-        DrawLineEx(p1, p2, 3, BLUE);//COLOR AZUL PARA DETERMINAR CONEXION
+		//eso si, los vectores son menos porque son para simular la entrada y la salida, lo que cambia, es el circulo al rotar 
+
+        Vector2 t1 = Terminal_1(
+            fuentes_T->fuentes_T[i].posicion,
+            fuentes_T->fuentes_T[i].rotacion
+        );
+
+        Vector2 t2 = Terminal_2(
+            fuentes_T->fuentes_T[i].posicion,
+            fuentes_T->fuentes_T[i].rotacion
+        );
+
+        Vector2 n1 = nodos->nodo[inicio].posicion;
+        Vector2 n2 = nodos->nodo[fin].posicion;
+
+        Dibujar_Cable(t1, n1, BLUE);
+        Dibujar_Cable(t2, n2, BLUE);
     }
 }
-*/
+
 
 void Anadir_Fuente_T(ArregloFuentes_T *punt_datos){
 
@@ -334,10 +417,10 @@ void Anadir_Fuente_T(ArregloFuentes_T *punt_datos){
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
         .seleccionado = false,
         //se debe agregar la conticion inicial de rotacion, en este caso horizontal
-        .rotacion = 0
+        .rotacion = 0,
         //ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
-        //.nodo_inicio = -1,
-        //.nodo_fin = -1
+        .nodo_inicio = -1,
+        .nodo_fin = -1
     };
 
     snprintf(fuentes_T.nombre, MAX_TEXTO_COMPONENTE, "V%zu", punt_datos->tamano + 1);
@@ -587,8 +670,8 @@ void Anadir_Fuente_C(ArregloFuentes_C *punt_datos){
         //se debe agregar la conticion inicial de rotacion, en este caso horizontal
         .rotacion = 0,
         //ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
-        //.nodo_inicio = -1,
-        //.nodo_fin = -1
+        .nodo_inicio = -1,
+        .nodo_fin = -1
     };
 
     snprintf(fuentes_C.nombre, MAX_TEXTO_COMPONENTE, "I%zu", punt_datos->tamano + 1);
@@ -622,9 +705,8 @@ void Anadir_Fuente_C(ArregloFuentes_C *punt_datos){
 }
 
 //funcion de conexion en fuente de corriente
-/*
-void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, int indice_fuente_C, int nodo_inicio, int nodo_fin) {
-    if(indice_fuente_C < 0 || indice_fuente_C >= punt_datos->tamano) {
+void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, size_t indice_fuente_C, int nodo_inicio, int nodo_fin) {
+    if(indice_fuente_C >= punt_datos->tamano) {
         return;
     }
     punt_datos->fuentes_C[indice_fuente_C].nodo_inicio = nodo_inicio;
@@ -633,19 +715,36 @@ void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, int indice_fuente_C, int no
 
 //Funcion para dibujar coneccion de fuente de corriente en color verde 
 
-void Dibujar_Conexiones_Fuentes_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nodos) {
-    for(size_t i = 0; i < fuentes_C->tamano; i++) {
+void Dibujar_Conexiones_Fuente_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nodos)
+{ //se replica lo mismo que en caso anterior cambiando solo la identacion porque son lo mismo prácticamente 
+    for (size_t i = 0; i < fuentes_C->tamano; i++)
+    {
         int inicio = fuentes_C->fuentes_C[i].nodo_inicio;
         int fin = fuentes_C->fuentes_C[i].nodo_fin;
-        if(inicio < 0 || fin < 0) {
+
+        if (!Nodo_Valido(nodos, inicio) || !Nodo_Valido(nodos, fin))
+        {
             continue;
         }
-        Vector2 p1 = nodos->nodo[inicio].posicion;
-        Vector2 p2 = nodos->nodo[fin].posicion;
-        DrawLineEx(p1, p2, 3, GREEN);//color verde para conecciones 
+
+        Vector2 t1 = Terminal_1(
+            fuentes_C->fuentes_C[i].posicion,
+            fuentes_C->fuentes_C[i].rotacion
+        );
+
+        Vector2 t2 = Terminal_2(
+            fuentes_C->fuentes_C[i].posicion,
+            fuentes_C->fuentes_C[i].rotacion
+        );
+
+        Vector2 n1 = nodos->nodo[inicio].posicion;
+        Vector2 n2 = nodos->nodo[fin].posicion;
+
+        Dibujar_Cable(t1, n1, GREEN);
+        Dibujar_Cable(t2, n2, GREEN);//eso si, ya no es azul para distinguir y ayudar al usuario, por eso es verde 
     }
 }
-*/
+
 
 void Dibujar_Fuente_C(ArregloFuentes_C *punt_datos)
 {   
@@ -885,11 +984,11 @@ void Anadir_Nodo(ArregloNodos *punt_datos){
 
 void Dibujar_Nodo(ArregloNodos *punt_datos) {
 //si bien la rotacion de un nodo es innecesaria en este momento, de cara a un nodo especial en el futurop, es mejor tenerlo listo
-    for (size_t i = 0; i < punt_datos->tamano; i++) {
+    for (size_t i = 0; i < punt_datos->tamano; i++) {//es for ed solo para comprobar que el nodo no entre conectado a nadie, en una posición determinada
         int x = punt_datos->nodo[i].posicion.x;
         int y = punt_datos->nodo[i].posicion.y;
 
-        if(punt_datos->nodo[i].rotacion == 0) {
+        if(punt_datos->nodo[i].rotacion == 0) {//la rotación no se dará, porque es un punto, pero en caso de un posible nodo especial, es mejor tenerlo hecho 
             DrawCircle(x, y, 10, BLUE);
             DrawText(punt_datos->nodo[i].nombre, x - 20, y - 30, 20, BLACK);
             DrawText(punt_datos->nodo[i].valor, x - 1, y + 13, 18, BLACK);
@@ -981,7 +1080,7 @@ int Obtener_Nodo_Seleccionado(ArregloNodos *punt_datos) {
     }
     return -1;
 }
-
+//y para conectar, se debe usar el botón C
 
 Rectangle Caja_de_seleccion_Nodo(Nodo Nodo){  //cajita de la fuente de corriente por si es seleccionado
 
@@ -1006,8 +1105,8 @@ void Rotar_Nodo(ArregloNodos *punt_datos) {
 }
 //fin de agregado para rotar
 
-void Mover_Nodo(ArregloNodos *punt_datos)
-{
+void Mover_Nodo(ArregloNodos *punt_datos)//esto desplaza el nodo y facilita el uso para las teclas, todos los componentes lo tienen pero este es muy util
+{//se desplaza en el plano que simula la protoboard
     for (size_t i = 0; i < punt_datos->tamano; i++)
     {
         if (punt_datos->nodo[i].seleccionado)
