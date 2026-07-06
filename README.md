@@ -1,4 +1,6 @@
 # Proyecto_Final_Plataformas_G1
+Proyecto final: DC Simulator (Simple Edition)
+
 ## Proyecto final: DC Simulator (Simple Edition)
 
 Proyecto desarrollado en lenguaje C utilizando la biblioteca Raylib para el curso de Programación Bajo Plataformas Abiertas.
