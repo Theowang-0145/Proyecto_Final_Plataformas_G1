@@ -874,6 +874,21 @@ void Seleccion_movimiento_Nodo(ArregloNodos *punt_datos){ //basicamente funciona
     }
 }
 
+//determinacion de que el usuariop selecciono el nodo como tal 
+
+int Obtener_Nodo_Seleccionado(ArregloNodos *punt_datos) {
+    Vector2 mouse = GetMousePosition();//esto funciona con click derecho
+    for(size_t i = 0; i < punt_datos->tamano; i++) {
+        Rectangle caja = Caja_de_seleccion_Nodo(punt_datos->nodo[i]);
+        if(CheckCollisionPointRec(mouse,caja))
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+
 Rectangle Caja_de_seleccion_Nodo(Nodo Nodo){  //cajita de la fuente de corriente por si es seleccionado
 
     Rectangle caja = {Nodo.posicion.x - 20, Nodo.posicion.y -20, 30, 30}; 
