@@ -3,6 +3,8 @@
 #include <stdlib.h>
 
 
+
+
 /*
 
 NOTA: Toda esta seccion de codigo pertenece al las propiedades de cada componente. En resumen cada componente es un struct que posee 
@@ -12,6 +14,45 @@ Cabe resaltar que al ser objetos de diseno, se deben de seleccionar de alguna fo
 como objetos moviles si son clickeados por el cursor (como si fueran un boton). 
 
 */
+
+
+
+static bool Nodo_Valido(ArregloNodos *nodos, int indice)
+{
+    return indice >= 0 && (size_t)indice < nodos->tamano;
+}
+
+static Vector2 Terminal_1(Vector2 posicion, int rotacion)
+{
+    if (rotacion == 0)
+    {
+        return (Vector2){posicion.x - 60, posicion.y};
+    }
+    else
+    {
+        return (Vector2){posicion.x, posicion.y - 60};
+    }
+}
+
+static Vector2 Terminal_2(Vector2 posicion, int rotacion)
+{
+    if (rotacion == 0)
+    {
+        return (Vector2){posicion.x + 60, posicion.y};
+    }
+    else
+    {
+        return (Vector2){posicion.x, posicion.y + 60};
+    }
+}
+
+static void Dibujar_Cable(Vector2 terminal, Vector2 nodo, Color color)
+{
+    DrawLineEx(terminal, nodo, 3, color);
+    DrawCircleV(terminal, 4, color);
+    DrawCircleV(nodo, 4, color);
+}
+
 
 
 //====== Para los Resistores (COMPONENTES) ====== (basicamente se cambiaron todas pero se parece al Lab 5)
@@ -97,16 +138,33 @@ void Conectar_Resistor(ArregloResistores *punt_datos, size_t indice_resistor, in
 }
 
 //el siguiente dibuja la coneccion entre el componente y el nodo, el resistor es de coneccion roja
-void Dibujar_Conexiones_Resistor(ArregloResistores *resistores, ArregloNodos *nodos) {
-    for(size_t i = 0; i < resistores->tamano; i++) { //este es un cliclo de definicion nada mas
-        int inicio = resistores->resistores[i].nodo_inicio;//sse establece el valor de los nodos
+void Dibujar_Conexiones_Resistor(ArregloResistores *resistores, ArregloNodos *nodos)
+{
+    for (size_t i = 0; i < resistores->tamano; i++)
+    {
+        int inicio = resistores->resistores[i].nodo_inicio;
         int fin = resistores->resistores[i].nodo_fin;
-        if(inicio < 0 || fin < 0) {
+
+        if (!Nodo_Valido(nodos, inicio) || !Nodo_Valido(nodos, fin))
+        {
             continue;
         }
-        Vector2 p1 = nodos->nodo[inicio].posicion;
-        Vector2 p2 = nodos->nodo[fin].posicion;
-        DrawLineEx(p1, p2, 3, RED);//cable rojo para distinguir
+
+        Vector2 t1 = Terminal_1(
+            resistores->resistores[i].posicion,
+            resistores->resistores[i].rotacion
+        );
+
+        Vector2 t2 = Terminal_2(
+            resistores->resistores[i].posicion,
+            resistores->resistores[i].rotacion
+        );
+
+        Vector2 n1 = nodos->nodo[inicio].posicion;
+        Vector2 n2 = nodos->nodo[fin].posicion;
+
+        Dibujar_Cable(t1, n1, RED);
+        Dibujar_Cable(t2, n2, RED);
     }
 }
 
@@ -312,16 +370,33 @@ void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, size_t indice_fuente_T, int
 }
 
 //el siguiente vaoid establece la coneccion de fuente de tencion en color azul para visualizarlo
-void Dibujar_Conexiones_Fuente_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nodos) {
-    for(size_t i = 0; i < fuentes_T->tamano; i++) {
+void Dibujar_Conexiones_Fuente_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nodos)
+{
+    for (size_t i = 0; i < fuentes_T->tamano; i++)
+    {
         int inicio = fuentes_T->fuentes_T[i].nodo_inicio;
         int fin = fuentes_T->fuentes_T[i].nodo_fin;
-        if(inicio < 0 || fin < 0) {
+
+        if (!Nodo_Valido(nodos, inicio) || !Nodo_Valido(nodos, fin))
+        {
             continue;
         }
-        Vector2 p1 = nodos->nodo[inicio].posicion;
-        Vector2 p2 = nodos->nodo[fin].posicion;
-        DrawLineEx(p1, p2, 3, BLUE);//COLOR AZUL PARA DETERMINAR CONEXION
+
+        Vector2 t1 = Terminal_1(
+            fuentes_T->fuentes_T[i].posicion,
+            fuentes_T->fuentes_T[i].rotacion
+        );
+
+        Vector2 t2 = Terminal_2(
+            fuentes_T->fuentes_T[i].posicion,
+            fuentes_T->fuentes_T[i].rotacion
+        );
+
+        Vector2 n1 = nodos->nodo[inicio].posicion;
+        Vector2 n2 = nodos->nodo[fin].posicion;
+
+        Dibujar_Cable(t1, n1, BLUE);
+        Dibujar_Cable(t2, n2, BLUE);
     }
 }
 
@@ -632,16 +707,33 @@ void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, size_t indice_fuente_C, int
 
 //Funcion para dibujar coneccion de fuente de corriente en color verde 
 
-void Dibujar_Conexiones_Fuente_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nodos) {
-    for(size_t i = 0; i < fuentes_C->tamano; i++) {
+void Dibujar_Conexiones_Fuente_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nodos)
+{
+    for (size_t i = 0; i < fuentes_C->tamano; i++)
+    {
         int inicio = fuentes_C->fuentes_C[i].nodo_inicio;
         int fin = fuentes_C->fuentes_C[i].nodo_fin;
-        if(inicio < 0 || fin < 0) {
+
+        if (!Nodo_Valido(nodos, inicio) || !Nodo_Valido(nodos, fin))
+        {
             continue;
         }
-        Vector2 p1 = nodos->nodo[inicio].posicion;
-        Vector2 p2 = nodos->nodo[fin].posicion;
-        DrawLineEx(p1, p2, 3, GREEN);//color verde para conecciones 
+
+        Vector2 t1 = Terminal_1(
+            fuentes_C->fuentes_C[i].posicion,
+            fuentes_C->fuentes_C[i].rotacion
+        );
+
+        Vector2 t2 = Terminal_2(
+            fuentes_C->fuentes_C[i].posicion,
+            fuentes_C->fuentes_C[i].rotacion
+        );
+
+        Vector2 n1 = nodos->nodo[inicio].posicion;
+        Vector2 n2 = nodos->nodo[fin].posicion;
+
+        Dibujar_Cable(t1, n1, GREEN);
+        Dibujar_Cable(t2, n2, GREEN);
     }
 }
 
