@@ -16,12 +16,7 @@ como objetos moviles si son clickeados por el cursor (como si fueran un boton).
 
 //====== Para los Resistores (COMPONENTES) ====== (basicamente se cambiaron todas pero se parece al Lab 5)
 
-void InicializarArreglo_Res(ArregloResistores *punt_datos, size_t capacidad_inicial) {
-
-    //una validacion basica
-    if(punt_datos == NULL) {
-	return;
-    }
+void InicializarArreglo_Res(ArregloResistores *punt_datos, size_t capacidad_inicial){
 
     //se inicializa el arreglo segun correposnda (como el lab 5)
     punt_datos->resistores = NULL; 
@@ -43,22 +38,16 @@ void InicializarArreglo_Res(ArregloResistores *punt_datos, size_t capacidad_inic
     punt_datos->capacidad = capacidad_inicial; 
 }
 
-void Anadir_Resistor(ArregloResistores *punt_datos)
+void Anadir_Resistor(ArregloResistores *punt_datos){
+
     //aca se inicializan los resistores cuando hay que anadir uno nuevo, ojo con la posicion que cambia segun el tamano
     //esto para que a la hora de crearlos no se pongan uno sobre otro, sino corridos
-
-   //validacion
-   if (punt_datos == NULL)
-    {
-        return;
-    }
-
     Resistor resistor = {
         .posicion = {(500 + (punt_datos->tamano*40 + 30) ) , (500 + (punt_datos->tamano*40 + 30) )},
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
-        .seleccionado = false
+        .seleccionado = false,
 	//se debe agregar la conticion inicial de rotacion, en este caso horizontal
-	.rotacion = 0
+	.rotacion = 0,
 	//ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
 	//.nodo_inicio = -1,
 	//.nodo_fin = -1
@@ -81,7 +70,7 @@ void Anadir_Resistor(ArregloResistores *punt_datos)
             printf("NO SE PUDO GENERAR NUEVA MEMORIA PARA EL ARREGLO DE RESISTORES");
             return;
         }
-
+        
         //reescripcion del puntero con nueva capacidad
         punt_datos->resistores = nuevo; 
         punt_datos->capacidad = nueva_capacidad;
@@ -95,168 +84,107 @@ void Anadir_Resistor(ArregloResistores *punt_datos)
 
 }
 
-
+//el siguiente void permite conectar el componente con el nodo
 /*
- * Código de conexiones temporalmente deshabilitado.
- * Cuando se implementen nuevamente los campos de conexión
- * (nodo_inicio y nodo_fin) puede restaurarse esta sección.
- */
- 
-/*
-void Conectar_Resistor(ArregloResistores *punt_datos,
-                       int indice_resistor,
-                       int nodo_inicio,
-                       int nodo_fin)
-{
-    if (indice_resistor < 0 ||
-        indice_resistor >= (int)punt_datos->tamano)
-    {
+void Conectar_Resistor(ArregloResistores *punt_datos, int indice_resistor, int nodo_inicio, int nodo_fin) {
+    if(indice_resistor < 0 || indice_resistor >= punt_datos->tamano) {
 	//se comprueban dos cosas, primero, que el indice sea negativo para que este desconectado
-        //y que luego, que el indice sea disdinto de los otros componentes
-
-        return;
+	//y que luego, que el indice sea disdinto de los otros componentes
+	return;
     }
-
     punt_datos->resistores[indice_resistor].nodo_inicio = nodo_inicio;//aca se otorga el valor del primer nodo
     punt_datos->resistores[indice_resistor].nodo_fin = nodo_fin;//y aca el segundo nodo
 }
-*/
 
-/*
 //el siguiente dibuja la coneccion entre el componente y el nodo, el resistor es de coneccion roja
-void Dibujar_Conexiones_Resistores(ArregloResistores *resistores,
-                                   ArregloNodos *nodos)
-{
-    for (size_t i = 0; i < resistores->tamano; i++)
-    {
-        int inicio = resistores->resistores[i].nodo_inicio;
+void Dibujar_Conexiones_Resistores(ArregloResistores *resistores, ArregloNodos *nodos) {
+    for(size_t i = 0; i < resistores->tamano; i++) { //este es un cliclo de definicion nada mas
+        int inicio = resistores->resistores[i].nodo_inicio;//sse establece el valor de los nodos
         int fin = resistores->resistores[i].nodo_fin;
-
-        if (inicio < 0 || fin < 0)
-        {
+        if(inicio < 0 || fin < 0) {
             continue;
         }
-
         Vector2 p1 = nodos->nodo[inicio].posicion;
         Vector2 p2 = nodos->nodo[fin].posicion;
-
         DrawLineEx(p1, p2, 3, RED);//cable rojo para distinguir
     }
 }
 */
 
-void Dibujar_resistor(ArregloResistores *punt_datos)
-{
-//esta funcion recibe el struct planteado anteriormente en los
-//comoo ahora se maneja un arreglo resulta necesario utilizar un ciclo para recorrer todos los resistores y sus variables de posicion
 
-    if (punt_datos == NULL)
-    {
-        return;
-    }
+void Dibujar_resistor(ArregloResistores *punt_datos)    //esta funcion recibe el struct planteado anteriormente en los 
+{   
+    //comoo ahora se maneja un arreglo resulta necesario utilizar un ciclo para recorrer todos los resistores y sus variables de posicion
+    for (size_t i = 0; i < punt_datos->tamano; i ++ ){
 
-    for (size_t i = 0; i < punt_datos->tamano; i++)
-    {
-        int x = (int)punt_datos->resistores[i].posicion.x;//aca solo se cambio la notacion y ver que estan dentro de un ciclo
-        int y = (int)punt_datos->resistores[i].posicion.y;
+        int x = punt_datos->resistores[i].posicion.x;//aca solo se cambio la notacion y ver que estan dentro de un circlo
+        int y = punt_datos->resistores[i].posicion.y;
 
-        Color color_componente;
-        Color color_texto;
-	//esta nueva parte es solo un cambio de color si el resistor fue seleccionado
-        //ademas, se agrega la condicion que permite la rotacion al seleccionar usando boton R sobre el componente
-        if (punt_datos->resistores[i].seleccionado)
-        {
-            color_componente = RED;
-            color_texto = BLUE;
+        DrawLine(x - 60, y, x - 30, y, BLACK);
+
+    //este es el cuadrado de en medio (Recordar que el eje x crece hacia la derecha pero y hacia abajo. Raylib dibuja del punto hacia la derehca y hacia abajo)
+        DrawRectangleLines(x - 30, y - 15, 60, 30, BLACK);
+
+    //esta es la linea derecha
+        DrawLine(x + 30, y, x + 60, y, BLACK);
+
+    //esto es para el texto dentro del cuadrado
+        DrawText(punt_datos->resistores[i].nombre, x - 12, y - 45, 20, BLACK);
+        DrawText(punt_datos->resistores[i].valor, x - 12, y + 25, 18, RED);
+
+        //esta nueva parte es solo un cambio de color si el resistor fue seleccionado
+	//ademas, se agrega la condicion que permite la rotacion al seleccionar usando boton R sobre el componente
+        if (punt_datos->resistores[i].seleccionado == true) {
+		if(punt_datos->resistores[i].rotacion == 0) {
+        		DrawLine(x - 60, y, x - 30, y, RED);
+       	 		DrawRectangleLines(x - 30, y - 15, 60, 30, RED);
+        		DrawLine(x + 30, y, x + 60, y, RED);
+    		}
+    		else {
+        		DrawLine(x, y - 60, x, y - 30, RED);
+        		DrawRectangleLines(x - 15, y - 30, 30, 60, RED);
+        		DrawLine(x, y + 30, x, y + 60, RED);
+		}
+            	DrawText(punt_datos->resistores[i].nombre, x - 12, y - 45, 20, BLUE);
+            	DrawText(punt_datos->resistores[i].valor, x - 12, y + 25, 18, BLUE);
+	}
+	//esto agrega las condiciones para la rotacion del componente
+	//esta primera condicion determina si esta en horizontal
+	if (punt_datos->resistores[i].rotacion == 0) {
+		DrawLine(x - 60, y, x - 30,y, BLACK);
+		DrawRectangleLines(x - 30, y - 15, 60, 30, BLACK);
+	}
+	else { //mientras que esta cambia la forma en vertical 
+		DrawLine(x, y - 60, x, y - 30, BLACK);
+		DrawRectangleLines(x - 15, y - 30, 30, 60, BLACK);
+		DrawLine(x, y + 30, x, y + 60, BLACK);
         }
-        else
-        {
-            color_componente = BLACK;
-            color_texto = BLACK;
-        }
 
-        // Resistor horizontal
-        if (punt_datos->resistores[i].rotacion == 0)
-        {
-	//esta es la linea derecha
-            DrawLine(x - 60, y, x - 30, y, color_componente);
-	 //este es el cuadrado de en medio (Recordar que el eje x crece hacia la derecha pero y hacia abajo. Raylib dibuja del punto hacia la derehca y hacia abajo)
-            DrawRectangleLines(
-                x - 30,
-                y - 15,
-                60,
-                30,
-                color_componente
-            );
-
-            DrawLine(x + 30, y, x + 60, y, color_componente);
-        }
-        // Resistor vertical
-        else
-        {
-            DrawLine(x, y - 60, x, y - 30, color_componente);
-
-            DrawRectangleLines(
-                x - 15,
-                y - 30,
-                30,
-                60,
-                color_componente
-            );
-
-            DrawLine(x, y + 30, x, y + 60, color_componente);
-        }
-	//esto es para el texto dentro del cuadrado
-        DrawText(
-            punt_datos->resistores[i].nombre,
-            x - 12,
-            y - 45,
-            20,
-            color_texto
-        );
-
-        DrawText(
-            punt_datos->resistores[i].valor,
-            x - 12,
-            y + 25,
-            18,
-            color_texto
-        );
     }
 }
 
-void Liberar_Arreglo_Resistores(ArregloResistores *punt_datos)
-{//este algoritmo ya es base del lab 5 para liberar memoria de los punteros
-    if (punt_datos == NULL)
-    {
-        return;
-    }
-
-    if (punt_datos->resistores != NULL)
+void Liberar_Arreglo_Resistores(ArregloResistores *punt_datos){
+    //este algoritmo ya es base del lab 5 para liberar memoria de los punteros
+        if (punt_datos->resistores != NULL)
     {
         free(punt_datos->resistores);
+
+        punt_datos->resistores = NULL;
+        punt_datos->tamano = 0;
+        punt_datos->capacidad = 0;
     }
 
-    punt_datos->resistores = NULL;
-    punt_datos->tamano = 0;
-    punt_datos->capacidad = 0;
+    punt_datos->resistores = NULL; 
+    punt_datos->capacidad = 0; 
+    punt_datos->tamano = 0; 
 }
 
-bool Eliminar_Resistor_Seleccionado(ArregloResistores *punt_datos)
-{
-    if (punt_datos == NULL)
-    {
-        return false;
-    }
 
-    for (size_t i = 0; i < punt_datos->tamano; i++)
-    {
-        if (punt_datos->resistores[i].seleccionado)
-        {
-            for (size_t j = i; j + 1 < punt_datos->tamano; j++)
-            {
-                punt_datos->resistores[j] =
-                    punt_datos->resistores[j + 1];
+bool Eliminar_Resistor_Seleccionado(ArregloResistores *punt_datos){
+    for (size_t i = 0; i < punt_datos->tamano; i++){
+        if (punt_datos->resistores[i].seleccionado){
+            for (size_t j = i; j + 1 < punt_datos->tamano; j++){
+                punt_datos->resistores[j] = punt_datos->resistores[j + 1];
             }
 
             punt_datos->tamano--;
@@ -268,11 +196,6 @@ bool Eliminar_Resistor_Seleccionado(ArregloResistores *punt_datos)
 }
 
 void Seleccion_movimiento_resistores(ArregloResistores *punt_datos){ //basicamente funciona como pulsos generados por el cursor
-
-    if (punt_datos == NULL)
-    {
-        return;
-    }
 
     bool click;
     bool encima;
@@ -302,21 +225,11 @@ void Seleccion_movimiento_resistores(ArregloResistores *punt_datos){ //basicamen
     }
 }
 
+Rectangle Caja_de_seleccion_resistor(Resistor resistor){
 
-
-Rectangle Caja_de_seleccion_resistor(Resistor resistor)
-{
-    Rectangle caja =
-    {
-        resistor.posicion.x - 70,
-        resistor.posicion.y - 50,
-        130,
-        70
-    };
-
-    return caja;
-}
-
+    Rectangle caja = {resistor.posicion.x - 70, resistor.posicion.y -50, 130, 70}; 
+    return caja; 
+} 
 
 //aca se agrega el codigo que permite la rotacion
 void Rotar_Resistor(ArregloResistores *punt_datos) {
@@ -398,29 +311,29 @@ void InicializarArreglo_F_T(ArregloFuentes_T *punt_datos, size_t capacidad_inici
 }
 
 //el siguiente void permite conectar el componente con el nodo
-
-//void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, int indice_fuente_T, int nodo_inicio, int nodo_fin) {
-    //if(indice_fuente_T < 0 || indice_fuente_T >= punt_datos->tamano) {
-        //return;
-    //}
-    //punt_datos->fuentes_T[indice_fuente_T].nodo_inicio = nodo_inicio;
-    //punt_datos->fuentes_T[indice_fuente_T].nodo_fin = nodo_fin;
-//}
+/*
+void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, int indice_fuente_T, int nodo_inicio, int nodo_fin) {
+    if(indice_fuente_T < 0 || indice_fuente_T >= punt_datos->tamano) {
+        return;
+    }
+    punt_datos->fuentes_T[indice_fuente_T].nodo_inicio = nodo_inicio;
+    punt_datos->fuentes_T[indice_fuente_T].nodo_fin = nodo_fin;
+}
 
 //el siguiente vaoid establece la coneccion de fuente de tencion en color azul para visualizarlo
-//void Dibujar_Conexiones_Fuentes_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nodos) {
-    //for(size_t i = 0; i < fuentes_T->tamano; i++) {
-        //int inicio = fuentes_T->fuentes_T[i].nodo_inicio;
-        //int fin = fuentes_T->fuentes_T[i].nodo_fin;
-        //if(inicio < 0 || fin < 0) {
-            //continue;
-        //}
-        //Vector2 p1 = nodos->nodo[inicio].posicion;
-        //Vector2 p2 = nodos->nodo[fin].posicion;
-        //DrawLineEx(p1, p2, 3, BLUE);//COLOR AZUL PARA DETERMINAR CONEXION
-    //}
-//}
-
+void Dibujar_Conexiones_Fuentes_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nodos) {
+    for(size_t i = 0; i < fuentes_T->tamano; i++) {
+        int inicio = fuentes_T->fuentes_T[i].nodo_inicio;
+        int fin = fuentes_T->fuentes_T[i].nodo_fin;
+        if(inicio < 0 || fin < 0) {
+            continue;
+        }
+        Vector2 p1 = nodos->nodo[inicio].posicion;
+        Vector2 p2 = nodos->nodo[fin].posicion;
+        DrawLineEx(p1, p2, 3, BLUE);//COLOR AZUL PARA DETERMINAR CONEXION
+    }
+}
+*/
 
 void Anadir_Fuente_T(ArregloFuentes_T *punt_datos){
 
@@ -428,7 +341,7 @@ void Anadir_Fuente_T(ArregloFuentes_T *punt_datos){
     Fuentes_T fuentes_T = {
         .posicion = {(600 + (punt_datos->tamano*40 + 30) ) , (500 + (punt_datos->tamano*40 + 30) )},
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
-        .seleccionado = false
+        .seleccionado = false,
         //se debe agregar la conticion inicial de rotacion, en este caso horizontal
         .rotacion = 0
         //ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
@@ -470,9 +383,11 @@ void Anadir_Fuente_T(ArregloFuentes_T *punt_datos){
 
 void Dibujar_Fuente_T(ArregloFuentes_T *punt_datos) //tal vez el cambio mas importante es este el cambio de dibujo 
 {   
-
 //en esta seccion se debe hacer un cambio en el diseño, antes, solo se dibujaba, pero al agregarse la rotacion, no basta con el diseño basico 
 	for (size_t i = 0; i < punt_datos->tamano; i++) {
+
+        int x = punt_datos->fuentes_T[i].posicion.x;
+        int y = punt_datos->fuentes_T[i].posicion.y;
 		//aca se dejo la tipografia del texto
 		DrawText(punt_datos->fuentes_T[i].nombre, x -12, y - 45, 20, BLUE);
 		DrawText(punt_datos->fuentes_T[i].valor, x - 12, y + 25, 18, BLUE);
@@ -482,19 +397,19 @@ void Dibujar_Fuente_T(ArregloFuentes_T *punt_datos) //tal vez el cambio mas impo
 			DrawCircleLines(x, y, 25, BLACK);//el circulo principal
 			DrawLine(x + 15, y, x + 5, y, BLUE);//linea horizontal derecha
 			DrawLine(x + 10, y-7, x + 10, y+7, BLUE);//linea vertical derecha
-    			DrawLine(x - 10, y-7, x - 10, y+7, BLUE);//linea vertical izquierda
-    			DrawLine(x + 25, y, x + 60, y, BLACK);//linea horizontal izquierda
+    		DrawLine(x - 10, y-7, x - 10, y+7, BLUE);//linea vertical izquierda
+    		DrawLine(x + 25, y, x + 60, y, BLACK);//linea horizontal izquierda
 		}
 		else {
-    			DrawLine(x, y - 60, x, y - 25, BLACK);
+    		DrawLine(x, y - 60, x, y - 25, BLACK);
 			DrawCircleLines(x, y, 25, BLACK);
  			//Rotacion para el simbolo interno
-    			DrawLine(x, y - 15, x, y - 5, BLUE);
-    			DrawLine(x - 7, y - 10, x + 7, y - 10, BLUE);
-    			DrawLine(x - 7, y + 10, x + 7, y + 10, BLUE);
+    		DrawLine(x, y - 15, x, y - 5, BLUE);
+    		DrawLine(x - 7, y - 10, x + 7, y - 10, BLUE);
+    		DrawLine(x - 7, y + 10, x + 7, y + 10, BLUE);
    			DrawLine(x, y + 25, x, y + 60, BLACK);
 		}
-	}
+	
         //al igual que en el dibujado, el seleccionado debe cambiar la estructura para rotar.
 
 		if (punt_datos->fuentes_T[i].seleccionado == true) {
@@ -519,6 +434,7 @@ void Dibujar_Fuente_T(ArregloFuentes_T *punt_datos) //tal vez el cambio mas impo
     			DrawText(punt_datos->fuentes_T[i].nombre, x - 12, y - 45, 20, BLUE);
     			DrawText(punt_datos->fuentes_T[i].valor, x - 12, y + 25, 18, BLUE);
 		}
+    }
 }
 
 void Liberar_Arreglo_Fuente_T(ArregloFuentes_T *punt_datos){
@@ -674,9 +590,9 @@ void Anadir_Fuente_C(ArregloFuentes_C *punt_datos){
     Fuentes_C fuentes_C = {
         .posicion = {(700 + (punt_datos->tamano*40 + 30) ) , (500 + (punt_datos->tamano*40 + 30) )},
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
-        .seleccionado = false
+        .seleccionado = false,
         //se debe agregar la conticion inicial de rotacion, en este caso horizontal
-        .rotacion = 0
+        .rotacion = 0,
         //ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
         //.nodo_inicio = -1,
         //.nodo_fin = -1
@@ -713,35 +629,38 @@ void Anadir_Fuente_C(ArregloFuentes_C *punt_datos){
 }
 
 //funcion de conexion en fuente de corriente
-
-//void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, int indice_fuente_C, int nodo_inicio, int nodo_fin) {
-    //if(indice_fuente_C < 0 || indice_fuente_C >= punt_datos->tamano) {
-        //return;
-    //}
-    //punt_datos->fuentes_C[indice_fuente_C].nodo_inicio = nodo_inicio;
-    //punt_datos->fuentes_C[indice_fuente_C].nodo_fin = nodo_fin;
-//}
+/*
+void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, int indice_fuente_C, int nodo_inicio, int nodo_fin) {
+    if(indice_fuente_C < 0 || indice_fuente_C >= punt_datos->tamano) {
+        return;
+    }
+    punt_datos->fuentes_C[indice_fuente_C].nodo_inicio = nodo_inicio;
+    punt_datos->fuentes_C[indice_fuente_C].nodo_fin = nodo_fin;
+}
 
 //Funcion para dibujar coneccion de fuente de corriente en color verde 
 
-//void Dibujar_Conexiones_Fuentes_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nodos) {
-    //for(size_t i = 0; i < fuentes_C->tamano; i++) {
-        //int inicio = fuentes_C->fuentes_C[i].nodo_inicio;
-        //int fin = fuentes_C->fuentes_C[i].nodo_fin;
-        //if(inicio < 0 || fin < 0) {
-            //continue;
-        //}
-        //Vector2 p1 = nodos->nodo[inicio].posicion;
-        //Vector2 p2 = nodos->nodo[fin].posicion;
-        //DrawLineEx(p1, p2, 3, GREEN);//color verde para conecciones 
-    //}
-//}
-
+void Dibujar_Conexiones_Fuentes_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nodos) {
+    for(size_t i = 0; i < fuentes_C->tamano; i++) {
+        int inicio = fuentes_C->fuentes_C[i].nodo_inicio;
+        int fin = fuentes_C->fuentes_C[i].nodo_fin;
+        if(inicio < 0 || fin < 0) {
+            continue;
+        }
+        Vector2 p1 = nodos->nodo[inicio].posicion;
+        Vector2 p2 = nodos->nodo[fin].posicion;
+        DrawLineEx(p1, p2, 3, GREEN);//color verde para conecciones 
+    }
+}
+*/
 
 void Dibujar_Fuente_C(ArregloFuentes_C *punt_datos)
 {   
    //ciclo para impresion constante de todas las fuentes
     for (size_t i = 0; i < punt_datos->tamano; i ++ ){
+
+        int x = punt_datos->fuentes_C[i].posicion.x;
+        int y = punt_datos->fuentes_C[i].posicion.y;
 
 	if(punt_datos->fuentes_C[i].rotacion == 0) {//esto representa a la version hozizontal, que ya habia
     		DrawLine(x - 60, y, x - 25, y, BLACK);
@@ -935,7 +854,6 @@ void Anadir_Nodo(ArregloNodos *punt_datos){
         .posicion = {(800 + (punt_datos->tamano*40 + 30) ) , (500 + (punt_datos->tamano*40 + 30) )},
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
         .seleccionado = false
-	.rotacion = 0
     };
 
     snprintf(nodo.nombre, MAX_TEXTO_COMPONENTE, "Nodo");
@@ -967,15 +885,6 @@ void Anadir_Nodo(ArregloNodos *punt_datos){
 
 }
 
-
-
-void Dibujar_Nodo(ArregloNodos *punt_datos)
-{   
-   //ciclo para impresion constante de todas las fuentes
-    for (size_t i = 0; i < punt_datos->tamano; i ++ ){
-
-        int x = punt_datos->nodo[i].posicion.x;
-        int y = punt_datos->nodo[i].posicion.y;
 
 void Dibujar_Nodo(ArregloNodos *punt_datos) {
 //si bien la rotacion de un nodo es innecesaria en este momento, de cara a un nodo especial en el futurop, es mejor tenerlo listo
@@ -1064,17 +973,17 @@ void Seleccion_movimiento_Nodo(ArregloNodos *punt_datos){ //basicamente funciona
 
 //determinacion de que el usuariop selecciono el nodo como tal 
 
-//int Obtener_Nodo_Seleccionado(ArregloNodos *punt_datos) {
-    //Vector2 mouse = GetMousePosition();//esto funciona con click derecho
-    //for(size_t i = 0; i < punt_datos->tamano; i++) {
-        //Rectangle caja = Caja_de_seleccion_Nodo(punt_datos->nodo[i]);
-        //if(CheckCollisionPointRec(mouse,caja))
-        //{
-            //return i;
-        //}
-    //}
-    //return -1;
-//}
+int Obtener_Nodo_Seleccionado(ArregloNodos *punt_datos) {
+    Vector2 mouse = GetMousePosition();//esto funciona con click derecho
+    for(size_t i = 0; i < punt_datos->tamano; i++) {
+        Rectangle caja = Caja_de_seleccion_Nodo(punt_datos->nodo[i]);
+        if(CheckCollisionPointRec(mouse,caja))
+        {
+            return i;
+        }
+    }
+    return -1;
+}
 
 
 Rectangle Caja_de_seleccion_Nodo(Nodo Nodo){  //cajita de la fuente de corriente por si es seleccionado
