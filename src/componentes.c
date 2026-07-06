@@ -49,7 +49,7 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
 	//se debe agregar la conticion inicial de rotacion, en este caso horizontal
 	.rotacion = 0
 	//ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
-	.nodo_inicio = -1
+	.nodo_inicio = -1,
 	.nodo_fin = -1
     };
 
@@ -309,7 +309,7 @@ void Anadir_Fuente_T(ArregloFuentes_T *punt_datos){
         //se debe agregar la conticion inicial de rotacion, en este caso horizontal
         .rotacion = 0
         //ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
-        .nodo_inicio = -1
+        .nodo_inicio = -1,
         .nodo_fin = -1
     };
 
@@ -525,7 +525,7 @@ void Anadir_Fuente_C(ArregloFuentes_C *punt_datos){
         //se debe agregar la conticion inicial de rotacion, en este caso horizontal
         .rotacion = 0
         //ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
-        .nodo_inicio = -1
+        .nodo_inicio = -1,
         .nodo_fin = -1
     };
 
