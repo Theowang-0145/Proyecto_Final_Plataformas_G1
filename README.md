@@ -31,6 +31,12 @@ Este programa permite construir circuitos eléctricos esquemáticos mediante una
  - Dezplazar el componente en pantalla mediante click derecho sostenido
  - Generar un componente mediante el click derecho sobre la casilla respectiva
  - Click derecho + R para totar
+ - Con tecla E permite la edicion de valores para la division
+ - Con TAB permite se cambia de campo en la edicion de valores
+ - Con ENTER para guardar los cambios
+ - Eliminar un componente se selecciona, tras cambiar de color, precione en eliminar componente
+ - La union entre componente y nodo opera por colores, el rojo representa al resistor, el azul la fuente de tension y el verde la fuente de corriente
+
  
 ## Compilación
 
