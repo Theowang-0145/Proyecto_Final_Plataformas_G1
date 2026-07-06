@@ -84,6 +84,17 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
 
 }
 
+//el siguiente void permite conectar el componente con el nodo
+void Conectar_Resistor(ArregloResistores *punt_datos, int indice_resistor, int nodo_inicio, int nodo_fin) {
+    if(indice_resistor < 0 || indice_resistor >= punt_datos->tamano) {
+	//se comprueban dos cosas, primero, que el indice sea negativo para que este desconectado
+	//y que luego, que el indice sea disdinto de los otros componentes
+	return;
+    }
+    punt_datos->resistores[indice_resistor].nodo_inicio = nodo_inicio;//aca se otorga el valor del primer nodo
+    punt_datos->resistores[indice_resistor].nodo_fin = nodo_fin;//y aca el segundo nodo
+}
+
 
 
 void Dibujar_resistor(ArregloResistores *punt_datos)    //esta funcion recibe el struct planteado anteriormente en los 
@@ -247,6 +258,16 @@ void InicializarArreglo_F_T(ArregloFuentes_T *punt_datos, size_t capacidad_inici
     }
 
     punt_datos->capacidad = capacidad_inicial; 
+}
+
+//el siguiente void permite conectar el componente con el nodo
+
+void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, int indice_fuente_T, int nodo_inicio, int nodo_fin) {
+    if(indice_fuente_T < 0 || indice_fuente_T >= punt_datos->tamano) {
+        return;
+    }
+    punt_datos->fuentes_T[indice_fuente_T].nodo_inicio = nodo_inicio;
+    punt_datos->fuentes_T[indice_fuente_T].nodo_fin = nodo_fin;
 }
 
 void Anadir_Fuente_T(ArregloFuentes_T *punt_datos){
@@ -509,6 +530,15 @@ void Anadir_Fuente_C(ArregloFuentes_C *punt_datos){
 
 }
 
+//funcion de conexion en fuente de corriente
+
+void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, int indice_fuente_C, int nodo_inicio, int nodo_fin) {
+    if(indice_fuente_C < 0 || indice_fuente_C >= punt_datos->tamano) {
+        return;
+    }
+    punt_datos->fuentes_C[indice_fuente_C].nodo_inicio = nodo_inicio;
+    punt_datos->fuentes_C[indice_fuente_C].nodo_fin = nodo_fin;
+}
 
 
 void Dibujar_Fuente_C(ArregloFuentes_C *punt_datos)
