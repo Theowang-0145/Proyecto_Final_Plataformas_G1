@@ -219,7 +219,36 @@ void ActualizarSimulador()
         	else {//con un segundo click derecho, selecciona el nodo final. 
             		nodo_fin_seleccionado = nodo;
         	}
-    	} 
+    	}
+
+	//se agrega la deteccion mediante la tecla C de que se desea conectar el nodo de un componente a otro nodo
+	//para los resistores
+	if(IsKeyPressed(KEY_C)) {
+    		for(size_t i = 0; i < arreglo_R.tamano; i++) {
+        		if(arreglo_R.resistores[i].seleccionado) {
+            			Conectar_Resistor(&arreglo_R, i, nodo_inicio_seleccionado, nodo_fin_seleccionado);
+            			printf("Resistor conectado\n");
+            			break;
+        		}
+    		}
+	//para la fuente de tension 
+    		for(size_t i = 0; i < arreglo_F_T.tamano; i++) {
+        		if(arreglo_F_T.fuentes_T[i].seleccionado) {
+            			Conectar_Fuente_T(&arreglo_F_T, i, nodo_inicio_seleccionado, nodo_fin_seleccionado);
+            			printf("Fuente de tension conectada\n");
+            			break;
+        		}
+    		}
+	//para la cuente de corriente
+    		for(size_t i = 0; i < arreglo_F_C.tamano; i++) {
+        		if(arreglo_F_C.fuentes_C[i].seleccionado) {
+            			Conectar_Fuente_C(&arreglo_F_C, i, nodo_inicio_seleccionado, nodo_fin_seleccionado);
+            			printf("Fuente de corriente conectada\n");
+            			break;
+        		}
+    		}
+	}
+
     //revisar primero si esta en modo edicion
     if (modo_edicion){
         Actualizar_Modo_Edicion();
