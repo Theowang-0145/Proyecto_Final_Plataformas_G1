@@ -375,9 +375,9 @@ void DibujarSimulador(void)
     Dibujar_boton(eliminar_boton, "Eliminar");
 
     //dibujado de los componentes, ahora solo se necesita una funcion que en realidad es un loop
-    Dibujar_Conexiones_Resistores(&arreglo_R, &arreglo_nodo);
+    Dibujar_Conexiones_Resistor(&arreglo_R, &arreglo_nodo);
     Dibujar_Conexiones_Fuente_T(&arreglo_F_T, &arreglo_nodo);
-    Dibujar_Conexiones_Fuentes_C(&arreglo_F_C, &arreglo_nodo);
+    Dibujar_Conexiones_Fuente_C(&arreglo_F_C, &arreglo_nodo);
 
     Dibujar_resistor(&arreglo_R);
     Dibujar_Fuente_T(&arreglo_F_T);

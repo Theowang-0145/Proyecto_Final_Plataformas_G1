@@ -86,8 +86,8 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
 
 //el siguiente void permite conectar el componente con el nodo
 
-void Conectar_Resistor(ArregloResistores *punt_datos, int indice_resistor, int nodo_inicio, int nodo_fin) {
-    if(indice_resistor < 0 || indice_resistor >= punt_datos->tamano) {
+void Conectar_Resistor(ArregloResistores *punt_datos, size_t indice_resistor, int nodo_inicio, int nodo_fin) {
+    if(indice_resistor >= punt_datos->tamano) {
 	//se comprueban dos cosas, primero, que el indice sea negativo para que este desconectado
 	//y que luego, que el indice sea disdinto de los otros componentes
 	return;
@@ -97,7 +97,7 @@ void Conectar_Resistor(ArregloResistores *punt_datos, int indice_resistor, int n
 }
 
 //el siguiente dibuja la coneccion entre el componente y el nodo, el resistor es de coneccion roja
-void Dibujar_Conexiones_Resistores(ArregloResistores *resistores, ArregloNodos *nodos) {
+void Dibujar_Conexiones_Resistor(ArregloResistores *resistores, ArregloNodos *nodos) {
     for(size_t i = 0; i < resistores->tamano; i++) { //este es un cliclo de definicion nada mas
         int inicio = resistores->resistores[i].nodo_inicio;//sse establece el valor de los nodos
         int fin = resistores->resistores[i].nodo_fin;
@@ -303,8 +303,8 @@ void InicializarArreglo_F_T(ArregloFuentes_T *punt_datos, size_t capacidad_inici
 
 //el siguiente void permite conectar el componente con el nodo
 
-void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, int indice_fuente_T, int nodo_inicio, int nodo_fin) {
-    if(indice_fuente_T < 0 || indice_fuente_T >= punt_datos->tamano) {
+void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, size_t indice_fuente_T, int nodo_inicio, int nodo_fin) {
+    if(indice_fuente_T >= punt_datos->tamano) {
         return;
     }
     punt_datos->fuentes_T[indice_fuente_T].nodo_inicio = nodo_inicio;
@@ -312,7 +312,7 @@ void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, int indice_fuente_T, int no
 }
 
 //el siguiente vaoid establece la coneccion de fuente de tencion en color azul para visualizarlo
-void Dibujar_Conexiones_Fuentes_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nodos) {
+void Dibujar_Conexiones_Fuente_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nodos) {
     for(size_t i = 0; i < fuentes_T->tamano; i++) {
         int inicio = fuentes_T->fuentes_T[i].nodo_inicio;
         int fin = fuentes_T->fuentes_T[i].nodo_fin;
@@ -622,8 +622,8 @@ void Anadir_Fuente_C(ArregloFuentes_C *punt_datos){
 }
 
 //funcion de conexion en fuente de corriente
-void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, int indice_fuente_C, int nodo_inicio, int nodo_fin) {
-    if(indice_fuente_C < 0 || indice_fuente_C >= punt_datos->tamano) {
+void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, size_t indice_fuente_C, int nodo_inicio, int nodo_fin) {
+    if(indice_fuente_C >= punt_datos->tamano) {
         return;
     }
     punt_datos->fuentes_C[indice_fuente_C].nodo_inicio = nodo_inicio;
@@ -632,7 +632,7 @@ void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, int indice_fuente_C, int no
 
 //Funcion para dibujar coneccion de fuente de corriente en color verde 
 
-void Dibujar_Conexiones_Fuentes_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nodos) {
+void Dibujar_Conexiones_Fuente_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nodos) {
     for(size_t i = 0; i < fuentes_C->tamano; i++) {
         int inicio = fuentes_C->fuentes_C[i].nodo_inicio;
         int fin = fuentes_C->fuentes_C[i].nodo_fin;
