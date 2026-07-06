@@ -7,7 +7,7 @@ Proyecto Final del curso de Programación I.
 
 Aarón Madrigal - C14373
 Brayan Sanchez Chavarria - C37283
-Theo
+Theo Wang - C
 
 Este proyecto consiste en un simulador gráfico de circuitos eléctricos en corriente directa (DC), desarrollado en lenguaje C utilizando la biblioteca Raylib. El programa permite construir circuitos mediante una interfaz gráfica intuitiva con el usuario. Esta edición es simplificada y no cuenta con análsis de tensión, corriente y potencia.
 
