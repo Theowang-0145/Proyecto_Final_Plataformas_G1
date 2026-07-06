@@ -47,7 +47,7 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
         .seleccionado = false
 	//se debe agregar la conticion inicial de rotacion, en este caso horizontal
-	.rotacion = 0
+	.rotacion = 0,
 	//ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
 	.nodo_inicio = -1,
 	.nodo_fin = -1
@@ -132,13 +132,31 @@ void Dibujar_resistor(ArregloResistores *punt_datos)    //esta funcion recibe el
         DrawText(punt_datos->resistores[i].valor, x - 12, y + 25, 18, RED);
 
         //esta nueva parte es solo un cambio de color si el resistor fue seleccionado
+	//ademas, se agrega la condicion que permite la rotacion al seleccionar usando boton R sobre el componente
         if (punt_datos->resistores[i].seleccionado == true) {
-            DrawLine(x - 60, y, x - 30, y, RED);
-            DrawRectangleLines(x - 30, y - 15, 60, 30, RED);
-            DrawLine(x + 30, y, x + 60, y, RED);
-
-            DrawText(punt_datos->resistores[i].nombre, x - 12, y - 45, 20, BLUE);
-            DrawText(punt_datos->resistores[i].valor, x - 12, y + 25, 18, BLUE);
+		if(punt_datos->resistores[i].rotacion == 0) {
+        		DrawLine(x - 60, y, x - 30, y, RED);
+       	 		DrawRectangleLines(x - 30, y - 15, 60, 30, RED);
+        		DrawLine(x + 30, y, x + 60, y, RED);
+    		}
+    		else {
+        		DrawLine(x, y - 60, x, y - 30, RED);
+        		DrawRectangleLines(x - 15, y - 30, 30, 60, RED);
+        		DrawLine(x, y + 30, x, y + 60, RED);
+		}
+            	DrawText(punt_datos->resistores[i].nombre, x - 12, y - 45, 20, BLUE);
+            	DrawText(punt_datos->resistores[i].valor, x - 12, y + 25, 18, BLUE);
+	}
+	//esto agrega las condiciones para la rotacion del componente
+	//esta primera condicion determina si esta en horizontal
+	if (punt_datos->resistores[i].rotacion == 0) {
+		Drawline(x - 60, y, x - 30,y, BLACK);
+		DrawRectangleLines(x - 30, y - 15, 60, 30, BLACK);
+	}
+	else { //mientras que esta cambia la forma en vertical 
+		DrawLine(x, y - 60, x, y - 30, BLACK);
+		DrawRectangleLines(x - 15, y - 30, 30, 60, BLACK);
+		DrawLine(x, y + 30, x, y + 60, BLACK);
         }
 
     }
@@ -159,6 +177,7 @@ void Liberar_Arreglo_Resistores(ArregloResistores *punt_datos){
     punt_datos->capacidad = 0; 
     punt_datos->tamano = 0; 
 }
+
 
 bool Eliminar_Resistor_Seleccionado(ArregloResistores *punt_datos){
     for (size_t i = 0; i < punt_datos->tamano; i++){
@@ -210,6 +229,22 @@ Rectangle Caja_de_seleccion_resistor(Resistor resistor){
     Rectangle caja = {resistor.posicion.x - 70, resistor.posicion.y -50, 130, 70}; 
     return caja; 
 } 
+
+//aca se agrega el codigo que permite la rotacion
+void Rotar_Resistor(ArregloResistores *punt_datos) {
+	for(size_t i = 0; i < punt_datos->tamano; i++) {
+		if(punt_datos->resistores[i].seleccionado) {
+			if(punt_datos->resistores[i].rotacion == 0) {
+				punt_datos->resistores[i].rotacion = 1; //mientras que aca se evalua si es vertical
+			}
+			else {
+				punt_datos->resistores[i].rotacion = 0; //esto permite que siempre este en horrizantal 
+			}
+			break;
+		}
+	}
+}
+//fin de agregado para rotar
 
 void Mover_Resistor(ArregloResistores *punt_datos)
 {
@@ -348,40 +383,54 @@ void Anadir_Fuente_T(ArregloFuentes_T *punt_datos){
 void Dibujar_Fuente_T(ArregloFuentes_T *punt_datos) //tal vez el cambio mas importante es este el cambio de dibujo 
 {   
 
-    for (size_t i = 0; i < punt_datos->tamano; i ++ ){
+//en esta seccion se debe hacer un cambio en el diseño, antes, solo se dibujaba, pero al agregarse la rotacion, no basta con el diseño basico 
+	for (size_t i = 0; i < punt_datos->tamano; i++) {
+		//aca se dejo la tipografia del texto
+		DrawText(punt_datos->fuentes_T[i].nombre, x -12, y - 45, 20, BLUE);
+		DrawText(punt_datos->fuentes_T[i].valor, x - 12, y + 25, 18, BLUE);
 
-        int x = punt_datos->fuentes_T[i].posicion.x;
-        int y = punt_datos->fuentes_T[i].posicion.y;
+		if(punt_datos->fuentes_T[i].rotacion == 0) {
+			DrawLine(x - 60, y, x - 25, y, BLACK);//terminal izquierdo
+			DrawCircleLines(x, y, 25, BLACK);//el circulo principal
+			DrawLine(x + 15, y, x + 5, y, BLUE);//linea horizontal derecha
+			DrawLine(x + 10, y-7, x + 10, y+7, BLUE);//linea vertical derecha
+    			DrawLine(x - 10, y-7, x - 10, y+7, BLUE);//linea vertical izquierda
+    			DrawLine(x + 25, y, x + 60, y, BLACK);//linea horizontal izquierda
+		}
+		else {
+    			DrawLine(x, y - 60, x, y - 25, BLACK);
+			DrawCircleLines(x, y, 25, BLACK);
+ 			//Rotacion para el simbolo interno
+    			DrawLine(x, y - 15, x, y - 5, BLUE);
+    			DrawLine(x - 7, y - 10, x + 7, y - 10, BLUE);
+    			DrawLine(x - 7, y + 10, x + 7, y + 10, BLUE);
+   			DrawLine(x, y + 25, x, y + 60, BLACK);
+		}
+	}
+        //al igual que en el dibujado, el seleccionado debe cambiar la estructura para rotar.
 
-        DrawLine(x - 60, y, x - 25, y, BLACK);//terminal izquierda
-
-        
-        DrawCircleLines(x, y, 25, BLACK);//circulo principal
-        DrawLine(x + 15, y, x + 5, y, BLUE);//linea horizontal derecha
-        DrawLine(x + 10, y-7, x + 10, y+7, BLUE);//linea vertical derecha
-        DrawLine(x - 10, y-7, x - 10, y+7, BLUE);//linea vertical izquierda
-
-
-
-        DrawLine(x + 25, y, x + 60, y, BLACK);//terminal derecha
-
-        DrawText(punt_datos->fuentes_T[i].nombre, x - 12, y - 45, 20, BLACK);//texto para la fuente
-        DrawText(punt_datos->fuentes_T[i].valor, x - 12, y + 25, 18, RED);
-  
-        if (punt_datos->fuentes_T[i].seleccionado == true) {//cambio si es seleccionado
-            DrawLine(x - 60, y, x - 25, y, RED);
-            DrawCircleLines(x, y, 25, RED);
-            DrawLine(x + 15, y, x + 5, y, RED);
-            DrawLine(x + 10, y-7, x + 10, y+7, RED);
-            DrawLine(x - 10, y-7, x - 10, y+7, RED);
-            DrawLine(x + 25, y, x + 60, y, RED);
-
-            DrawText(punt_datos->fuentes_T[i].nombre, x - 12, y - 45, 20, BLUE);//texto para la fuente
-            DrawText(punt_datos->fuentes_T[i].valor, x - 12, y + 25, 18, BLUE);
-
-        }
-
-    }
+		if (punt_datos->fuentes_T[i].seleccionado == true) {
+    			if(punt_datos->fuentes_T[i].rotacion == 0) {
+        		//aca se respeta el mismo orden de lineas pera cambiando de horizontal a vertital y viceversa
+				DrawLine(x - 60, y, x - 25, y, RED);
+        			DrawCircleLines(x, y, 25, RED);
+        			DrawLine(x + 15, y, x + 5, y, RED);
+        			DrawLine(x + 10, y-7, x + 10, y+7, RED);
+       				DrawLine(x - 10, y-7, x - 10, y+7, RED);
+        			DrawLine(x + 25, y, x + 60, y, RED);
+    			}
+    			else {
+        			DrawLine(x, y - 60, x, y - 25, RED);
+        			DrawCircleLines(x, y, 25, RED);
+        			DrawLine(x, y - 15, x, y - 5, RED);
+        			DrawLine(x - 7, y - 10, x + 7, y - 10, RED);
+        			DrawLine(x - 7, y + 10, x + 7, y + 10, RED);
+        			DrawLine(x, y + 25, x, y + 60, RED);
+   			}
+	//se mantine la tipografia del texto
+    			DrawText(punt_datos->fuentes_T[i].nombre, x - 12, y - 45, 20, BLUE);
+    			DrawText(punt_datos->fuentes_T[i].valor, x - 12, y + 25, 18, BLUE);
+		}
 }
 
 void Liberar_Arreglo_Fuente_T(ArregloFuentes_T *punt_datos){
@@ -450,6 +499,22 @@ Rectangle Caja_de_seleccion_Fuente_T(Fuentes_T fuentes_T){  //y este es el segun
     Rectangle caja = {fuentes_T.posicion.x - 70, fuentes_T.posicion.y -50, 150, 90}; 
     return caja; 
 } 
+
+//aca se agrega el codigo que permite la rotacion 
+void Rotar_Fuente_T(ArregloFuentes_T *punt_datos) {
+        for(size_t i = 0; i < punt_datos->tamano; i++) {
+                if(punt_datos->fuentes_T[i].seleccionado) {
+                        if(punt_datos->fuentes_T[i].rotacion == 0) {
+                                punt_datos->fuentes_T[i].rotacion = 1; //mientras que aca se evalua si e>
+                        }
+                        else {
+                                punt_datos->fuentes_T[i].rotacion = 0; //esto permite que siempre este e>
+                        }
+                        break;
+                }
+        }
+}
+//fin de agregado para rotar
 
 void Mover_Fuente_T(ArregloFuentes_T *punt_datos)
 {
@@ -590,39 +655,47 @@ void Dibujar_Fuente_C(ArregloFuentes_C *punt_datos)
    //ciclo para impresion constante de todas las fuentes
     for (size_t i = 0; i < punt_datos->tamano; i ++ ){
 
-        int x = punt_datos->fuentes_C[i].posicion.x;
-        int y = punt_datos->fuentes_C[i].posicion.y;
-
-        DrawLine(x - 60, y, x - 25, y, BLACK);
-
-        //este es el dibujo del circulo 
-        DrawCircleLines(x, y, 25, BLACK);
-        DrawLine(x - 10, y, x+10, y , BLUE); //linea horizontal
-        DrawLine(x + 10, y, x , y - 10 , BLUE);//linea inclinada superior
-        DrawLine(x + 10, y, x , y + 10 , BLUE);//linea inclinada inferior
-
-    //esta es la linea derecha
-        DrawLine(x + 25, y, x + 60, y, BLACK);
-
+	if(punt_datos->fuentes_C[i].rotacion == 0) {//esto representa a la version hozizontal, que ya habia
+    		DrawLine(x - 60, y, x - 25, y, BLACK);
+		DrawCircleLines(x, y, 25, BLACK);//ciculo central 
+    		DrawLine(x - 10, y, x + 10, y, BLUE);//linea horizontal
+    		DrawLine(x + 10, y, x, y - 10, BLUE);//inclinada superior
+    		DrawLine(x + 10, y, x, y + 10, BLUE);//inclinada inferior
+    		DrawLine(x + 25, y, x + 60, y, BLACK);
+	}
+	else {//esto es el cambio
+    		DrawLine(x, y - 60, x, y - 25, BLACK);
+    		DrawCircleLines(x, y, 25, BLACK);
+    		DrawLine(x, y + 10, x, y - 10, BLUE);
+    		DrawLine(x, y - 10, x - 8, y, BLUE);
+    		DrawLine(x, y - 10, x + 8, y, BLUE);
+    		DrawLine(x, y + 25, x, y + 60, BLACK);
+	}
     //esto es para el texto de la fuente
         DrawText(punt_datos->fuentes_C[i].nombre, x - 12, y - 45, 20, BLACK);
         DrawText(punt_datos->fuentes_C[i].valor, x - 12, y + 25, 18, RED);
 
         //cambio de color si es seleccionado
         if (punt_datos->fuentes_C[i].seleccionado == true) {
-
-            DrawLine(x - 60, y, x - 25, y, RED);
-            DrawCircleLines(x, y, 25, RED);
-            DrawLine(x - 10, y, x+10, y , RED);
-            DrawLine(x + 10, y, x , y - 10 , RED);
-            DrawLine(x + 10, y, x , y + 10 , RED);
-            DrawLine(x + 25, y, x + 60, y, RED);
-
-            DrawText(punt_datos->fuentes_C[i].nombre, x - 12, y - 45, 20, BLUE);
-            DrawText(punt_datos->fuentes_C[i].valor, x - 12, y + 25, 18, BLUE);
-
-        }
-
+		 if(punt_datos->fuentes_C[i].rotacion == 0) {//para permitir la rotacion
+            		DrawLine(x - 60, y, x - 25, y, RED);
+            		DrawCircleLines(x, y, 25, RED);
+            		DrawLine(x - 10, y, x+10, y , RED);
+            		DrawLine(x + 10, y, x , y - 10 , RED);
+            		DrawLine(x + 10, y, x , y + 10 , RED);
+            		DrawLine(x + 25, y, x + 60, y, RED);
+		}
+		else {//este agregado es para que rote
+			DrawLine(x, y - 60, x, y - 25, RED);
+			DrawCircleLines(x, y, 25, RED);
+			DrawLine(x, y + 10, x, y - 10, RED);
+        		DrawLine(x, y - 10, x - 8, y, RED);
+        		DrawLine(x, y - 10, x + 8, y, RED);
+			DrawLine(x, y + 25, x, y + 60, RED);
+    		}
+        	DrawText(punt_datos->fuentes_C[i].nombre, x - 12, y - 45, 20, BLUE);
+        	DrawText(punt_datos->fuentes_C[i].valor, x - 12, y + 25, 18, BLUE);
+	}
     }
 }
 
@@ -691,6 +764,22 @@ Rectangle Caja_de_seleccion_Fuente_C(Fuentes_C fuentes_C){  //cajita de la fuent
     Rectangle caja = {fuentes_C.posicion.x - 70, fuentes_C.posicion.y -50, 150, 90}; 
     return caja; 
 } 
+
+//aca se agrega el codigo que permite la rotacion 
+void Rotar_Fuente_C(ArregloFuentes_C *punt_datos) {
+        for(size_t i = 0; i < punt_datos->tamano; i++) {
+                if(punt_datos->fuentes_C[i].seleccionado) {
+                        if(punt_datos->fuentes_C[i].rotacion == 0) {
+                                punt_datos->fuentes_C[i].rotacion = 1; //mientras que aca se evalua si e>
+                        }
+                        else {
+                                punt_datos->fuentes_C[i].rotacion = 0; //esto permite que siempre este e>
+                        }
+                        break;
+                }
+        }
+}
+//fin de agregado para rotar
 
 void Mover_Fuente_C(ArregloFuentes_C *punt_datos)
 {
@@ -799,21 +888,31 @@ void Dibujar_Nodo(ArregloNodos *punt_datos)
         int x = punt_datos->nodo[i].posicion.x;
         int y = punt_datos->nodo[i].posicion.y;
 
+void Dibujar_Nodo(ArregloNodos *punt_datos) {
+//si bien la rotacion de un nodo es innecesaria en este momento, de cara a un nodo especial en el futurop, es mejor tenerlo listo
+    for (size_t i = 0; i < punt_datos->tamano; i++) {
+        int x = punt_datos->nodo[i].posicion.x;
+        int y = punt_datos->nodo[i].posicion.y;
+
+        if(punt_datos->nodo[i].rotacion == 0) {
             DrawCircle(x, y, 10, BLUE);
             DrawText(punt_datos->nodo[i].nombre, x - 20, y - 30, 20, BLACK);
             DrawText(punt_datos->nodo[i].valor, x - 1, y + 13, 18, BLACK);
-
-        //cambio de color si es seleccionado
-        if (punt_datos->nodo[i].seleccionado == true) {
-
+        }
+        else
+        {
+            // Reservado para futuras rotaciones en caso de un nodo especial
+            DrawCircle(x, y, 10, BLUE);
+            DrawText(punt_datos->nodo[i].nombre, x - 20, y - 30, 20, BLACK);
+            DrawText(punt_datos->nodo[i].valor, x - 1, y + 13, 18, BLACK);
+        }
+        if (punt_datos->nodo[i].seleccionado) {
             DrawCircle(x, y, 10, RED);
             DrawText(punt_datos->nodo[i].nombre, x - 20, y - 30, 20, BLUE);
             DrawText(punt_datos->nodo[i].valor, x - 1, y + 13, 18, BLUE);
         }
-
     }
 }
-
 void Liberar_Arreglo_Nodo(ArregloNodos *punt_datos){
         //liberacion de memoria para los punteros
         if (punt_datos->nodo != NULL)
@@ -894,6 +993,23 @@ Rectangle Caja_de_seleccion_Nodo(Nodo Nodo){  //cajita de la fuente de corriente
     Rectangle caja = {Nodo.posicion.x - 20, Nodo.posicion.y -20, 30, 30}; 
     return caja; 
 } 
+
+//aca se agrega el codigo que permite la rotacion 
+//esta funcion se agrega por el remoto caso que la forma del nodo sea especial y por tanto, rotabble
+void Rotar_Nodo(ArregloNodos *punt_datos) {
+        for(size_t i = 0; i < punt_datos->tamano; i++) {
+                if(punt_datos->nodo[i].seleccionado) {
+                        if(punt_datos->nodo[i].rotacion == 0) {
+                                punt_datos->nodo[i].rotacion = 1; //mientras que aca se evalua si e>
+                        }
+                        else {
+                                punt_datos->nodo[i].rotacion = 0; //esto permite que siempre este e>
+                        }
+                        break;
+                }
+        }
+}
+//fin de agregado para rotar
 
 void Mover_Nodo(ArregloNodos *punt_datos)
 {
