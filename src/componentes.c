@@ -147,8 +147,8 @@ void Dibujar_resistor(ArregloResistores *punt_datos)    //esta funcion recibe el
         		DrawLine(x, y - 60, x, y - 30, RED);
         		DrawRectangleLines(x - 15, y - 30, 30, 60, RED);
         		DrawLine(x, y + 30, x, y + 60, RED);
-                DrawText(punt_datos->resistores[i].nombre, x - 55, y - 20, 20, RED);
-                DrawText(punt_datos->resistores[i].valor, x - 55, y + 5, 18, RED);
+                DrawText(punt_datos->resistores[i].nombre, x - 55, y - 20, 20, BLUE);
+                DrawText(punt_datos->resistores[i].valor, x - 55, y + 5, 18, BLUE);
             }
         }
     }
