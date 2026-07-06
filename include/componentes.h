@@ -8,9 +8,6 @@
 
 #define MAX_TEXTO_COMPONENTE 20
 
-//definicion de arreglo de nodos para evitar error de no existencia antes de tiempo
-typedef struct ArregloNodos ArregloNodos;
-
 //====== Para los Resistores (COMPONENTES) ======
 typedef struct 
 {
@@ -172,8 +169,7 @@ typedef struct
 }Nodo;
 
 //esto de aca ya no se toca (por ahora jeje creo que si para el snap y el seleccionado pero asi se ve bien)
-typedef struct 
-{
+typedef struct {
     Nodo *nodo; //aca se encuentran practicamente todos los resistores almacenados
     size_t tamano; 
     size_t capacidad; 
