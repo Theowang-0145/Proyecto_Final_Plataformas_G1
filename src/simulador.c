@@ -15,6 +15,11 @@ ArregloFuentes_T arreglo_F_T;
 ArregloFuentes_C arreglo_F_C;
 ArregloNodos arreglo_nodo;
 
+//Nodos seleccionados para las conecciones
+int nodo_inicio_seleccionado = -1;
+int nodo_fin_seleccionado = -1;
+//deben estar declaradas fuera de cualquier funcion 
+
 //este boton si es estatico y sirve siempre 
 static Rectangle resistor_boton = {20, 20, 180, 45};
 static Rectangle fuente_T_boton = {20, 80, 180, 45};
@@ -326,11 +331,6 @@ void ActualizarSimulador() {
     Mover_Nodo(&arreglo_nodo);
 }
 
-//Nodos seleccionados para las conecciones
-int nodo_inicio_seleccionado = -1;
-int nodo_fin_seleccionado = -1;
-//deben estar declaradas fuera de cualquier funcion 
-
 //--------------------------------------DRAWING------------------------------------
 void DibujarSimulador(void)
 {
@@ -372,7 +372,7 @@ void DibujarSimulador(void)
     //dibujado de los componentes, ahora solo se necesita una funcion que en realidad es un loop
     Dibujar_Conexiones_Resistores(&arreglo_R, &arreglo_nodo);
     Dibujar_Conexiones_Fuente_T(&arreglo_F_T, &arreglo_nodo);
-    Dibujar_Conexiones_Fuente_C(&arreglo_F_C, &arreglo_nodo);
+    Dibujar_Conexiones_Fuentes_C(&arreglo_F_C, &arreglo_nodo);
 
     Dibujar_resistor(&arreglo_R);
     Dibujar_Fuente_T(&arreglo_F_T);
