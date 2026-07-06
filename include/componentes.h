@@ -8,6 +8,9 @@
 
 #define MAX_TEXTO_COMPONENTE 20
 
+//definicion de arreglo de nodos para evitar error de no existencia antes de tiempo
+typedef struct ArregloNodos ArregloNodos;
+
 //====== Para los Resistores (COMPONENTES) ======
 typedef struct 
 {
@@ -16,7 +19,10 @@ typedef struct
     bool seleccionado;  //este bool luego hay que trabajarlo para poder seleccionar y mover
     char nombre[MAX_TEXTO_COMPONENTE];
     char valor[MAX_TEXTO_COMPONENTE];
-
+    int rotacion; //si es 0 sera horizontal, si es 1 vertical
+//agregado para permitir una conexion entre componentes
+    int nodo_inicio;
+    int nodo_fin;
 }Resistor;
 
 //esto de aca ya no se toca (por ahora jeje creo que si para el snap y el seleccionado pero asi se ve bien)
@@ -26,19 +32,6 @@ typedef struct
     size_t tamano; 
     size_t capacidad; 
 }ArregloResistores;
-
-//agregado para  determinar la orientacion del compoente: resistor
-typedef struct {
-        vector2 posicion; //solicita saber como esta el componente
-        bool visible;
-        bool seleccionado;
-
-        int rotacion; //si es 0 sera horizontal, si es 1 vertical
-//agregado para permitir una conexion entre componentes
-	int nodo_inicio;
-	int nodo_fin;
-}Resistor;//acase debe indicar cada uno de los compoenetes
-//fin del seteo de rotacion
 
 void InicializarArreglo_Res(ArregloResistores *punt_datos, size_t capacidad_inicial);  //inicializa el arreglo (Como el lab 5)
 void Anadir_Resistor(ArregloResistores *punt_datos);//anade resistores (como el lab 5)
@@ -53,7 +46,7 @@ void Mover_Resistor(ArregloResistores *punt_datos);
 void Rotar_Resistor(ArregloResistores *punt_datos);//permite la rotacion con posicion determinada
 
 //el siguiente void permite el mmalado para la conexcion de componentes con nodos. 
-void Conectar_Resistor(ArrgloResistores *punt_datos, int indice_resistor, int nodo_inicio, int nodo_fin);
+void Conectar_Resistor(ArregloResistores *punt_datos, int indice_resistor, int nodo_inicio, int nodo_fin);
 
 //el siguiente void permite el llamado para conectar con un cable el nodo y el componente
 void Dibujar_Conexiones_Resistores(ArregloResistores *resistores, ArregloNodos *nodos);
@@ -79,7 +72,7 @@ typedef struct
 
 //agregado para  determinar la orientacion del compoente: Fuente de tension
 typedef struct {
-        vector2 posicion; 
+        Vector2 posicion; 
         bool visible;
         bool seleccionado;
 
@@ -106,7 +99,7 @@ void Mover_Fuente_T(ArregloFuentes_T *punt_datos);
 void Rotar_Fuente_T(ArregloFuentes_T *punt_datos);//permite la rotacion con posicion determinada
 
 //el siguiente void permite la llamada  para la conexcion de componentes con nodos. 
-void Conectar_Fuente_T(ArrgloFuentes_T *punt_datos, int indice_fuentes_T, int nodo_inicio, int nodo_fin);
+void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, int indice_fuentes_T, int nodo_inicio, int nodo_fin);
 
 //el siguiente void permite el llamado para conectar con un cable el nodo y el componente
 void Dibujar_Conexiones_Fuente_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nodos);
@@ -134,7 +127,7 @@ typedef struct
 
 //agregado para  determinar la orientacion del compoente: Fuente de corriente
 typedef struct {
-        vector2 posicion;
+        Vector2 posicion;
         bool visible;
         bool seleccionado;
 
@@ -159,7 +152,7 @@ void Mover_Fuente_C(ArregloFuentes_C *punt_datos);
 void Rotar_Fuente_C(ArregloFuentes_C *punt_datos);//permite la rotacion con posicion determinada
 
 //el siguiente void permite la llamada  para la conexcion de componentes con nodos. 
-void Conectar_Fuente_C(ArrgloFuentes_C *punt_datos, int indice_fuentes_C, int nodo_inicio, int nodo_fin);
+void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, int indice_fuentes_C, int nodo_inicio, int nodo_fin);
 
 //el siguiente void permite el llamado para conectar con un cable el nodo y el componente
 void Dibujar_Conexiones_Fuentes_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nodos);
@@ -174,7 +167,8 @@ typedef struct
     bool seleccionado;  //este bool luego hay que trabajarlo para poder seleccionar y mover
     char nombre[MAX_TEXTO_COMPONENTE];
     char valor[MAX_TEXTO_COMPONENTE];
-
+    //aunque el nodo no rote, es mejor dejarlo listo para un futuro en caso ede nodo especial
+    int rotacion; //si es 0 sera horizontal, si es 1 vertical
 }Nodo;
 
 //esto de aca ya no se toca (por ahora jeje creo que si para el snap y el seleccionado pero asi se ve bien)
@@ -184,16 +178,6 @@ typedef struct
     size_t tamano; 
     size_t capacidad; 
 }ArregloNodos;
-
-
-//agregado para  determinar la orientacion del compoente: Nodo
-typedef struct {
-        vector2 posicion;
-        bool visible;
-        bool seleccionado;
-        int rotacion; //si es 0 sera horizontal, si es 1 vertical
-}Nodo;//aca se debe indicar cada uno de los compoenetes
-//fin del seteo de rotacion
 
 void InicializarArregloNodo(ArregloNodos *punt_datos, size_t capacidad_inicial);  //inicializa el arreglo (Como el lab 5)
 void Anadir_Nodo(ArregloNodos *punt_datos);//anade resistores (como el lab 5)
