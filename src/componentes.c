@@ -16,7 +16,12 @@ como objetos moviles si son clickeados por el cursor (como si fueran un boton).
 
 //====== Para los Resistores (COMPONENTES) ====== (basicamente se cambiaron todas pero se parece al Lab 5)
 
-void InicializarArreglo_Res(ArregloResistores *punt_datos, size_t capacidad_inicial){
+void InicializarArreglo_Res(ArregloResistores *punt_datos, size_t capacidad_inicial) {
+
+    //una validacion basica
+    if(punt_datos == NULL) {
+	return;
+    }
 
     //se inicializa el arreglo segun correposnda (como el lab 5)
     punt_datos->resistores = NULL; 
@@ -38,16 +43,22 @@ void InicializarArreglo_Res(ArregloResistores *punt_datos, size_t capacidad_inic
     punt_datos->capacidad = capacidad_inicial; 
 }
 
-void Anadir_Resistor(ArregloResistores *punt_datos){
-
+void Anadir_Resistor(ArregloResistores *punt_datos)
     //aca se inicializan los resistores cuando hay que anadir uno nuevo, ojo con la posicion que cambia segun el tamano
     //esto para que a la hora de crearlos no se pongan uno sobre otro, sino corridos
+
+   //validacion
+   if (punt_datos == NULL)
+    {
+        return;
+    }
+
     Resistor resistor = {
         .posicion = {(500 + (punt_datos->tamano*40 + 30) ) , (500 + (punt_datos->tamano*40 + 30) )},
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
         .seleccionado = false
 	//se debe agregar la conticion inicial de rotacion, en este caso horizontal
-	.rotacion = 0,
+	.rotacion = 0
 	//ademas de añadir la condicion inicial de coneccion de los componentes, -1 significa no conectado
 	//.nodo_inicio = -1,
 	//.nodo_fin = -1
@@ -70,7 +81,7 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
             printf("NO SE PUDO GENERAR NUEVA MEMORIA PARA EL ARREGLO DE RESISTORES");
             return;
         }
-        
+
         //reescripcion del puntero con nueva capacidad
         punt_datos->resistores = nuevo; 
         punt_datos->capacidad = nueva_capacidad;
@@ -84,106 +95,168 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
 
 }
 
-//el siguiente void permite conectar el componente con el nodo
-//void Conectar_Resistor(ArregloResistores *punt_datos, int indice_resistor, int nodo_inicio, int nodo_fin) {
-    //if(indice_resistor < 0 || indice_resistor >= punt_datos->tamano) {
+
+/*
+ * Código de conexiones temporalmente deshabilitado.
+ * Cuando se implementen nuevamente los campos de conexión
+ * (nodo_inicio y nodo_fin) puede restaurarse esta sección.
+ */
+ 
+/*
+void Conectar_Resistor(ArregloResistores *punt_datos,
+                       int indice_resistor,
+                       int nodo_inicio,
+                       int nodo_fin)
+{
+    if (indice_resistor < 0 ||
+        indice_resistor >= (int)punt_datos->tamano)
+    {
 	//se comprueban dos cosas, primero, que el indice sea negativo para que este desconectado
-	//y que luego, que el indice sea disdinto de los otros componentes
-	//return;
-    //}
-    //punt_datos->resistores[indice_resistor].nodo_inicio = nodo_inicio;//aca se otorga el valor del primer nodo
-    //punt_datos->resistores[indice_resistor].nodo_fin = nodo_fin;//y aca el segundo nodo
-//}
+        //y que luego, que el indice sea disdinto de los otros componentes
 
+        return;
+    }
+
+    punt_datos->resistores[indice_resistor].nodo_inicio = nodo_inicio;//aca se otorga el valor del primer nodo
+    punt_datos->resistores[indice_resistor].nodo_fin = nodo_fin;//y aca el segundo nodo
+}
+*/
+
+/*
 //el siguiente dibuja la coneccion entre el componente y el nodo, el resistor es de coneccion roja
-//void Dibujar_Conexiones_Resistores(ArregloResistores *resistores, ArregloNodos *nodos) {
-    //for(size_t i = 0; i < resistores->tamano; i++) { //este es un cliclo de definicion nada mas
-        //int inicio = resistores->resistores[i].nodo_inicio;//sse establece el valor de los nodos
-        //int fin = resistores->resistores[i].nodo_fin;
-        //if(inicio < 0 || fin < 0) {
-            //continue;
-        //}
-        //Vector2 p1 = nodos->nodo[inicio].posicion;
-        //Vector2 p2 = nodos->nodo[fin].posicion;
-        //DrawLineEx(p1, p2, 3, RED);//cable rojo para distinguir
-    //}
-//}
+void Dibujar_Conexiones_Resistores(ArregloResistores *resistores,
+                                   ArregloNodos *nodos)
+{
+    for (size_t i = 0; i < resistores->tamano; i++)
+    {
+        int inicio = resistores->resistores[i].nodo_inicio;
+        int fin = resistores->resistores[i].nodo_fin;
 
-
-
-void Dibujar_resistor(ArregloResistores *punt_datos)    //esta funcion recibe el struct planteado anteriormente en los 
-{   
-    //comoo ahora se maneja un arreglo resulta necesario utilizar un ciclo para recorrer todos los resistores y sus variables de posicion
-    for (size_t i = 0; i < punt_datos->tamano; i ++ ){
-
-        int x = punt_datos->resistores[i].posicion.x;//aca solo se cambio la notacion y ver que estan dentro de un circlo
-        int y = punt_datos->resistores[i].posicion.y;
-
-        DrawLine(x - 60, y, x - 30, y, BLACK);
-
-    //este es el cuadrado de en medio (Recordar que el eje x crece hacia la derecha pero y hacia abajo. Raylib dibuja del punto hacia la derehca y hacia abajo)
-        DrawRectangleLines(x - 30, y - 15, 60, 30, BLACK);
-
-    //esta es la linea derecha
-        DrawLine(x + 30, y, x + 60, y, BLACK);
-
-    //esto es para el texto dentro del cuadrado
-        DrawText(punt_datos->resistores[i].nombre, x - 12, y - 45, 20, BLACK);
-        DrawText(punt_datos->resistores[i].valor, x - 12, y + 25, 18, RED);
-
-        //esta nueva parte es solo un cambio de color si el resistor fue seleccionado
-	//ademas, se agrega la condicion que permite la rotacion al seleccionar usando boton R sobre el componente
-        if (punt_datos->resistores[i].seleccionado == true) {
-		if(punt_datos->resistores[i].rotacion == 0) {
-        		DrawLine(x - 60, y, x - 30, y, RED);
-       	 		DrawRectangleLines(x - 30, y - 15, 60, 30, RED);
-        		DrawLine(x + 30, y, x + 60, y, RED);
-    		}
-    		else {
-        		DrawLine(x, y - 60, x, y - 30, RED);
-        		DrawRectangleLines(x - 15, y - 30, 30, 60, RED);
-        		DrawLine(x, y + 30, x, y + 60, RED);
-		}
-            	DrawText(punt_datos->resistores[i].nombre, x - 12, y - 45, 20, BLUE);
-            	DrawText(punt_datos->resistores[i].valor, x - 12, y + 25, 18, BLUE);
-	}
-	//esto agrega las condiciones para la rotacion del componente
-	//esta primera condicion determina si esta en horizontal
-	if (punt_datos->resistores[i].rotacion == 0) {
-		Drawline(x - 60, y, x - 30,y, BLACK);
-		DrawRectangleLines(x - 30, y - 15, 60, 30, BLACK);
-	}
-	else { //mientras que esta cambia la forma en vertical 
-		DrawLine(x, y - 60, x, y - 30, BLACK);
-		DrawRectangleLines(x - 15, y - 30, 30, 60, BLACK);
-		DrawLine(x, y + 30, x, y + 60, BLACK);
+        if (inicio < 0 || fin < 0)
+        {
+            continue;
         }
 
+        Vector2 p1 = nodos->nodo[inicio].posicion;
+        Vector2 p2 = nodos->nodo[fin].posicion;
+
+        DrawLineEx(p1, p2, 3, RED);//cable rojo para distinguir
+    }
+}
+*/
+
+void Dibujar_resistor(ArregloResistores *punt_datos)
+{
+//esta funcion recibe el struct planteado anteriormente en los
+//comoo ahora se maneja un arreglo resulta necesario utilizar un ciclo para recorrer todos los resistores y sus variables de posicion
+
+    if (punt_datos == NULL)
+    {
+        return;
+    }
+
+    for (size_t i = 0; i < punt_datos->tamano; i++)
+    {
+        int x = (int)punt_datos->resistores[i].posicion.x;//aca solo se cambio la notacion y ver que estan dentro de un ciclo
+        int y = (int)punt_datos->resistores[i].posicion.y;
+
+        Color color_componente;
+        Color color_texto;
+	//esta nueva parte es solo un cambio de color si el resistor fue seleccionado
+        //ademas, se agrega la condicion que permite la rotacion al seleccionar usando boton R sobre el componente
+        if (punt_datos->resistores[i].seleccionado)
+        {
+            color_componente = RED;
+            color_texto = BLUE;
+        }
+        else
+        {
+            color_componente = BLACK;
+            color_texto = BLACK;
+        }
+
+        // Resistor horizontal
+        if (punt_datos->resistores[i].rotacion == 0)
+        {
+	//esta es la linea derecha
+            DrawLine(x - 60, y, x - 30, y, color_componente);
+	 //este es el cuadrado de en medio (Recordar que el eje x crece hacia la derecha pero y hacia abajo. Raylib dibuja del punto hacia la derehca y hacia abajo)
+            DrawRectangleLines(
+                x - 30,
+                y - 15,
+                60,
+                30,
+                color_componente
+            );
+
+            DrawLine(x + 30, y, x + 60, y, color_componente);
+        }
+        // Resistor vertical
+        else
+        {
+            DrawLine(x, y - 60, x, y - 30, color_componente);
+
+            DrawRectangleLines(
+                x - 15,
+                y - 30,
+                30,
+                60,
+                color_componente
+            );
+
+            DrawLine(x, y + 30, x, y + 60, color_componente);
+        }
+	//esto es para el texto dentro del cuadrado
+        DrawText(
+            punt_datos->resistores[i].nombre,
+            x - 12,
+            y - 45,
+            20,
+            color_texto
+        );
+
+        DrawText(
+            punt_datos->resistores[i].valor,
+            x - 12,
+            y + 25,
+            18,
+            color_texto
+        );
     }
 }
 
-void Liberar_Arreglo_Resistores(ArregloResistores *punt_datos){
-    //este algoritmo ya es base del lab 5 para liberar memoria de los punteros
-        if (punt_datos->resistores != NULL)
+void Liberar_Arreglo_Resistores(ArregloResistores *punt_datos)
+{//este algoritmo ya es base del lab 5 para liberar memoria de los punteros
+    if (punt_datos == NULL)
+    {
+        return;
+    }
+
+    if (punt_datos->resistores != NULL)
     {
         free(punt_datos->resistores);
-
-        punt_datos->resistores = NULL;
-        punt_datos->tamano = 0;
-        punt_datos->capacidad = 0;
     }
 
-    punt_datos->resistores = NULL; 
-    punt_datos->capacidad = 0; 
-    punt_datos->tamano = 0; 
+    punt_datos->resistores = NULL;
+    punt_datos->tamano = 0;
+    punt_datos->capacidad = 0;
 }
 
+bool Eliminar_Resistor_Seleccionado(ArregloResistores *punt_datos)
+{
+    if (punt_datos == NULL)
+    {
+        return false;
+    }
 
-bool Eliminar_Resistor_Seleccionado(ArregloResistores *punt_datos){
-    for (size_t i = 0; i < punt_datos->tamano; i++){
-        if (punt_datos->resistores[i].seleccionado){
-            for (size_t j = i; j + 1 < punt_datos->tamano; j++){
-                punt_datos->resistores[j] = punt_datos->resistores[j + 1];
+    for (size_t i = 0; i < punt_datos->tamano; i++)
+    {
+        if (punt_datos->resistores[i].seleccionado)
+        {
+            for (size_t j = i; j + 1 < punt_datos->tamano; j++)
+            {
+                punt_datos->resistores[j] =
+                    punt_datos->resistores[j + 1];
             }
 
             punt_datos->tamano--;
@@ -195,6 +268,11 @@ bool Eliminar_Resistor_Seleccionado(ArregloResistores *punt_datos){
 }
 
 void Seleccion_movimiento_resistores(ArregloResistores *punt_datos){ //basicamente funciona como pulsos generados por el cursor
+
+    if (punt_datos == NULL)
+    {
+        return;
+    }
 
     bool click;
     bool encima;
@@ -224,11 +302,21 @@ void Seleccion_movimiento_resistores(ArregloResistores *punt_datos){ //basicamen
     }
 }
 
-Rectangle Caja_de_seleccion_resistor(Resistor resistor){
 
-    Rectangle caja = {resistor.posicion.x - 70, resistor.posicion.y -50, 130, 70}; 
-    return caja; 
-} 
+
+Rectangle Caja_de_seleccion_resistor(Resistor resistor)
+{
+    Rectangle caja =
+    {
+        resistor.posicion.x - 70,
+        resistor.posicion.y - 50,
+        130,
+        70
+    };
+
+    return caja;
+}
+
 
 //aca se agrega el codigo que permite la rotacion
 void Rotar_Resistor(ArregloResistores *punt_datos) {
