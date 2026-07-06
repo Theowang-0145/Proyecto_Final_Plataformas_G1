@@ -207,6 +207,19 @@ static void Actualizar_Modo_Edicion(void){
 
 void ActualizarSimulador()
 {
+
+	//actualizacion para lector de seleccion en nodo 
+	if(IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {//con el primer click derecho, se establece el primer nodo
+    		int nodo = Obtener_Nodo_Seleccionado(&arreglo_nodo);
+    		if(nodo != -1) {
+        		if(nodo_inicio_seleccionado == -1) {
+            			nodo_inicio_seleccionado = nodo;
+			}
+		}
+        	else {//con un segundo click derecho, selecciona el nodo final. 
+            		nodo_fin_seleccionado = nodo;
+        	}
+    	} 
     //revisar primero si esta en modo edicion
     if (modo_edicion){
         Actualizar_Modo_Edicion();
