@@ -37,7 +37,7 @@ void Liberar_Arreglo_Resistores(ArregloResistores *punt_datos);//libera la mmori
 bool Eliminar_Resistor_Seleccionado(ArregloResistores *punt_datos); //elximina el resistor
 
 void Seleccion_movimiento_resistores(ArregloResistores *punt_datos);
-Rectangle Caja_de_seleccion_resistor(Resistor resistor); 
+ 
 void Mover_Resistor(ArregloResistores *punt_datos); 
 
 void Rotar_Resistor(ArregloResistores *punt_datos);//permite la rotacion con posicion determinada
@@ -48,6 +48,8 @@ void Conectar_Resistor(ArregloResistores *punt_datos, int indice_resistor, int n
 //el siguiente void permite el llamado para conectar con un cable el nodo y el componente
 void Dibujar_Conexiones_Resistores(ArregloResistores *resistores, ArregloNodos *nodos);
 
+Rectangle Caja_de_seleccion_resistor(Resistor resistor); 
+
 //====== Para las Fuentes de Tension (COMPONENTES) ======
 
 typedef struct 
@@ -57,6 +59,12 @@ typedef struct
     bool seleccionado;  //este bool luego hay que trabajarlo para poder seleccionar y mover
     char nombre[MAX_TEXTO_COMPONENTE];
     char valor[MAX_TEXTO_COMPONENTE];
+
+    int rotacion; //si es 0 sera horizontal, si es 1 vertical
+
+    int nodo_inicio;
+    int nodo_fin;
+
 }Fuentes_T;
 
 //esto de aca ya no se toca (por ahora jeje creo que si para el snap y el seleccionado pero asi se ve bien)
@@ -67,20 +75,6 @@ typedef struct
     size_t capacidad; 
 }ArregloFuentes_T;
 
-//agregado para  determinar la orientacion del compoente: Fuente de tension
-typedef struct {
-        Vector2 posicion; 
-        bool visible;
-        bool seleccionado;
-
-        int rotacion; //si es 0 sera horizontal, si es 1 vertical
-
-	int nodo_inicio;
-	int nodo_fin;
-
-}Fuente_T;//aca se debe indicar cada uno de los compoenetes
-//fin del seteo de rotacion 
-
 
 void InicializarArreglo_F_T(ArregloFuentes_T *punt_datos, size_t capacidad_inicial);  //inicializa el arreglo (Como el lab 5)
 void Anadir_Fuente_T(ArregloFuentes_T *punt_datos);//anade resistores (como el lab 5)
@@ -90,7 +84,7 @@ bool Eliminar_Fuente_T_Seleccionada(ArregloFuentes_T *punt_datos); //elimina la 
 
 
 void Seleccion_movimiento_Fuente_T(ArregloFuentes_T *punt_datos);
-Rectangle Caja_de_seleccion_Fuente_T(Fuentes_T fuente_T); 
+ 
 void Mover_Fuente_T(ArregloFuentes_T *punt_datos); 
 
 void Rotar_Fuente_T(ArregloFuentes_T *punt_datos);//permite la rotacion con posicion determinada
@@ -101,7 +95,7 @@ void Conectar_Fuente_T(ArregloFuentes_T *punt_datos, int indice_fuentes_T, int n
 //el siguiente void permite el llamado para conectar con un cable el nodo y el componente
 void Dibujar_Conexiones_Fuente_T(ArregloFuentes_T *fuentes_T, ArregloNodos *nodos);
 
-
+Rectangle Caja_de_seleccion_Fuente_T(Fuentes_T fuente_T);
 //====== Para las Fuentes de Corriente (COMPONENTES) ======
 
 typedef struct 
@@ -112,6 +106,9 @@ typedef struct
     char nombre[MAX_TEXTO_COMPONENTE];
     char valor[MAX_TEXTO_COMPONENTE];
 
+    int rotacion; //si es 0 sera horizontal, si es 1 vertical
+    int nodo_inicio;
+    int nodo_fin;
 }Fuentes_C;
 
 //esto de aca ya no se toca (por ahora jeje creo que si para el snap y el seleccionado pero asi se ve bien)
@@ -122,19 +119,6 @@ typedef struct
     size_t capacidad; 
 }ArregloFuentes_C;
 
-//agregado para  determinar la orientacion del compoente: Fuente de corriente
-typedef struct {
-        Vector2 posicion;
-        bool visible;
-        bool seleccionado;
-
-        int rotacion; //si es 0 sera horizontal, si es 1 vertical
-
-	int nodo_inicio;
-	int nodo_fin;
-}Fuente_C;//aca se debe indicar cada uno de los compoenetes
-//fin del seteo de rotacion
-
 
 void InicializarArreglo_F_C(ArregloFuentes_C *punt_datos, size_t capacidad_inicial);  //inicializa el arreglo (Como el lab 5)
 void Anadir_Fuente_C(ArregloFuentes_C *punt_datos);//anade resistores (como el lab 5)
@@ -143,7 +127,7 @@ void Liberar_Arreglo_Fuente_C(ArregloFuentes_C *punt_datos);//libera la mmoria (
 bool Eliminar_Fuente_C_Seleccionada(ArregloFuentes_C *punt_datos); //elimina la fuente de corriente
 
 void Seleccion_movimiento_Fuente_C(ArregloFuentes_C *punt_datos);
-Rectangle Caja_de_seleccion_Fuente_C(Fuentes_C fuente_T); 
+ 
 void Mover_Fuente_C(ArregloFuentes_C *punt_datos); 
 
 void Rotar_Fuente_C(ArregloFuentes_C *punt_datos);//permite la rotacion con posicion determinada
@@ -154,6 +138,7 @@ void Conectar_Fuente_C(ArregloFuentes_C *punt_datos, int indice_fuentes_C, int n
 //el siguiente void permite el llamado para conectar con un cable el nodo y el componente
 void Dibujar_Conexiones_Fuentes_C(ArregloFuentes_C *fuentes_C, ArregloNodos *nodos);
 
+Rectangle Caja_de_seleccion_Fuente_C(Fuentes_C fuente_T); 
 
 //====== Para los nodos (COMPONENTES) ======
 
@@ -181,13 +166,13 @@ void Dibujar_Nodo(ArregloNodos *punt_datos); //los dibuja, pero sus posiciones s
 void Liberar_Arreglo_Nodo(ArregloNodos *punt_datos);//libera la mmoria (igual que el lab 5)
 bool Eliminar_Nodo_Seleccionado(ArregloNodos *punt_datos); //elimina el nodo
 
-void Seleccion_movimiento_Nodo(ArregloNodos *punt_datos);
-Rectangle Caja_de_seleccion_Nodo(Nodo nodo); 
-//esta funcion permite llamar a la funcion que detecta el seleccionado del nodo
 int Obtener_Nodo_Seleccionado(ArregloNodos *punt_datos);
 
 void Mover_Nodo(ArregloNodos *punt_datos); 
 
 void Rotar_Nodo(ArregloNodos *punt_datos);//permite la rotacion con posicion determinada
+
+void Seleccion_movimiento_Nodo(ArregloNodos *punt_datos);
+Rectangle Caja_de_seleccion_Nodo(Nodo nodo); 
 
 #endif
