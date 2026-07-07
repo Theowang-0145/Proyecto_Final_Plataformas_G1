@@ -86,7 +86,7 @@ void Anadir_Resistor(ArregloResistores *punt_datos){
     //aca se inicializan los resistores cuando hay que anadir uno nuevo, ojo con la posicion que cambia segun el tamano
     //esto para que a la hora de crearlos no se pongan uno sobre otro, sino corridos
     Resistor resistor = {
-        .posicion = {(500 + (punt_datos->tamano*40 + 30) ) , (500 + (punt_datos->tamano*40 + 30) )},
+        .posicion = {(200 + (punt_datos->tamano*40 + 30) ) , (200 + (punt_datos->tamano*40 + 30) )},
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
         .seleccionado = false,
 	//se debe agregar la conticion inicial de rotacion, en este caso horizontal
@@ -413,7 +413,7 @@ void Anadir_Fuente_T(ArregloFuentes_T *punt_datos){
 
     //inicializacion de una fuente de tension
     Fuentes_T fuentes_T = {
-        .posicion = {(600 + (punt_datos->tamano*40 + 30) ) , (500 + (punt_datos->tamano*40 + 30) )},
+        .posicion = {(350 + (punt_datos->tamano*40 + 30) ) , (200 + (punt_datos->tamano*40 + 30) )},
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
         .seleccionado = false,
         //se debe agregar la conticion inicial de rotacion, en este caso horizontal
@@ -664,7 +664,7 @@ void Anadir_Fuente_C(ArregloFuentes_C *punt_datos){
 
     //se inicializa una nueva fuente de corriente 
     Fuentes_C fuentes_C = {
-        .posicion = {(700 + (punt_datos->tamano*40 + 30) ) , (500 + (punt_datos->tamano*40 + 30) )},
+        .posicion = {(500 + (punt_datos->tamano*40 + 30) ) , (200 + (punt_datos->tamano*40 + 30) )},
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
         .seleccionado = false,
         //se debe agregar la conticion inicial de rotacion, en este caso horizontal
@@ -947,7 +947,7 @@ void Anadir_Nodo(ArregloNodos *punt_datos){
 
     //se inicializa una nueva fuente de corriente 
     Nodo nodo = {
-        .posicion = {(800 + (punt_datos->tamano*40 + 30) ) , (500 + (punt_datos->tamano*40 + 30) )},
+        .posicion = {(650 + (punt_datos->tamano*40 + 30) ) , (200 + (punt_datos->tamano*40 + 30) )},
         .visible = false,   //se inicializa en false pero al anadirlo hay que ponerlo luego en true
         .seleccionado = false
     };
